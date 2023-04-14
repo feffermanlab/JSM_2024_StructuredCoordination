@@ -28,6 +28,10 @@ class Orbit:
             nc = nx.draw_networkx_nodes(self.graph, pos, nodelist=self.graph.nodes(),node_color = self.solution[-(ii)])
         plt.show()
 
+    def __str__(self):
+        n=len(self.graph.nodes())
+        st= "Starting from a given coloring of a connected graph on {} vertices, the orbit {}".format(n,self.report)
+        return st 
 
     def __solve__(self,y0=None, iter_limit = 5000):
         if y0 is None:
@@ -44,21 +48,21 @@ class Orbit:
             yold=orbit[-1]
             orbit.append(self.__F__(yold))
             iter=iter+1 
-            if iter>=100:
+            if iter>=19:
                 eq = (orbit[-1]==orbit[-2]).all() and (orbit[-1]==orbit[-3]).all()
-                cycle2 = (orbit[-1]==orbit[-3]).all() and (orbit[-1]==orbit[-5]).all()
-                cycle3 = (orbit[-1]==orbit[-4]).all() and (orbit[-1]==orbit[-7]).all()
+                cycle2 = (orbit[-1]==orbit[-3]).all() and (orbit[-1]==orbit[-5]).all() and (orbit[-1]==orbit[-19]).all()
+                cycle3 = (orbit[-1]==orbit[-4]).all() and (orbit[-1]==orbit[-7]).all() and (orbit[-1]==orbit[-19]).all()
             finished = iter>=iter_limit or eq or cycle2 or cycle3
 
         if eq:
-            str="Resulted in an equilibrium"
+            str="The orbit ended at an equilibrium"
         elif cycle2:
-            str="Resulted in a 2 cycle"
+            str="The orbit ended in a 2 cycle"
         elif cycle3:
-            str="Resulted in a 3 cycle"
+            str="The orbit ended in a 3 cycle"
         else: 
-            str= "Did not result in an equilibrium or small limit cycle"
-        report = "Finished in {} iterations. {}".format(iter, str)
+            str= "The orbit not result in an equilibrium or small limit cycle. A limit may exist, try again with a larger iter_limit"
+        report = "terminated in {} iterations. {}".format(iter, str)
         return [orbit,iter, eq, cycle2, cycle3,report]
     
     def __F__(self,y):
@@ -71,3 +75,14 @@ class Orbit:
     def __mode__(self,array):
         most = max(list(map(array.count, array)))
         return list(set(filter(lambda x: array.count(x) == most, array)))
+    
+    def get_limit(self):
+        if self.eq:
+            return self.solution[-1]
+        elif self.cycle2:
+            return self.solution[-2:]
+        elif self.cycle3:
+            return self.solution[-3:]
+        else:
+            print("Orbit has no equilibrium or small limit cycle")
+            return self.solution[-5:]

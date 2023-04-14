@@ -14,9 +14,32 @@ def gen_connected_graph(n,p):
     
     return G
 
-#def find_cliques(G,orbit):
+def find_cliques(sol):
+    G=sol.graph
+    lim = sol.get_limit()
+    Q=list()
+    if sol.eq:
+        config = lim
+        strats = list(set(config))
+        for ii in strats:
+            locs = (config == ii)
+            clique=G.subgraph(np.asarray(G.nodes)[locs])
+            Q.append(clique)
+        return Q 
 
-myOrbit = orbit.Orbit(gen_connected_graph(20,0.1))
+    elif sol.cycle2:
+        cofig1=lim[0]
+        config2=lim[1]
+    return("not yet supported")
 
+
+#myOrbit = orbit.Orbit(gen_connected_graph(20,0.2))
+#G=nx.complete_bipartite_graph(4,2)
+G=gen_connected_graph(20,0.2)
+myOrbit = orbit.Orbit(G,[random.randint(0,4) for i in range(len(G.nodes))])
 print(myOrbit.report)
-myOrbit.draw(2)
+print(find_cliques(myOrbit))
+#limit = myOrbit.get_limit()
+#print(np.shape(np.asarray(myOrbit.get_limit())))
+
+#myOrbit.draw(2)
