@@ -1,6 +1,7 @@
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 import random 
 
 class Orbit:
@@ -8,6 +9,7 @@ class Orbit:
         self.graph = G
         result = self.__solve__(y0,iter_limit)
         self.solution = result[0]
+        self.iter = result[1]
         self.eq= result[2]
         self.cycle2= result[3]
         self.cycle3= result[4]
@@ -25,7 +27,7 @@ class Orbit:
         for ii in np.arange(1,n+1):
             plt.subplot(r,c,ii)
             ec=nx.draw_networkx_edges(self.graph,pos)
-            nc = nx.draw_networkx_nodes(self.graph, pos, nodelist=self.graph.nodes(),node_color = self.solution[-(ii)])
+            nc = nx.draw_networkx_nodes(self.graph, pos, nodelist=self.graph.nodes(),node_color = self.solution[-(ii)],node_size = 20)
         plt.show()
 
     def __str__(self):
@@ -69,7 +71,10 @@ class Orbit:
         ynew = np.zeros(len(y))
         for n in np.arange(0,len(y)):
             argmax = self.__mode__([y[i]for i in list(self.graph.neighbors(n))])
-            ynew[n]=random.choice(argmax)
+            if y[n] in argmax:
+                ynew[n]=y[n]
+            else:
+                ynew[n]=random.choice(argmax)
         return ynew
 
     def __mode__(self,array):
@@ -86,3 +91,16 @@ class Orbit:
         else:
             print("Orbit has no equilibrium or small limit cycle")
             return self.solution[-5:]
+    
+    def __animate__(self,framenumber, graph, solution, pos):
+        
+        ec=nx.draw_networkx_edges(graph,pos)
+        nc=nx.draw_networkx_nodes(graph, pos, nodelist=graph.nodes(),node_color = solution[framenumber],node_size = 20)
+
+    def animation(self):
+        pos=nx.spring_layout(self.graph)
+        fig = plt.figure()
+        ec=nx.draw_networkx_edges(self.graph,pos)
+        nc = nx.draw_networkx_nodes(self.graph, pos, nodelist=self.graph.nodes(),node_color = self.solution[0],node_size = 20)
+        ani = animation.FuncAnimation(fig,self.__animate__, frames=self.iter, repeat=True, fargs = (self.graph,self.solution,pos))
+        plt.show()

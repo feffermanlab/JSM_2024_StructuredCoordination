@@ -2,6 +2,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
+import matplotlib.animation as animation
 import random
 import orbit
 
@@ -35,11 +36,14 @@ def find_cliques(sol):
 
 #myOrbit = orbit.Orbit(gen_connected_graph(20,0.2))
 #G=nx.complete_bipartite_graph(4,2)
-G=gen_connected_graph(20,0.2)
-myOrbit = orbit.Orbit(G,[random.randint(0,4) for i in range(len(G.nodes))])
+G=gen_connected_graph(40,0.1)
+myOrbit = orbit.Orbit(G,[random.randint(0,100) for i in range(len(G.nodes))])
 print(myOrbit.report)
-print(find_cliques(myOrbit))
+myOrbit.animation()
+#print(find_cliques(myOrbit))
 #limit = myOrbit.get_limit()
 #print(np.shape(np.asarray(myOrbit.get_limit())))
-
-#myOrbit.draw(2)
+#if myOrbit.eq:
+#    myOrbit.draw()
+#else:
+#    myOrbit.draw(2)
