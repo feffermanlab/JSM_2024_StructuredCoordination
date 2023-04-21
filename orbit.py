@@ -2,6 +2,7 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib as mpl
 import random 
 
 class Orbit:
@@ -48,7 +49,7 @@ class Orbit:
         cycle3=False
         while not finished:
             yold=orbit[-1]
-            orbit.append(self.__F__(yold))
+            orbit.append(self.__F__(yold).astype(int))
             iter=iter+1 
             if iter>=19:
                 eq = (orbit[-1]==orbit[-2]).all() and (orbit[-1]==orbit[-3]).all()
@@ -92,15 +93,43 @@ class Orbit:
             print("Orbit has no equilibrium or small limit cycle")
             return self.solution[-5:]
     
-    def __animate__(self,framenumber, graph, solution, pos):
-        
-        ec=nx.draw_networkx_edges(graph,pos)
-        nc=nx.draw_networkx_nodes(graph, pos, nodelist=graph.nodes(),node_color = solution[framenumber],node_size = 20)
+    def __animate__(self,framenumber, pos,cmap):
+        cols = self.__getcolors__(cmap,framenumber)
+        ec=nx.draw_networkx_edges(self.graph,pos)
+        nc=nx.draw_networkx_nodes(self.graph, pos, 
+                                  nodelist=self.graph.nodes(),
+                                  node_color = cols,
+                                  node_size = 20)
+        title=plt.title('$t={}$'.format(framenumber))
+        return(ec,nc,title)
 
     def animation(self):
+        #Start by assigning colors to stratagies
+        strats = list(set(self.solution[0]))
+        stmax= max(strats)
+        hsv = mpl.colormaps['hsv']
+        cmap = hsv(np.linspace(0,hsv.N,stmax+1).astype(int))
+
+        cols = self.__getcolors__(cmap,0)
         pos=nx.spring_layout(self.graph)
         fig = plt.figure()
+        title =plt.title('$t=0$')
         ec=nx.draw_networkx_edges(self.graph,pos)
-        nc = nx.draw_networkx_nodes(self.graph, pos, nodelist=self.graph.nodes(),node_color = self.solution[0],node_size = 20)
-        ani = animation.FuncAnimation(fig,self.__animate__, frames=self.iter, repeat=True, fargs = (self.graph,self.solution,pos))
+        nc = nx.draw_networkx_nodes(self.graph, pos, 
+                                    nodelist=self.graph.nodes(),
+                                    node_color = cols,
+                                    node_size = 20)
+        ani = animation.FuncAnimation(fig,self.__animate__, 
+                                        frames=self.iter, 
+                                        repeat=True,
+                                        fargs = (pos,cmap),
+                                        blit = True)
         plt.show()
+
+    def __getcolors__(self,cmap,frame):
+        y = self.solution[frame]
+        n=len(y)
+        cols = np.zeros((n,4))
+        for ii in np.arange(0,n):
+            cols[ii,:]=cmap[y[ii],:]    
+        return cols

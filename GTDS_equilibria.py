@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 import matplotlib.animation as animation
+import matplotlib.colors as mcolors
 import random
 import orbit
 
@@ -37,13 +38,13 @@ def find_cliques(sol):
 #myOrbit = orbit.Orbit(gen_connected_graph(20,0.2))
 #G=nx.complete_bipartite_graph(4,2)
 G=gen_connected_graph(40,0.1)
-myOrbit = orbit.Orbit(G,[random.randint(0,100) for i in range(len(G.nodes))])
+myOrbit = orbit.Orbit(G,[random.randint(0,40) for i in range(len(G.nodes))])
 print(myOrbit.report)
 myOrbit.animation()
-#print(find_cliques(myOrbit))
+print(find_cliques(myOrbit))
 #limit = myOrbit.get_limit()
 #print(np.shape(np.asarray(myOrbit.get_limit())))
 #if myOrbit.eq:
-#    myOrbit.draw()
+#   myOrbit.draw()
 #else:
 #    myOrbit.draw(2)

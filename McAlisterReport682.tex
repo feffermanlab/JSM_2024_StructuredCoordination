@@ -1,6 +1,7 @@
 \documentclass[]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
 
 %opening
 \title{Python Tools for the Analysis of a Graph Theoretical Dynamical System}
@@ -17,14 +18,56 @@ Here I present a set of tools written in python using the \verb*|networkx| libra
 \section{Homophily though a Graph Theoretical Dynamical System}
 Homophily, which is observed as the tendency to be associated with those similar to ourselves can emerge by simple mimicry behavior wherein an individual conforms to the behavior which is most common among their associates. Although this type of problem is thoroughly studied for strategies which exist in a metric space, when strategies are not measurable against one another and offer truly neutral intrinsic fitnesses, we can no longer use the standard ODE or difference equation models. Additionally, when individuals don't interact equally with all group members this game must be thought of on a graph. 
 \subsection{The Game}
-	Consider a connected graph $G(V,E)$ and a (not necessarily proper) vertex coloring of that graph $\mathbf{u}$. Now imagine the game where the fitness of each vertex is determined as the number of its neighbors which share the same color as it. The fitness function is $w:V\times C\times U\rightarrow \mathbb{N}$
+	Consider a connected graph $G(V,E)$ and a (not necessarily proper) vertex coloring of that graph $\mathbf{u}$ from the set of coloring $U$ with use colors in $C$. Now imagine the game where the fitness of each vertex is determined as the number of its neighbors which share the same color as it. The fitness function is $w:V\times C\times U\rightarrow \mathbb{N}$.
+	For any coloring $\mathbf{u}$ (which we think of as a color vector of length equal to the number of vertices) we can calculate a best response for each vertex by finding which color would have maximized fitness given the current coloring. 
 \subsection{The Dynamical System}
+	If we use the best response as an update rule we get the following dynamical system
+\begin{equation}
+	\mathbf{u}_{k+1}=[\text{argmax}_{c\in C}\{w(v,c;\mathbf{u}_k)\} ]_{v\in V}
+\end{equation}
+Because argmax might be larger than a single color we have to carefully break ties. If $\mathbf{u}_{k,v}\in \text{argmax}_{c\in C}{w(v,c,\mathbf{u}_k)}$ then $\mathbf{u}_{k+1,v}=\mathbf{u}_{k,v}$. Otherwise ties are broken uniform randomly. This process results in a sequence of colorings $(\mathbf{u}_k)_{k=0}^N$ which I call an orbit. It is easy to see that equilibria of this dynamical system are Nash equilibria of the game. Some equilibria are easy to see but some are nontrivial. (Fig. 1)
+
+\begin{figure}[h!]
+	\includegraphics[width=\linewidth]{images/figure4}
+	\includegraphics[width=\linewidth]{images/figure3}
+	\caption{\textbf{Top} a trivial equilibrium coloring wherein every vertex has the same color. \textbf{Bottom} a nontrivial equilibrium coloring with three cliques.}
+\end{figure}
+
+Equilibria can be separated into (typically connected) subgraphs wherein each vertex has the same color called cliques. A sequence of colorings does not necessarily stop at an equilibrium. Often a two-cycle can arise (Fig. 2)
+
+\begin{figure}[h!]
+	\includegraphics[width=\linewidth]{images/figure6}
+	\caption{An example of a two-cycle. If each vertex plays its best response to the coloring on the right it becomes the coloring on the left and if each vertex plays its best response to the coloring on the left it becomes the coloring on the right. }
+\end{figure}
+
+In two-cycles, we can still define cliques among the vertices which do not change. It may also become useful to discuss the connected subgraphs which alternate colors as ``two-cliques."   
 \subsection{Goals}
+There are several graph theoretical goals of this project, the first is to be able to find sufficient conditions and necessary conditions for equilibrium colorings. In order to do this, a process to find nontrivial equilibrium colorings is crucial. The second is to be able to classify equilibrium colorings as ``stable" or ``unstable" which requires us to have an equilibrium coloring and a way of perturbing it. Lastly we want to shift the question slightly to consider it as a boundary value problem wherein some vertices have fixed colors. It is not yet clear how to find an equilibrium coloring which satisfies the boundary condition or even how to determine if such a coloring exists. 
+
+All of these goals require a robust set of tools for finding equilibria from an initial coloring and keeping track of an orbit through time. It will also be important to generate images and animations of orbits and equilibria. Here I present an assortment of tools towards these goals written in python using the \verb*|networkx| library. 
 \section{Initial Value Problem}
+The process to find equilibria can be most easy thought of as computing trajectories or orbits from an initial coloring. we conjecture, but cannot yet prove, that, despite the stochasticity of the game, every orbit ends in an equilibrium or two-cycle. Therefore the most straight forward approach to finding equilibria is to simply solve the IVP. 
 \subsection{Preliminaries}
+In order to begin we need a way to generate a graph, \verb*|networkx| has may functions to return well known graphs but to generate a random connected graph quickly, I wrote the function \verb*|gen_connected_graph(n,p)| which starts with an Erd\'os-R\'enyi graph on \verb*|n| vertices where the probability that any two vertices share an edge is \verb*|p|. Because considering this problem on disconnected graphs is the same as considering the problem independently for each connected component, I want to ensure that the graph I return is connected. Therefore, I make a list of connected components in the Erd\'os-R\'enyi graph and connected a random vertex in one component to a random vertex in the next component until the graph is connected. The function returns the connected graph on \verb*|n| vertices.   
 \subsection{Orbit Object}
+Much of the questions about the initial value problem have to do with the analysis of the sequence of colorings called an orbit. To make the analysis easier and more readable, I made a class called \verb*|Orbit| which is initialized with a graph \verb*|G|, an initial coloring \verb*|y0|, and an iteration limit required by the function which wills solve the IVP. This object has the following attributes: \verb*|Graph| which is the graph the orbit was built on, \verb*|solution| which is the sequence of colorings, \verb*|iter| which is the length of solution, \verb*|eq|, \verb*|cycle2|, \verb*|cycle3| which are boolean variables that are true if the orbit ends in an equilibrium, two-cycle, or three-cycle respectively, and \verb*|report| which is a string object describing the orbit. 
+\subsubsection{solver}
+During initialization, to get a solution the function \verb*|__solve__(self,y0,iter_limit)| is used. The function mainly loops through a seperate function \verb*|__F__(y)| until one of the following conditions is met:
+\begin{enumerate}
+	\item An equilibrium is apparent - The solution has remained the same for 3 iterations
+	\item A two-cycle is apparent - The solution has oscillated between two colorings for 19 iterations
+	\item A three-cycle is apparent - The solution has rotated between three colorings for 19 iterations. 
+	\item The iteration limit is reached.
+\end{enumerate}  
+Once one of these conditions is met, the function returns the sequence of colorings, the number of iterations it took to terminate, the boolean variables saying whether or not it ended in an equilibrium, two-cycle or three-cycle, and the report, which is a string describing the orbit. 
+
+The function \verb*|__F__(self,y)| is the main component of the solver. This function does exactly what is written in equation (1). Given an coloring \verb*|y|, it constructs a new coloring by the following process. For each vertex in the graph, it finds which colors are the most prevalent among its neighbors in the coloring \verb*|y|. If the argmax contains more than one color, the function either assigns the vertex to be the same color that it was or chooses between the colors in argmax according to the tie-breaking rule described in section 1.2. After each vertex is assigned a new color, the new coloring is returned.   
+\subsubsection{Visualization}
+Because this problem is best understood visually, visualization is obviously a very important part of this \verb*|Orbit| class. Within the class, the function \verb*|draw(self,n=1,dim=None)|, by default, draws the graph with the vertices colored by the last coloring in \verb*|self.solution| using the \verb*|nx.draw| methods (e.g. Fig. 1). If a different argument \verb*|n| is given then the method draws the last \verb*|n| colorings from self.solution in individual subplots which are arranged in the figure with dimensions given by \verb*|dim| (e.g. Fig. 2).
+
+Seeing the orbit evolve through time can also be helpful for understanding so the method \verb*|animation(self)| in the \verb*|Orbit| class returns an animation of the colorings changing through time. It starts by defining a position so that the position of the vertices do not change in each frame then uses \verb*|FuncAnimation(fig,self.__animate__,farges=(pos,)...)| to create an animation.  The update function, \verb*|self.__animate__(self,framenumber,pos)| draws the edges and the vertices in the position given by \verb*|pos| then colors the vertices according to the coloring corresponding to the frame number. This method shows the animation in a figure.
 \subsection{Understanding Cliques}
-\subsection{Visualization}
+The main tool to understand equilibria it observing and understanding their cliques.  
 \subsection{Enumerating Equilibria}
 \subsection{Next Questions}
 \section{Towards a Boundary Value Problem}
