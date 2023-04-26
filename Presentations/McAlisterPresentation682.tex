@@ -1,0 +1,172 @@
+\documentclass{beamer}
+\usetheme{berlin}
+\definecolor{utorange}{HTML}{F77F00}
+\definecolor{smokey}{HTML}{4C4D4F}
+\definecolor{limestone}{HTML}{F0EDE4}
+\definecolor{accent}{RGB}{0,018,147}
+\definecolor{darkutorange}{HTML}{a95700}
+\definecolor{lightutorange}{HTML}{ffe8d0}
+
+\setbeamercolor*{title}{fg=smokey,bg=limestone}
+\setbeamercolor*{author}{fg=smokey}
+\setbeamercolor*{institute}{fg=smokey}
+\setbeamercolor*{date}{fg=smokey}
+\setbeamercolor*{frametitle}{fg=smokey, bg=limestone,}
+\setbeamercolor*{structure}{fg=utorange}
+\setbeamercolor{normal text}{fg=smokey,bg=white}
+\setbeamercolor{alerted text}{fg=utorange}
+\setbeamercolor{example text}{fg=smokey}
+\setbeamercolor{palette primary}{fg=black, bg=utorange}
+\setbeamercolor{palette secondary}{fg=white, bg=utorange}
+\setbeamercolor{palette tertiary}{fg=white, bg=darkutorange}
+
+\DeclareMathOperator*{\argmax}{\text{argmax}}
+\DeclareMathOperator*{\argmin}{\text{argmin}}
+\DeclareMathOperator{\uu}{\mathbf{u}}
+\usepackage{tikz}
+
+\title{Python Tools for the Analysis of a Graph Theoretical Dynamical System}
+\author{John McAlister}
+\institute[Math 682]{Univeristy of Tennessee - Knoxville}
+\begin{document}
+\begin{frame}[plain]
+    \centering
+    \maketitle
+    \includegraphics[height=3cm]{images/LogoCenter.jpg}
+
+\end{frame}
+
+\section{The Game}
+\begin{frame}{The Game: In images}
+	Consider a connected graph and a vertex coloring on that graph. Imagine the game where each vertex is trying to share a color with as many of its neighbors as possible. 
+	
+	\begin{figure}
+		\begin{tikzpicture}
+				\begin{scope}[every node/.style={circle,thick,draw}]
+				\node (A) [fill = cyan]at (0,0) {A};
+				\node (B) [fill = yellow]at (1,-1){B};
+				\node (C) [fill = red] at (2,1){C};
+				\node (D) [fill = green] at (3,-1){D};
+				\node (E) [fill = cyan] at (4,1){E};
+				\node (F) [fill = red]at (5,-1){F};
+				\node (G) [fill = green]at (6,0){G};
+			\end{scope}
+			
+			\draw(A)--(B)--(C)--(E)--(G)--(F)--(D)--(C)--(G);
+			\draw(D)--(B)--(E)--(F);
+			\draw(E)--(D)--(G);
+		\end{tikzpicture}
+	\caption{A coloring of the graph $G$. Call this coloring $\mathbf{u_0}$.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{The Game: In images}
+	In $\mathbf{u_0}$ each vertex had a best response. To approach a Nash Equilibrium update every vertex to play its best response simultaneously. Call this new coloring $\mathbf{u_1}$. 
+	
+	\begin{figure}
+		\begin{tikzpicture}
+			\begin{scope}[every node/.style={circle,thick,draw}]
+				\node (A) [fill = yellow]at (0,0) {A};
+				\node (B) [fill = cyan]at (1,-1){B};
+				\node (C) [fill = green] at (2,1){C};
+				\node (D) [fill = red] at (3,-1){D};
+				\node (E) [fill = green] at (4,1){E};
+				\node (F) [fill = green]at (5,-1){F};
+				\node (G) [fill = red]at (6,0){G};
+			\end{scope}
+			
+			\draw(A)--(B)--(C)--(E)--(G)--(F)--(D)--(C)--(G);
+			\draw(D)--(B)--(E)--(F);
+			\draw(E)--(D)--(G);
+		\end{tikzpicture}
+		\caption{A new coloring of $G$. Call this coloring $\mathbf{u_1}$.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{The Game: In images}
+	Repeat this process and we get a sequence of colorings $\{\mathbf{u_0},\mathbf{u_1},\mathbf{u_2},...\}$. Call this sequence of colorings an orbit. We may be interested in knowing where this orbit goes.
+	
+	\begin{figure}
+		\begin{tikzpicture}
+			\begin{scope}[every node/.style={circle,thick,draw}]
+				\node (A) [fill = cyan]at (0,0) {A};
+				\node (B) [fill = green]at (1,-1){B};
+				\node (C) [fill = red] at (2,1){C};
+				\node (D) [fill = green] at (3,-1){D};
+				\node (E) [fill = green] at (4,1){E};
+				\node (F) [fill = red]at (5,-1){F};
+				\node (G) [fill = green]at (6,0){G};
+			\end{scope}
+			
+			\draw(A)--(B)--(C)--(E)--(G)--(F)--(D)--(C)--(G);
+			\draw(D)--(B)--(E)--(F);
+			\draw(E)--(D)--(G);
+		\end{tikzpicture}
+		\caption{A new coloring of $G$. Call this coloring $\mathbf{u_2}$.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{The Game: In images}
+	After some number of repetitions we may reach a coloring in which every vertex is playing its best response. This in a Nash equilibrium.
+	
+	\begin{figure}
+			\begin{tikzpicture}
+			\begin{scope}[every node/.style={circle,thick,draw}]
+				\node (A) [fill = green]at (0,0) {A};
+				\node (B) [fill = green]at (1,-1){B};
+				\node (C) [fill = green] at (2,1){C};
+				\node (D) [fill = green] at (3,-1){D};
+				\node (E) [fill = green] at (4,1){E};
+				\node (F) [fill = green]at (5,-1){F};
+				\node (G) [fill = green]at (6,0){G};
+			\end{scope}
+			
+			\draw(A)--(B)--(C)--(E)--(G)--(F)--(D)--(C)--(G);
+			\draw(D)--(B)--(E)--(F);
+			\draw(E)--(D)--(G);
+		\end{tikzpicture}
+		\caption{An equilibrium coloring of $G$. Call this coloring $\mathbf{u_3}$.}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{The Game: In symbols}
+	Consider a connected graph $G(V,E)$ and a coloring of the vertices from a set of colors, $C$. Given some graph coloring, $\uu$, from the set of all colorings, $U$, each vertex $v$ has a fitness:
+	
+	\begin{block}{Fitness function $w:V\times C\times U\rightarrow \mathbb{N}$}
+		$w(v,c;\uu)=$ number of neighbors of $v$ which have the color $c$.
+	\end{block}
+	 
+	 Each vertex attempts to use the same strategy as the plurality of its neighbors. 
+\end{frame}
+
+\begin{frame}{The Dynamical System}
+		We can use this fitness function to define an update rule for a dynamical system. Let $\mathbf{u_k}$ be vertex coloring which we can think of as a vector of colors. $[u_{k,1},u_{k,2},...,u_{k,n}]$
+	\begin{block}{Dynamical System $F:U\rightarrow U$}
+		\begin{equation}
+			\mathbf{u_{k+1}}=F(\mathbf{u_k}):=\left[\text{argmax}_{C}\{w(v,c;\mathbf{u_k})\}\right]_{v\in V}
+		\end{equation}
+	\end{block}
+	For this to be a function we need to decide how ties are broken. 
+	\begin{itemize} \item If $u_{k,v}\in \text{argmax}_C\{w(v,c,\mathbf{u_k})\}$. then $u_{k+1,v}=u_{k,v}$. \item If $u_{k,v}\notin \text{argmax}_C\{w(v,c;\mathbf{u_k})\}$, then break ties randomly. \end{itemize}
+\end{frame}
+
+\begin{frame}{Why is this interesting?}
+	A Nash equilibrium of the game would be a fixed point of $F$.
+	\vspace{0.5cm}
+	 
+	\pause 
+	\begin{minipage}{0.49\linewidth}
+		There are some obvious equilibria 
+	
+	\end{minipage}\pause
+	\begin{minipage}{0.49\linewidth}
+	 \raggedright
+	 , but many are not obvious
+	
+	\end{minipage}
+	
+\end{frame}
+
+
+\end{document}

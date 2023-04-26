@@ -1,0 +1,117 @@
+\documentclass[]{article}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corrollary}[theorem]{Corrollary}
+\newtheorem{lemma}[theorem]{Lemma}
+%opening
+\title{Homophily Through a Graph Theoretical Dynamical System: Project Description}
+\author{John McAlister}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	When individuals in a network attempt to take on the strategy which is most prevalent among their neighbors, we can consider a graph theoretical dynamical system wherein each vertex is updating to take on its best response at every iteration. This system can have many non-trivial equilibria. In this project we seek to classify equilibria of the system for particular well understood graphs, and characterize equilibria of a general graph with methods from extremal graph theory. We also seek to derive stability conditions for equilibria using classical algebraic techniques from graph theoretical dynamical systems. Lastly, we consider reformulating the problem as a boundary value problem. Seeking an algorithm to find an equilibrium interpolation of compatible boundary data, we may begin to investigate some interesting applications of this system.   
+\end{abstract}
+
+\section{Introduction}
+Homophily, which is observed as the tendency to be associated with those similar to ourselves can emerge by simple mimicry behavior wherein an individual conforms to the behavior which is most common among their associates. Although this type of problem is thoroughly studied for strategies which exist in a metric space, when strategies are not measurable against one another and offer truly neutral intrinsic fitnesses, we can no longer use the standard ODE or difference equation models. Additionally, when individuals don't interact equally with all group members this game must be thought of on a graph. 
+\subsection{The Game}
+Consider a connected graph $G(V,E)$ and a (not necessarily proper) vertex coloring of that graph $\mathbf{u}$ from the set of coloring $U$ which use colors in $C$. Now imagine the game where the fitness of each vertex is determined as the number of its neighbors which share the same color as it. The fitness function is $w:V\times C\times U\rightarrow \mathbb{N}$.
+For any coloring $\mathbf{u}$ (which we think of as a color vector of length equal to the number of vertices) we can calculate a best response for each vertex by finding which color would have maximized fitness given the current coloring. Ties may occur, the tie breaking rule is described in the next section. Clearly, a Nash Equilibrium of this game is the state wherein every vertex is playing its best response and would not increase its fitness by becoming a different color. 
+\subsection{The Dynamical System}
+If we use the best response as an update rule we get the following dynamical system
+\begin{equation}
+	\mathbf{u}_{k+1}=F(\mathbf{u}_k):=[\text{argmax}_{c\in C}\{w(v,c;\mathbf{u}_k)\} ]_{v\in V}
+\end{equation}
+Because argmax might be larger than a single color we have to carefully break ties. If $\mathbf{u}_{k,v}\in \text{argmax}_{c\in C}{w(v,c,\mathbf{u}_k)}$ then $\mathbf{u}_{k+1,v}=\mathbf{u}_{k,v}$. Otherwise ties are broken uniform randomly. This process results in a sequence of colorings $(\mathbf{u}_k)_{k=0}^N$ which we call an orbit. It is easy to see that equilibria of this dynamical system are Nash equilibria of the game. Some equilibria are easy to see (Fig. 1) but some are nontrivial. (Fig. 2)
+\begin{figure}[h!]
+	\includegraphics[width=\linewidth]{images/figure4}
+	\caption{A trivial equilibrium coloring}
+\end{figure}
+\begin{figure}
+	\includegraphics[width=\linewidth]{images/figure3}
+	\caption{A nontrivial equilibrium coloring with three cliques.}
+\end{figure}
+
+Equilibria can be separated into (typically connected) subgraphs wherein each vertex has the same color called cliques. The equilibrium coloring with exactly 1 clique is the trivial equilibrium and exists in every graph. A graph generally admits nontrivial equilibria with multiple cliques as well. To discuss cliques more fully we introduce some notation.
+\begin{center}
+	\begin{tabular}{c|l}
+		symbol&definition\\
+		\hline
+		$Q(\mathbf{u})$& The set of all cliques in a coloring $\mathbf{u}$\\
+		$q_i$& A cliques in $Q(\mathbf{u})$\\
+		$\partial q_i$ &The set of vertices in $q_i$ which have neighbors in other cliques. 	
+	\end{tabular}
+\end{center}
+
+ A sequence of colorings does not necessarily stop at an equilibrium. Often a two-cycle can arise (Fig. 3). In two-cycles, we can still define cliques among the vertices which do not change. It may also become useful to discuss the connected subgraphs which alternate colors as ``two-cliques."
+
+\begin{figure}[h!]
+	\includegraphics[width=\linewidth]{images/figure6}
+	\caption{An example of a two-cycle. If each vertex plays its best response to the coloring on the right it becomes the coloring on the left and if each vertex plays its best response to the coloring on the left it becomes the coloring on the right. }
+\end{figure}
+
+Although the rules of the game do not explicitly disallow cycles larger than 2-cycles, no such cycles have been found. 
+
+\section{Equilibria}
+The first task is understanding this game is to understand its equilibria. There are many ways in which this might be done. Below are some theorems and conjectures regarding equilibria and limits. 
+
+\begin{theorem}[No nontrivial equilibria in $K_n$]
+	In the complete graph on $n$ vertices, $K_n$, the only equilibrium coloring is the trivial coloring.
+\end{theorem} 
+\begin{proof} Suppose that $K_n$ has an equilibrium coloring $\mathbf{u}^*$ with $m\geq 2$ cliques, $q_1,...,q_m$ which have colors $c_1,...,c_m$ respectively. (notice that every clique is connected to every other clique so we can be assured that to two cliques have the same color.) Because ever pair of vertices shares an edge, $w(v,c_i;\mathbf{u}^*)=|q_i|$ if $v\notin q_i$ and  $w(v,c_i;\mathbf{u}^*)=|q_i|-1$ if $v\in q_i$. Consider $v_1\in q_i$. Because $\mathbf{u}^*$ is an equilibrium coloring we know that
+\begin{equation}
+	w(v_1,c_1;\mathbf{u}^*)=\max_C\{w(v_1,C;\mathbf{u}^*)\} =:a
+\end{equation}
+Therefore $|q_1|=a+1$. Now observe that $w(v_1,c_2;\mathbf{u}^*)\leq a $ so $|q_2|\leq a$. Consider a vertex $v_2\in q_2$. $w(v_2,c_2;\mathbf{u}^*)=|q_2|-1\leq a-1$ but $w(v_2,c_1;\mathbf{u}^*)=|q_1|=a+1$. Thus
+\begin{equation}
+	w(v_2,c_2;\mathbf{u}^*)<\max_C\{w(v_2,c;\mathbf{u}^*)\}
+\end{equation}
+so $\mathbf{u}^*$ is not an equilibrium coloring. 
+\end{proof} 
+
+\begin{conjecture}[Complete Bipartite Equilibria]
+	The complete bipartite graph $K_{m,n}$ has an equilibrium with $k$ cliques if and only if $k$ is a common divisor of $m$ and $n$.  
+\end{conjecture}
+\begin{proof}
+		Consider $K_{n,m}$ and separate the vertices into the two parts $V_1$ which has $n$ vertices and $V_2$ which has $m$ vertices. Let $d$ be a common divisor of $m$ and $n$. 
+		
+		We start by easily constructing an equilibrium coloring with $d$ cliques using colors $c_1,...,c_d$. color $n/d$ of the vertices in $V_1$ with each color and $m/d$ of the vertices in $V_2$ with each color. Clearly we will have given every vertex exactly one color. Now observe that this is an equilibrium because for any vertex $v\in V_1$ which has the color $c_1$, $w(v,c_1)=m/d=\max_c\{w(v,c)\}.$ likewise for any vertex $x\in V_2$ which has the color $c_2$, $w(x,c_2)=n/d=\max_c\{w(x,c)\}.$ Therefore every vertex is playing its best response and this coloring is therefore an equilibrium. 
+		
+		Next we need to exclude equilibria with $d$ cliques where $d$ is not a common divisor of $n$ and $m$. I don't know how to do this yet
+\end{proof} 
+
+\begin{conjecture}[Impossibility of three-cycles]
+	For any graph, the probability of a three-cycle continuing indefinitely is zero
+\end{conjecture}
+\subsection{Further Questions}
+
+\begin{itemize}
+	\item Can we find or classify all the graphs which only admit the trivial equilibrium? 
+	\item Can we enumerate all the equilibria for a particular graph (can we at least give an upper limit better than $n^n?$)
+	\item Can we describe how common equilibria with $r$ cliques are for graphs with $n$ vertices and some edge parameter $p$. 
+	\item Can give some upper or lower bounds for connectors or separators between two cliques of given sizes?
+	\item Can we classify equilibria possible in trees?
+	\item If a graph contains a $K_n$ subgraph, will that $K_n$ subgraph be contained in one cliques (If yes it must be conditional on $n$).
+\end{itemize}
+\section{Stability}
+The problem of stability is tricky because it is hard to define. There are many conceptions of stability in this case. We list some below
+\subsection{Local Stability} We say that an equilibrium coloring $\mathbf{u}$ is locally stable at a vertex $v_i$ if $\mathbf{u}=F(\tilde{\mathbf{u}})$ for any $\tilde{\mathbf{u}}$ with $\mathbf{u}_{v}=\tilde{\mathbf{u}}_{v}$ for all $v\in V$. This is an $\mathcal{O}(n)$ process to check but we suspect that an algebraic stability condition can be derived. Two steps towards such a condition come as this conjecture and a possible corollary.
+\begin{conjecture}
+	For any graph $G$ and equilibrium coloring $\mathbf{u}$, $\mathbf{u}$ is locally stable at any vertex which is not adjacent to the boundary of a clique or a vertex of degree 1. 
+\end{conjecture} 
+\begin{corrollary}
+	The trivial equilibrium of any two graph with no vertices of degree one is locally stable at every vertex.
+\end{corrollary}
+\subsection{Global Stability}
+\subsection{Convergent Stability}
+\subsection{Structural Stability}
+\section{Boundary Value Problem}
+\end{document}
