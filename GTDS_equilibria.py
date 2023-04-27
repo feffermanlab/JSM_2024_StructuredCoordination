@@ -7,37 +7,21 @@ import matplotlib.colors as mcolors
 import random
 import orbit
 
-print("here")
 def do_this():
     print("We start by generating a random connected graph")
-    n = 40 
+    n = 50 
     p = 0.1
-    G=gen_connected_graph(n,p)
+    G=nx.random_regular_graph(round(n*p),n)
     print("Then we can create an orbit object from this graph")
     myOrbit = orbit.Orbit(G,[random.randint(0,40) for i in range(len(G.nodes))])
     print(myOrbit.report)
     cliques = find_cliques(myOrbit)
     print("the orbit has a limit with {} cliques".format(len(cliques)))
+    myOrbit.draw(frames=(-3,-2,-1))
     myOrbit.animation()
     
+    
 
-
-#n=len(cliques)
-#myOrbit.animation()
-#limit = myOrbit.get_limit()
-#print(np.shape(np.asarray(myOrbit.get_limit())))
-#if myOrbit.eq:
-#   myOrbit.draw()
-#else:
-#    myOrbit.draw(2)
-#print(cliques)
-#print("This orbit has a limit with {} cliques".format(n))
-
-#clique_counts = count_cliques(100,0.02,100)
-#print(clique_counts)
-#print(np.arange(clique_counts.min(),clique_counts.max()+1))
-#plt.hist(clique_counts,bins = np.arange(clique_counts.min(),clique_counts.max()+1))
-#plt.show()
 
 
 
@@ -91,13 +75,14 @@ def find_cliques(sol):
         strats = list(set(config))
         for ii in strats:
             locs = (config == ii)
-            clique=G.subgraph(np.asarray(G.nodes)[locs])
+            clique=G.subgraph(np.asarray(G.nodes)[locs]).copy()
             Q.append(clique)
     elif sol.cycle2:
         config1=lim[0]
         config2=lim[1]
         strats = list(set(config1))
-        Q.append(nx.connected_components(G.subgraph(np.asarray(G.nodes)[config1 != config2])))
+        alts = G.subgraph(np.asarray(G.nodes)[config1 != config2])
+        Q=Q+[alts.subgraph(c).copy() for c in nx.connected_components(alts)]
         for ii in strats:
             t1 = (config1 == ii)
             t2 = (config1 == config2)
@@ -118,24 +103,4 @@ def count_cliques(n,p,count):
     return clique_count        
 
 
-#main()
-#G=gen_connected_graph(40,0.1)
-#myOrbit = orbit.Orbit(G,[random.randint(0,40) for i in range(len(G.nodes))])
-##cliques = find_cliques(myOrbit)
-#print(myOrbit.report)
-#=len(cliques)
-#myOrbit.animation()
-#limit = myOrbit.get_limit()
-#print(np.shape(np.asarray(myOrbit.get_limit())))
-#if myOrbit.eq:
-#   myOrbit.draw()
-#else:
-#    myOrbit.draw(2)
-#print(cliques)
-#print("This orbit has a limit with {} cliques".format(n))
-
-#clique_counts = count_cliques(100,0.02,100)
-#print(clique_counts)
-#print(np.arange(clique_counts.min(),clique_counts.max()+1))
-#plt.hist(clique_counts,bins = np.arange(clique_counts.min(),clique_counts.max()+1))
-#plt.show()
+#do_this()

@@ -13,6 +13,8 @@ class Orbit:
     ----------
         graph : nx.Graph
             the graph on which the IVP is solved 
+        size : int
+            The number of nodes in graph
         solution : list 
             a sequence of colorings, colors are represented as integers
         iter : int
@@ -53,6 +55,7 @@ class Orbit:
             set to 5000
         '''
         self.graph = G
+        self.size = len(list(G.nodes()))
         result = self.__solve__(y0,iter_limit)
         self.solution = result[0]
         self.iter = result[1]
@@ -61,19 +64,22 @@ class Orbit:
         self.cycle3= result[4]
         self.report = result[5]
 
-    def draw(self,n=1, dim=None):
+    def draw(self,frames =(-1,), dim=None, node_size = 20):
         '''
         Draws the last n colorings of the orbit arranged as subplots
 
         Parameters
         ----------
-        n : int, optional
-            The number of colorings to be drawn. Given value 1 by default
+        frames : tuple, optional
+            The frames of the solution to be drawn. only the last frame by default
         dim : tuple, optional
             The dimensions of the subplots as (rows,columns). By default it will be calculated
             to be as close to square as possible
+        node_size: int, optional
+            The size of the nodes for networkx.draw()
         '''
         #calculate dimensions
+        n=len(frames)
         if dim == None:
             r = int(np.floor(np.sqrt(n)))
             c = int(np.ceil(n/r))
@@ -81,18 +87,28 @@ class Orbit:
             r=dim[0]
             c=dim[1]
         
+
+        #make a color map to color nodes consistently
+        strats = list(set(self.solution[frames[0]]))
+        jet = mpl.colormaps['jet']
+        cmap = {strats[i]:jet(np.linspace(0,jet.N,len(strats)).astype(int)[i]) 
+                for i in range(0,len(strats))}
+
         #get position so that each frame uses the same arrangement
         pos=nx.spring_layout(self.graph)
 
         plt.figure()
-        for ii in np.arange(1,n+1):
-            plt.subplot(r,c,ii)
+        for ii in np.arange(0,n):
+            cols = self.__get_colors__(cmap,frames[ii])
+            
+            plt.subplot(r,c,ii+1)
             ec=nx.draw_networkx_edges(self.graph,pos)
             nc = nx.draw_networkx_nodes(self.graph, 
                                         pos, 
                                         nodelist=self.graph.nodes(),
-                                        node_color = self.solution[-(ii)],
-                                        node_size = 20)
+                                        node_color = cols,
+                                        node_size = node_size)
+            
         plt.show()
 
     def __str__(self):
@@ -260,7 +276,7 @@ class Orbit:
             The artist object which draws the title of the graph
 
         '''
-        cols = self.__getcolors__(cmap,framenumber)
+        cols = self.__get_colors__(cmap,framenumber)
         ec=nx.draw_networkx_edges(self.graph,pos)
         nc=nx.draw_networkx_nodes(self.graph, pos, 
                                   nodelist=self.graph.nodes(),
@@ -276,13 +292,14 @@ class Orbit:
         '''
 
         #Start by assigning colors to stratagies
+     #make a color map to color nodes consistently
         strats = list(set(self.solution[0]))
-        stmax= max(strats)
-        hsv = mpl.colormaps['hsv']
-        cmap = hsv(np.linspace(0,hsv.N,stmax+1).astype(int))
+        jet = mpl.colormaps['jet']
+        cmap = {strats[i]:jet(np.linspace(0,jet.N,len(strats)).astype(int)[i]) 
+                for i in range(0,len(strats))}
 
         #calls __getcolors__ to get a list of colors from the strategies
-        cols = self.__getcolors__(cmap,0)
+        cols = self.__get_colors__(cmap,0)
 
         #make a position object so each frame has the graph in the same layout
         pos=nx.spring_layout(self.graph)
@@ -301,7 +318,7 @@ class Orbit:
         plt.show()
         return ani 
 
-    def __getcolors__(self,cmap,frame):
+    def __get_colors__(self,cmap,frame):
         ''' 
         A hidden method to make a list of RGB from a list step in the soluiton
 
@@ -320,8 +337,12 @@ class Orbit:
         '''
 
         y = self.solution[frame]
-        n=len(y)
-        cols = np.zeros((n,4))
-        for ii in np.arange(0,n):
-            cols[ii,:]=cmap[y[ii],:]    
-        return cols
+        cols = np.zeros((len(y),4))
+        for n in self.graph.nodes():
+            cols[n,:]=cmap[y[n]] 
+
+        #Order colors correctly... 
+        ordered_cols=np.zeros((self.size,4))
+        for jj in range(0,self.size):
+            ordered_cols[jj,:]=cols[list(self.graph.nodes)[jj]]   
+        return ordered_cols
