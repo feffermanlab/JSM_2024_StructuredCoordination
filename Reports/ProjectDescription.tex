@@ -6,7 +6,7 @@
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{corrollary}[theorem]{Corrollary}
+\newtheorem{corrollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
 %opening
 \title{Homophily Through a Graph Theoretical Dynamical System: Project Description}
@@ -111,7 +111,45 @@ The problem of stability is tricky because it is hard to define. There are many 
 	The trivial equilibrium of any two graph with no vertices of degree one is locally stable at every vertex.
 \end{corrollary}
 \subsection{Global Stability}
+We say that an equilibrium is globally stable if it is stable at every vertex in $G$. Corollary 5 is a global stability statement. It would be helpful to give an algebraic characterization to globally stable equilibria. For instance
+
+\begin{conjecture}{Stability condition}
+		Let $A$ be the adjacency matrix of $G$ and let $\mathbf{\chi_i} = [\delta(\mathbf{u}_k,c_i)]_{k=1}^n$. If \begin{equation}
+			\chi_i^TA\chi_i>\chi_i^TA\chi_j\quad \forall \, i, j
+		\end{equation}
+		Then $\mathbf{u}$ is globally stable. 
+	
+\end{conjecture}
 \subsection{Convergent Stability}
+If a coloring is stable it has some basin of stability. Describing the basins of stability here will be challenging because strategies are not in a vector space. We can still describe metric between colorings $d:U\times U \rightarrow \mathbb{Z}$
+\begin{equation}
+	d(\mathbf{u_1},\mathbf{u_2})=\sum_{i=1}^n (1-\delta(\mathbf{u_1}_i,\mathbf{u_2}_i)) \quad \text{ where }\quad  \delta(c_i,c_j)=\begin{cases}
+		1 & c_i=c_j\\
+		0 & c_i\neq c_j
+	\end{cases}
+\end{equation}
+
+\begin{conjecture}[$d$ is a metric]
+	$d(\mathbf{u_1},\mathbf{u_2})$ ad defined above is a metric in $U$. 
+\end{conjecture}
+
+\begin{proof}
+	Clearly $d(\mathbf{u_1}\mathbf{u_2})=d(\mathbf{u_2},\mathbf{u_1})$ so we have symmetry. We also have positive definiteness easily from the definition. To prove the Triangle inequality we require a little bit of work. 
+\end{proof}
+
+This gives us the tool we need to study the following question: if $u^*$ is an equilibrium coloring, where in $U$ do we have that 
+\begin{equation}
+	d(\mathbf{u^*},F(\mathbf{u}))\leq d(\mathbf{u^*},\mathbf{u})
+\end{equation}
+or asked another way, where can we say that there exists some $N\in \mathbb{N}$ such that 
+\begin{equation}
+	d(\mathbf{u^*},F^n(\mathbf{u}))=0 \text{ for } n\geq N
+\end{equation}
 \subsection{Structural Stability}
+Kemeney's constant work. When does adding an edge destabilize an equilibrium coloring
 \section{Boundary Value Problem}
+
+Thinking about compatible boundary data
+Thinking about a process for finding an ``Equilibrium interpolation" like Dirchlet's method of harmonic lifting. 
+Thinking this might be most interesting for k-connected graphs $k\geq 2$. 
 \end{document}

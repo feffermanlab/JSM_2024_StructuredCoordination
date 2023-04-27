@@ -70,7 +70,8 @@ Seeing the orbit evolve through time can also be helpful for understanding so th
 The main tool to understand equilibria it observing and understanding their cliques so being able to identify and extract cliques is a crucial tool. The function \verb*|find_cliques(orbit)| is a function which takes an orbit object and returns a list of graphs, which are the subgraphs of the \verb*|orbit.graph| which represent cliques. For the case where the orbit ends in an equilibrium, this is easy. The function simply identifies all the colors present in that equilibrium coloring, and builds a list of subgraphs by using the \verb*|subgraph()| method of the graph class. 
 
 For orbits which result in a two cycle, the method is slightly different. First it identifies the nodes which do not change color between iterations and divides those nodes into subgraphs in the same way as above. For the nodes that do alternate colors, the subgraph containing these nodes is separated into connected components using the \verb*|networkx.connected_components(graph)| method. Further analysis may require a more careful treatment of these two-cliques but this will suffice for our purposes. 
-
+\section{Demo}
+In order to demonstrate the capabilities of the code, the jupyter notebook \verb*|McAlisterProjectDemo.ipynb| showcases the objects and functions described above. 
 \section{Next Questions}
 Equipped with these tools, and the basis from which we can build more tools, we can start considering answering some interesting questions
 \subsection{Stability}
