@@ -1,2 +1,3 @@
 # HomophilyGTDS
-A collection of tools for the analysis of the homophily game posed as a Graph Theoretical Dynamical System (GTDS) 
+A collection of tools for the anaysis of an n-player, n-strategy coordination game on a network. 
+Considering the game as a dynamical system we describe orbits, equilibria, and stability.   

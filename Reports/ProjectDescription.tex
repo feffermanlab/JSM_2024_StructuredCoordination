@@ -4,25 +4,34 @@
 \usepackage{amsthm}
 \usepackage{graphicx}
 
+
 \newtheorem{theorem}{Theorem}
 \newtheorem{conjecture}[theorem]{Conjecture}
 \newtheorem{corrollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
 %opening
-\title{Homophily Through a Graph Theoretical Dynamical System: Project Description}
+\title{An $n \times n$ Structured Coordination Game and its Applications to Theoretical Ecology: Project Description}
 \author{John McAlister}
-
+\newcommand{\uu}{\mathbf{u}}
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-	When individuals in a network attempt to take on the strategy which is most prevalent among their neighbors, we can consider a graph theoretical dynamical system wherein each vertex is updating to take on its best response at every iteration. This system can have many non-trivial equilibria. In this project we seek to classify equilibria of the system for particular well understood graphs, and characterize equilibria of a general graph with methods from extremal graph theory. We also seek to derive stability conditions for equilibria using classical algebraic techniques from graph theoretical dynamical systems. Lastly, we consider reformulating the problem as a boundary value problem. Seeking an algorithm to find an equilibrium interpolation of compatible boundary data, we may begin to investigate some interesting applications of this system.   
+	When individuals in a network attempt to take on the strategy which is most prevalent among their neighbors, we can describe this as a structured coordination game with $n$ players and up to $n$ strategies. Using ideas inspired by dynamical systems we can describe a system wherein each vertex is updating to take on its best response at every iteration. It is easy to see that equilibria of this system are Nash Equilibria of the game itself. This system can have many non-trivial equilibria. In this project we seek to classify equilibria of the system for particular well understood graphs, and characterize equilibria of a general graph with methods from extremal graph theory. We also seek to derive stability conditions for equilibria using classical algebraic techniques from graph theoretical dynamical systems. Lastly, we consider reformulating the problem as a boundary value problem. Seeking an algorithm to find an equilibrium interpolation of compatible boundary data, we may begin to investigate some interesting applications of this system. We believe this last point in particular to have interesting applications for understanding the evolution of cooperative behavior.    
 \end{abstract}
 
 \section{Introduction}
-Homophily, which is observed as the tendency to be associated with those similar to ourselves can emerge by simple mimicry behavior wherein an individual conforms to the behavior which is most common among their associates. Although this type of problem is thoroughly studied for strategies which exist in a metric space, when strategies are not measurable against one another and offer truly neutral intrinsic fitnesses, we can no longer use the standard ODE or difference equation models. Additionally, when individuals don't interact equally with all group members this game must be thought of on a graph. 
+A coordination game is a game in which players attempt to use the same strategy as their opponents for an increased payoff. In the case where there are two players and two strategies to choose from, there are two obvious Nash Equilibria. The game in this setting is thoroughly understood. Here we consider the game in a structured population of $n$ players which can choose from up to $n$ strategies. 
+
+The coordination game in a structured population has been studied before \cite{Buskens2016, Tomassini2010} but these studies have only considered $n$ players picking from 2 strategies. We seek to extend this work by examining the situation in which there are up to $n$ discrete strategies available (which is trivially extendable to the case when there are an infinite number of strategies available)
+An other study looked at a game which could be called an $n\times n$ structured coordination game\cite{Szabo2016} but the structure was always a square lattice and all but two of the strategies were neutral.
+A similar type of problem in which strategies exist in a metric space has also been considered. %cite some
+However, when strategies are not measurable against one another and offer truly neutral intrinsic fitnesses, we can no longer use the standard ODE or difference equation models.
+
+
 \subsection{The Game}
+We hope to investigate an $n\times n$ structured coordination game with distinct strategies which provide no intrinsic fitness benefit.
 Consider a connected graph $G(V,E)$ and a (not necessarily proper) vertex coloring of that graph $\mathbf{u}$ from the set of coloring $U$ which use colors in $C$. Now imagine the game where the fitness of each vertex is determined as the number of its neighbors which share the same color as it. The fitness function is $w:V\times C\times U\rightarrow \mathbb{N}$.
 For any coloring $\mathbf{u}$ (which we think of as a color vector of length equal to the number of vertices) we can calculate a best response for each vertex by finding which color would have maximized fitness given the current coloring. Ties may occur, the tie breaking rule is described in the next section. Clearly, a Nash Equilibrium of this game is the state wherein every vertex is playing its best response and would not increase its fitness by becoming a different color. 
 \subsection{The Dynamical System}
@@ -88,9 +97,26 @@ so $\mathbf{u}^*$ is not an equilibrium coloring.
 		Next we need to exclude equilibria with $d$ cliques where $d$ is not a common divisor of $n$ and $m$. I don't know how to do this yet
 \end{proof} 
 
+\begin{lemma}
+	If $v$ is vertex in a finite graph $G$, and every neighbor of $v$ has a constant color in the sequence of colorings $\uu_1,\uu_2,\uu_3,....$ then $v$ must remain the same color after 1 time step. 
+\end{lemma}
+\begin{proof}
+	The neighbors of $v$ have colors which are constant in the sequence of colorings any coloring so the number of neighbors of $v$ with the color $c$ (which we will call $n_c$) is constant in time. Because the graph is finite we can order these $n_c$s. Without loss of generality order them as $n_{c_1}\leq n_{c_2}\leq...\leq n_{c_m}$. Let this largest $n_{c_m}=:M$ Clearly $w(v,c_i;\uu_j)=n_{c_i}$ for all $i,j$. Following the construction of the system $[\uu_i]_k=\text{argmax}_{c\in C}[w(v,c,\uu_{i-1})]= \text{argmax}_{c\in C} n_{c}$. Thus after one time step $v$ takes on one of the colors with $n_{c_i}=M$. In the next time step, because all of $v$'s neighbors keep the same color, and because of the tie breaking rule, $v$ will stay the same color in every coloring thereafter. 
+\end{proof}
+
 \begin{conjecture}[Impossibility of three-cycles]
 	For any graph, the probability of a three-cycle continuing indefinitely is zero
 \end{conjecture}
+
+\begin{proof}
+	Observe that if a three cycle is stochastic it persists exactly as a three cycle with probability zero. Suppose that a three cycle consists of three colorings $\uu_1,\uu_2,\uu_3$ where $F(\uu_1)=\uu_2$ with probability $p_1$, $F(\uu_2)=\uu_3$ with probability $p_2$ and $F(\uu_3)=\uu_1$ with probability $p_3$. The probability that this three cycle persist forever is clearly $\lim_{k\rightarrow \infty} (p_1p_2p_3)^k$ so if $p_1<1, p_2<1$ or $p_3<1$ this likelihood of the three cycle persisting is zero. 
+	
+	Therefore we can consider only the case when $p_1=p_2=p_3=1$. Consider the vertex $v$ which cycles through colors $c_1, c_2, c_3$ in the colorings $\uu_1,\uu_2, \uu_3$ respectively. $v$ must have a neighbor which $c_2$ in $\uu_1$, a neighbor $r_2$ which is $c_3$ in $\uu_2$, and a neighbor which is $c_1$ in $\uu_3$. 
+	
+	 Suppose that these neighbors are the same vertex $r_1$. This $r_1$ is cycling through $c_2,c_3,$ and $c_1$ in $\uu_1,\uu_2,$ and $\uu_3$ respectively. In $\uu_1$ is must have two neighbors which are $c_3$ in $\uu_1$, 
+
+	%v has a neighbor that is infront of it, that neighbor must also have a neighbor that is infront of it. and so on. 
+\end{proof}
 \subsection{Further Questions}
 
 \begin{itemize}
@@ -150,6 +176,8 @@ Kemeney's constant work. When does adding an edge destabilize an equilibrium col
 \section{Boundary Value Problem}
 
 Thinking about compatible boundary data
-Thinking about a process for finding an ``Equilibrium interpolation" like Dirchlet's method of harmonic lifting. 
+Thinking about a process for finding an ``Equilibrium interpolation" like Peron's method of harmonic lifting. 
 Thinking this might be most interesting for k-connected graphs $k\geq 2$. 
+\bibliographystyle{plain}
+\bibliography{structuredcoord.bib}
 \end{document}
