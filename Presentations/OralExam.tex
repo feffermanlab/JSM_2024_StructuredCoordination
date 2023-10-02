@@ -1,0 +1,241 @@
+\documentclass{beamer}
+\usetheme{berlin}
+\definecolor{utorange}{HTML}{F77F00}
+\definecolor{smokey}{HTML}{4C4D4F}
+\definecolor{limestone}{HTML}{F0EDE4}
+\definecolor{accent}{RGB}{0,018,147}
+\definecolor{darkutorange}{HTML}{a95700}
+\definecolor{lightutorange}{HTML}{ffe8d0}
+
+\setbeamercolor*{title}{fg=smokey,bg=limestone}
+\setbeamercolor*{author}{fg=smokey}
+\setbeamercolor*{institute}{fg=smokey}
+\setbeamercolor*{date}{fg=smokey}
+\setbeamercolor*{frametitle}{fg=smokey, bg=limestone,}
+\setbeamercolor*{structure}{fg=utorange}
+\setbeamercolor{normal text}{fg=smokey,bg=white}
+\setbeamercolor{alerted text}{fg=utorange}
+\setbeamercolor{example text}{fg=smokey}
+\setbeamercolor{palette primary}{fg=black, bg=utorange}
+\setbeamercolor{palette secondary}{fg=white, bg=utorange}
+\setbeamercolor{palette tertiary}{fg=white, bg=darkutorange}
+
+\DeclareMathOperator*{\argmax}{\text{argmax}}
+\DeclareMathOperator*{\argmin}{\text{argmin}}
+\DeclareMathOperator{\uu}{\mathbf{u}}
+\usepackage{tikz}
+
+\title{A Discrete Structured Coordination Game and its Applications in Theoretical Ecology}
+\author{John McAlister}
+\institute[Fefferman Lab]{Univeristy of Tennessee - Knoxville}
+\begin{document}
+	\begin{frame}[plain]
+		\centering
+		\maketitle
+		\includegraphics[height=3cm]{images/LogoCenter.jpg}
+	\end{frame}
+\section{Introduction}
+\begin{frame}{The Coordination Game}
+	The Coordination game, at its most basic, is a two player game with the following payoff matrix
+	\begin{center} 
+		\begin{tabular}{c|cc}
+			&A&B\\
+			\hline 
+			A&a,a&c,d\\
+			B&d,c&b,b
+		\end{tabular}
+	\end{center}
+	
+	With the assumption that $a>d$ and $b>c$. It has two Pure Strategy Nash equilibria, $(A,A), (B,B)$, and a mixed strategy Nash equilibrium where both players play strategy $A$ with probability $p=\frac{b-d}{a+b-c-d}$.
+\end{frame}
+\begin{frame}{The Coordination Game}
+	The game can also be considered among many players where pairs of players are selected to play uniformly randomly.
+	\begin{itemize}
+		\item Using myopic best response as a replicator dynamic, A group playing this game with \textit{high inertia} and $\varepsilon$\textit{-noise} will converge to the Risk Dominant Nash Equilibrium \footnote{Kandori, Michihiro, et al. “Learning, Mutation, and Long Run Equilibria in Games.”}
+		
+		\item Changing the way in which the pairs are selected can lead to different equilibrium selection \footnote{Robson, Arthur J., and Fernando Vega-Redondo. "Efficient equilibrium selection in evolutionary games with random matching."}
+		
+		\item Convergence time is very slow \footnote{Ellison, Glenn. "Basins of attraction, long-run stochastic stability, and the speed of step-by-step evolution."}
+	\end{itemize}
+\end{frame}
+\begin{frame}{The Structured Coordination Game}
+	If player selection is not uniform random across all players we call this a structured coordination game. 
+	\begin{itemize}
+		\item Complete Graphs (Identical to unstructured game)
+		\item Circular Cities
+		\item Square Lattice 
+	\end{itemize}
+	Each of these previous studies have taken the approach of using symmetry to reduce the state space, considering a transition matrix without noise and establishing a distance between states through mutation. \footnote{Ellison, Glenn. "Basins of attraction, long-run stochastic stability, and the speed of step-by-step evolution."}$^,$\footnote{Weidenholzer, Simon. "Coordination games and local interactions: a survey of the game theoretic literature."}
+\end{frame}
+
+\begin{frame}{The Structured Coordination Game}
+	Consider this most general setting: For a connected graph $G(V,E)$ each vertex $v\in V$ plays a strategy $c$ from a set of pure strategies $C$. and the payoff for $v$ is given by \begin{equation}
+		w(v,c|\uu)=|\{x\in \Gamma (v);\uu_x=c\}|
+	\end{equation}
+	where $\uu$ is the strategy profile and $\uu_x$ is the strategy that $x$ is using. 
+	In this case the game is at its most simple where the Payoff matrix is simply $I_n$. Note, however, we are not limited to only 2 strategies as before. 
+\end{frame}
+
+\begin{frame}{The Structured Coordination Game as a Dynamical System}
+	In keeping with the previous work, we use a myopic best response as our replicator dynamic. In this way we construct a sequence of strategy profiles $\uu(t)$ with 
+	\begin{equation}
+		\uu_v(t+1)\in \argmax_{c\in C}\{w(v,c|\uu(t))\}
+	\end{equation}
+It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon$-inertia) 
+\begin{itemize}
+	\item if $\uu_v(t)\in \argmax_{c\in C}\{w(v,c|\uu(t))\}$ then $ \uu_v(t+1)=\uu_v(t)$.
+	\item else, select from $\argmax_{c\in C}\{w(v,c|\uu(t))\}$ uniform randomly. 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Goals and Questions}
+	It is clear to see that Equilibria in the dynamical system are Nash Equilibria of the game. There are many questions that arise from this system:
+	\begin{itemize}
+		\item Can we Characterize Equilibria for a general graph (or a particular topology) and determine stability conditions?
+		
+		\item Given a set of ``boundary conditions" can we find a strategic interpolation which is a Nash Equilibrium?
+		
+		\item What might a strategically continuous version of this game look like and what can it tell us about cooperative behaviors in ecology?
+	\end{itemize}
+\end{frame}
+\section{Equilibria and Stability}
+\begin{frame}{Equilibria}
+	\begin{figure}
+		\includegraphics[width=0.4\linewidth]{images/OralFig2v1}
+		\includegraphics[width= 0.4\linewidth]{images/OralFig3v1}
+		\caption{A nontrivial and trivial equilibrium in a 4-regular graph}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	{Equilibra: Terminology}
+	In order to discuss these ideas we need a definition
+	\begin{block}{\textbf{Clique}}
+		A subgraph of $G$ spanned by all of the vertices using a particular strategy. 
+	\end{block}  
+	and some notation
+	\begin{block}{Notation}
+		\begin{tabular}{rp{9cm}} 
+			$Q(\mathbf{u})$& The set of all cliques in a strategy profile $\mathbf{u}$ \\
+			$q^i$& A clique in $Q(\mathbf{u})$ in which vertices use strategy $i$\\
+			$\partial q^i$& Vertices in $q_i$ which have neighbors in other cliques\\
+		\end{tabular}
+	\end{block}
+\end{frame} 	
+\begin{frame}{Preliminary Results}
+	\begin{block}{The only equilibrium in $K_n$ is the trivial equilibrium}
+		Suppose there is a equilibrium coloring $\mathbf{u^*}$ with $m\geq2$ cliques, $q^{c_1},...,q^{c_m}$. Because every pair of vertices shares an edge, $w(v,c_i|\uu)=|q_i|$ if $v\notin q^{c_i}$, and $w(v,c_i|\uu)=|q_i|-1$ if $v\in q^{c_i}$.  Consider a vertex $v_1\in q^{c_1}$. Because it is at equilibrium $$w(v_1,c_1|\uu^*)=\argmax_C\{w(v_1,c|\uu^*)\}=:a.$$
+		Therefore $|q^{c_1}|=a+1$. Moreover $w(v_1,c_2|\uu^*)\leq a$ so $|q^{c_2}|\leq a$.
+		Now consider a vertex  $v_2\in q^{c_2}$. $w(v_2,c_2|\uu^*)=|q^{c_2}|-1\leq a-1$ and $w(v_2,c_1|\uu^*)=a+1$. 
+		Thus $\uu^*_2=c_2\notin \argmax\{w(v_2,c|\uu^*)\}$ so $\uu^*$ is not an equilibrium.  
+	\end{block}
+\end{frame}
+
+\begin{frame}{Preliminary Results}
+	\begin{block}{$K_{n,m}$ admits an equilibrium with $d$ cliques iff $d|n$ and $d|m$}
+		$\impliedby$ It is easy to construct an equilibrium strategy profile with $d$ cliques
+		
+		$\implies$ I argue by contradiction. $K_{n,m}=E^n+E^m$  Without loss of generality suppose that $d$ is not a divisor of $m$. Suppose $\uu^*$ is an equilibrium strategy profile with $d>1$ cliques. $d$ does not divide $m$ so $\exists$ strategies $i$ and $j$ such that $|q^i\cap E^m|>|q^j\cap E^m|$. If $\uu^*$ is at equilibrium it must follow that $q^j\cap E^n=\emptyset$. It then follows $q^j\cap E^m =\emptyset$. If $q^j$ is empty then there are not $d$ cliques in $\uu^*$. This contradiction proves the result.   
+	\end{block}
+\end{frame}
+
+\begin{frame}{More General Equilibria Results}
+	In general the process of finding equilibria is equivalent to finding this kind of vertex partition.
+	
+	\begin{equation}
+		P=\cup_{i=1}^m P^{c_i}\text{ where } x\in P^{c_i}\Rightarrow |\Gamma(x)\cap P^{c_i}|\geq |\Gamma(x)\cap P^{c_j}|\, \forall i,j 
+	\end{equation}
+	There are other similar kinds of graph partitions
+	\begin{itemize}
+		\item Ratio Partitions
+		\item Maximum Modularity Partitions
+		\item balanced (k,v) Partitions
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Partitioning Conjecture}
+	\begin{block}{If $G$ has an equilibrium with $d$ cliques, then a Maximal Modularity Partition of $d$ parts corresponds to an equilibrium.}
+		Make a correspondence between a vertex partition $\mathcal{P}=\cup_{i=1}^dP_i$ and strategy profile $\uu$ by assigning strategy $c_i$ to all vertices in $P_i$ for all $i$.
+		Suppose the above is not true and a Maximal Modularity Partition $\mathcal{P}$ corresponds to $\uu^*$ which is not an equilibrium. Therefore in the corresponding $\uu^*$ there is at least one vertex $v\in P_i$ with $w(v,c_i,\uu)<w(v,c_j,\uu)$ for some $c_j\neq c_i$. Let $\hat\uu$ be the strategy profile wherein $\hat\uu_i=\uu_i$ for $i\neq v$ and $\hat\uu_v = c_j$. 
+		A tedious computations shows that the modularity of the partition $\hat{\mathcal{P}}$ corresponding to the strategy profile $\hat\uu$ is higher than that of $\mathcal{P}$.  
+	\end{block}
+\end{frame}
+
+\begin{frame}{Stability}
+	When viewed as a dynamical system, stability can be considered in multiple ways 
+	\begin{itemize}
+		\item Local Stability - A vertex is stable to a single perturbation
+		\item Global Stability - Every vertex is stable to a single perturbation
+		\item Convergent Stability - Every ``nearby" strategy profile evolves into this strategy profile
+		\item Structural Stability - A strategy profile is stable to perturbations of the graph structure. 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Cycles}
+	When viewed as a dynamical system we also see the (common) emergence of cycles. We conjecture that $n$-cycles with $n>2$ are impossible. 
+	\begin{figure}
+	\includegraphics[width = 0.8\linewidth]{images/Figure6}
+	\end{figure} 
+\end{frame}
+
+\begin{frame}{Goals and Further Questions}
+	We hope to 
+	\begin{itemize}
+		\item Prove the $n$-cycle conjecture,
+		\item Find analytically tractable stability criteria
+		\item Use energy-like estimates to describe basins of stability for equilibria
+		\item Use techniques from extremal graph theory to describe possible equilibria by the structure of the graph by which they are admitted
+		\item Summarize with some computational results relating edge density or connectance to clique number 
+	\end{itemize}
+\end{frame}
+
+
+\section{Boundary Value Problem}
+\begin{frame}{Boundary Value Problem}
+	A vital application of this idea is a boundary value conception of the problem.
+	\begin{block}{Boundary Value Problem}
+		Suppose $B\subset V$ is a subset of vertices which are assigned strategies by $f:B\rightarrow C$. Is there a strategy profile such that $\uu_v=f(v)$ for all $v\in B$ and $\uu$ is an equilibrium strategy profile?
+	\end{block}
+\end{frame}
+\begin{frame}{Intuition}
+	Suppose that in  a signaling network $G$
+	\begin{itemize}
+		\item Each vertex uses exactly one language to send a receive signals. 
+		\item A subset of vertices are assigned languages
+		\item translation of the signal is costly relative to transmission. 
+	\end{itemize}
+
+	How can we assign a ``language" to each vertex so that each vertex is minimizing their own ``translation" burden?
+\end{frame}
+
+\begin{frame}{Steps Forward}
+	This is rather speculative but the direction forward may look like this:
+	\begin{itemize}
+		\item Trying to prove existence of such an equilibrium interpolation for an admissible set of boundary values. 
+		\item (Almost Equivalently) finding a class of boundary values for which an interpolation can be made
+		\item Seeking out an algorithm to build an equilibrium interpolation through graph reductions.  
+	\end{itemize}
+\end{frame}
+\begin{frame}{Steps Forward}
+	As before this becomes a partitioning problem but with an added components
+	\begin{block}{Boundary Value Problem }
+		For a graph $G(V,E)$, $B\subset V$ and $F:B\rightarrow C$, find a partition $\mathcal{P}=\cup_{i=1}^mP^{c_i}$ such that 
+		\begin{equation}
+			\begin{split}
+				i)\quad & |\Gamma(x)\cap P^{\uu_x}|\geq |\Gamma(x)\cap P^{c}|\,\forall x\in V, c\in C \\
+				ii)\quad &  x\in P^{f(x)}\,\forall x\in B 
+			\end{split}
+		\end{equation}
+	\end{block}
+	The brute force algorithm has time complexity $\mathcal{O}(n^n)$, so we can only get better from there. 
+\end{frame}
+\begin{frame}
+	{A note on complexity class}
+	Almost all partitioning problems are in complexity class NP hard and some can be shown to be NP complete. It's unlikely, unless P=NP that an algorithm so solve the boundary value problem could run in polynomial time  but a $\mathcal{O}(2^n)$ would be a massive improvement.
+\end{frame}
+\section{Continuous Variations and applications}
+\begin{frame}{Symptraic Evolution of cooperative behavior}
+	content...
+\end{frame}
+
+\end{document}

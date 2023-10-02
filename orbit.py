@@ -25,6 +25,8 @@ class Orbit:
             True if the solution ends in a two-cycle
         cycle3 : bool
             True if the solution ends in a three-cycle
+        energy : nparray
+            array of energies (ints) at each time step until a limit is reached
         report : str
             A string which describes the solution and its limit. 
     Methods
@@ -63,6 +65,7 @@ class Orbit:
         self.cycle2= result[3]
         self.cycle3= result[4]
         self.report = result[5]
+        self.energy = np.array(result[6])
 
     def draw(self,frames =(-1,), dim=None, node_size = 20):
         '''
@@ -150,6 +153,8 @@ class Orbit:
                 True if the solution reached a 3 cycle
             report : str
                 A string describing the solution 
+            E : list
+                A sequence of energy measurements for each coloring in sol
         '''
 
         #if no initial data is given, give each vertex a different color
@@ -160,6 +165,8 @@ class Orbit:
         iter = 0
         sol=list()
         sol.append(y0)
+        E = list()
+        E.append(self.__energy__(y0))
         
         #prepare to check termination conditions
         finished = False
@@ -170,12 +177,13 @@ class Orbit:
         while not finished:
             #Add a new coloring according to the update rule
             sol.append(self.__F__(sol[-1]).astype(int))
+            E.append(self.__energy__(sol[-1]))
             iter=iter+1 
             #Check to see if the solution has reached a limit
-            if iter>=19:
+            if iter>=37:
                 eq = (sol[-1]==sol[-2]).all() and (sol[-1]==sol[-3]).all()
-                cycle2 = (sol[-1]==sol[-3]).all() and (sol[-1]==sol[-5]).all() and (sol[-1]==sol[-19]).all()
-                cycle3 = (sol[-1]==sol[-4]).all() and (sol[-1]==sol[-7]).all() and (sol[-1]==sol[-19]).all()
+                cycle2 = (sol[-1]==sol[-3]).all() and (sol[-1]==sol[-5]).all() and (sol[-1]==sol[-37]).all()
+                cycle3 = (sol[-1]==sol[-4]).all() and (sol[-1]==sol[-7]).all() and (sol[-1]==sol[-37]).all()
             finished = iter>=iter_limit or eq or cycle2 or cycle3
 
         # Once the solution has reached a limit, build the report 
@@ -190,7 +198,7 @@ class Orbit:
         report = "terminated in {} iterations. {}".format(iter, str)
 
         #return a list of 6 different objects
-        return [sol,iter, eq, cycle2, cycle3,report]
+        return [sol,iter, eq, cycle2, cycle3,report,E]
     
     def __F__(self,y):
         '''
@@ -217,7 +225,13 @@ class Orbit:
             else:
                 ynew[n]=random.choice(argmax)
         return ynew
-
+    def __energy__(self,y):
+        E= 0 
+        for n in np.arange(0,len(y)):
+            #count the neighbors of n which are not using the strategy y[n]
+            E+=sum(y[j]!=y[n] for j in list(self.graph.neighbors(n)))
+        return E/2
+    
     def __mode__(self,array):
         '''
         A hidden method for finding the mode of an array

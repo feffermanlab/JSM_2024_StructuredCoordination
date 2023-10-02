@@ -9,16 +9,20 @@ import orbit
 
 def do_this():
     print("We start by generating a random connected graph")
-    n = 50 
-    p = 0.1
+    n = 20
+    p = 0.2
     G=nx.random_regular_graph(round(n*p),n)
+    #G=nx.random_tree(n)
     print("Then we can create an orbit object from this graph")
     myOrbit = orbit.Orbit(G,[random.randint(0,40) for i in range(len(G.nodes))])
     print(myOrbit.report)
     cliques = find_cliques(myOrbit)
+    #for i in range(1,len(cliques)):
+    print("Energy Threshold:{}".format(G.number_of_edges() - (n/2)))
+    print(myOrbit.energy)    
     print("the orbit has a limit with {} cliques".format(len(cliques)))
-    myOrbit.draw(frames=(-3,-2,-1))
-    myOrbit.animation()
+    myOrbit.draw()
+    #myOrbit.animation()
     
     
 
@@ -103,4 +107,4 @@ def count_cliques(n,p,count):
     return clique_count        
 
 
-#do_this()
+do_this()
