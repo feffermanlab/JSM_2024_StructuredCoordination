@@ -24,6 +24,7 @@
 \DeclareMathOperator*{\argmin}{\text{argmin}}
 \DeclareMathOperator{\uu}{\mathbf{u}}
 \usepackage{tikz}
+\usetikzlibrary{calc, shapes, fit}
 
 \title{A Discrete Structured Coordination Game and its Applications in Theoretical Ecology}
 \author{John McAlister}
@@ -153,12 +154,48 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Partitioning Conjecture}
-	\begin{block}{If $G$ has an equilibrium with $d$ cliques, then a Maximal Modularity Partition of $d$ parts corresponds to an equilibrium.}
-		Make a correspondence between a vertex partition $\mathcal{P}=\cup_{i=1}^dP_i$ and strategy profile $\uu$ by assigning strategy $c_i$ to all vertices in $P_i$ for all $i$.
-		Suppose the above is not true and a Maximal Modularity Partition $\mathcal{P}$ corresponds to $\uu^*$ which is not an equilibrium. Therefore in the corresponding $\uu^*$ there is at least one vertex $v\in P_i$ with $w(v,c_i,\uu)<w(v,c_j,\uu)$ for some $c_j\neq c_i$. Let $\hat\uu$ be the strategy profile wherein $\hat\uu_i=\uu_i$ for $i\neq v$ and $\hat\uu_v = c_j$. 
-		A tedious computations shows that the modularity of the partition $\hat{\mathcal{P}}$ corresponding to the strategy profile $\hat\uu$ is higher than that of $\mathcal{P}$.  
-	\end{block}
+\begin{frame}{Partitioning Observations}
+	There are modularity partitions which do not correspond to equilibria and there are equilibria which do not correspond to modularity partitions
+\begin{figure}
+	\begin{tabular}{ccc}
+		\begin{tikzpicture}
+			\node (A) [draw = black, circle] at (1,0){$K_4$};
+			\node (B) [circle,fill,inner sep=1.5pt]at (2,0){};
+			\node (c) [circle,fill,inner sep=1.5pt]at (3,0){};
+			\node (d) [circle,fill,inner sep=1.5pt]at (4,0.5){};
+			\node (e) [circle,fill,inner sep=1.5pt]at (4,-0.5){};
+			 \node[fit=(A),dashed,draw, rectangle,rounded corners=10,inner sep=5pt] {};
+			 \node[fit=(B)(c)(d)(e),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+			
+			\draw (1.3,0.34)--(2,0)--(1.3,-0.34);
+			\draw(2,0)--(3,0)--(4,0.5)--(3,0)--(4,-0.5);
+		\end{tikzpicture}
+		&\hspace{0.5cm} &
+		\begin{tikzpicture}
+			\node (A) [draw = black, circle] at (1,0){$K_4$};
+			\node (B) [circle,fill,inner sep=1.5pt]at (2,0){};
+			\node (c) [circle,fill,inner sep=1.5pt]at (3,0){};
+			\node (d) [circle,fill,inner sep=1.5pt]at (4,0.5){};
+			\node (e) [circle,fill,inner sep=1.5pt]at (4,-0.5){};
+			\node[fit=(A)(B),dashed,draw, rectangle,rounded corners=10,inner sep=5pt] {};
+			\node[fit=(c)(d)(e),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+			
+			\draw (1.3,0.34)--(2,0)--(1.3,-0.34);
+			\draw(2,0)--(3,0)--(4,0.5)--(3,0)--(4,-0.5);
+		\end{tikzpicture}\\
+		$Q=0.2809$&&$Q=0.2603$\\
+		Modularity Partition &&Not a Modularity Partition\\
+		not an equilibrium&& equilibrium
+	\end{tabular}
+\end{figure}
+	
+	
+	
+%	\begin{block}{If $G$ has an equilibrium with $d$ cliques, then a Maximal Modularity Partition of $d$ parts corresponds to an equilibrium.}
+%		Make a correspondence between a vertex partition $\mathcal{P}=\cup_{i=1}^dP_i$ and strategy profile $\uu$ by assigning strategy $c_i$ to all vertices in $P_i$ for all $i$.
+%		Suppose the above is not true and a Maximal Modularity Partition $\mathcal{P}$ corresponds to $\uu^*$ which is not an equilibrium. Therefore in the corresponding $\uu^*$ there is at least one vertex $v\in P_i$ with $w(v,c_i,\uu)<w(v,c_j,\uu)$ for some $c_j\neq c_i$. Let $\hat\uu$ be the strategy profile wherein $\hat\uu_i=\uu_i$ for $i\neq v$ and $\hat\uu_v = c_j$. 
+%		A tedious computations shows that the modularity of the partition $\hat{\mathcal{P}}$ corresponding to the strategy profile $\hat\uu$ is higher than that of $\mathcal{P}$.  
+%	\end{block}
 \end{frame}
 
 \begin{frame}{Stability}
@@ -231,7 +268,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \end{frame}
 \begin{frame}
 	{A note on complexity class}
-	Almost all partitioning problems are in complexity class NP hard and some can be shown to be NP complete. It's unlikely, unless P=NP that an algorithm so solve the boundary value problem could run in polynomial time  but a $\mathcal{O}(2^n)$ would be a massive improvement.
+	Almost all partitioning problems are in complexity class NP, some have been shown to be NP complete. It's unlikely, unless P=NP that an algorithm so solve the boundary value problem could run deterministically polynomial time.
 \end{frame}
 \section{Continuous Variations and applications}
 \begin{frame}{Symptraic Evolution of cooperative behavior}
