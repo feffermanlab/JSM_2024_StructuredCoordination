@@ -21,7 +21,7 @@ def do_this():
     print("Energy Threshold:{}".format(G.number_of_edges() - (n/2)))
     print(myOrbit.energy)    
     print("the orbit has a limit with {} cliques".format(len(cliques)))
-    myOrbit.draw()
+    myOrbit.draw(frames = (-2,-1), node_size= 50)
     #myOrbit.animation()
     
     
