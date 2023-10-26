@@ -10,8 +10,9 @@ import orbit
 def do_this():
     print("We start by generating a random connected graph")
     n = 20
-    p = 0.2
-    G=nx.random_regular_graph(round(n*p),n)
+    p = 0.6
+    G = nx.watts_strogatz_graph(n,round(n*p),0)
+    #G=nx.random_regular_graph(round(n*p),n)
     #G=nx.random_tree(n)
     print("Then we can create an orbit object from this graph")
     myOrbit = orbit.Orbit(G,[random.randint(0,40) for i in range(len(G.nodes))])
@@ -21,7 +22,7 @@ def do_this():
     print("Energy Threshold:{}".format(G.number_of_edges() - (n/2)))
     print(myOrbit.energy)    
     print("the orbit has a limit with {} cliques".format(len(cliques)))
-    myOrbit.draw(frames = (-2,-1), node_size= 50)
+    myOrbit.draw(frames = (-1,), node_size= 50)
     #myOrbit.animation()
     
     

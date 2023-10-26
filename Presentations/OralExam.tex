@@ -125,7 +125,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \end{frame} 	
 \begin{frame}{Preliminary Results}
 	\begin{block}{The only equilibrium in $K_n$ is the trivial equilibrium}
-		Suppose there is a equilibrium coloring $\mathbf{u^*}$ with $m\geq2$ cliques, $q^{c_1},...,q^{c_m}$. Because every pair of vertices shares an edge, $w(v,c_i|\uu)=|q_i|$ if $v\notin q^{c_i}$, and $w(v,c_i|\uu)=|q_i|-1$ if $v\in q^{c_i}$.  Consider a vertex $v_1\in q^{c_1}$. Because it is at equilibrium $$w(v_1,c_1|\uu^*)=\argmax_C\{w(v_1,c|\uu^*)\}=:a.$$
+		Suppose there is a equilibrium coloring $\mathbf{u^*}$ with $m\geq2$ cliques, $q^{c_1},...,q^{c_m}$. Because every pair of vertices shares an edge, $w(v,c_i|\uu)=|q^{c_i}|$ if $v\notin q^{c_i}$, and $w(v,c_i|\uu)=|q^{c_i}|-1$ if $v\in q^{c_i}$.  Consider a vertex $v_1\in q^{c_1}$. Because it is at equilibrium $$w(v_1,c_1|\uu^*)=\max_C\{w(v_1,c|\uu^*)\}=:a.$$
 		Therefore $|q^{c_1}|=a+1$. Moreover $w(v_1,c_2|\uu^*)\leq a$ so $|q^{c_2}|\leq a$.
 		Now consider a vertex  $v_2\in q^{c_2}$. $w(v_2,c_2|\uu^*)=|q^{c_2}|-1\leq a-1$ and $w(v_2,c_1|\uu^*)=a+1$. 
 		Thus $\uu^*_2=c_2\notin \argmax\{w(v_2,c|\uu^*)\}$ so $\uu^*$ is not an equilibrium.  
@@ -340,7 +340,7 @@ It is a relatively easy task to prove that no modularity partition can have a pa
 	Almost all partitioning problems are in complexity class NP. Finding a modularity paritition in particular can be shown to be NP complete\footnote{Brandes, U. Delling, D. Gaertler, M. G\"orke, R. Hoefer, M. Nikoloski Z. Wagner, D. ``On Modularity - NP-Completeness and Beyond"}. Because of the similarities between these partitions, it's unlikely that we can find an algorithm to solve the boundary value problem that runs deterministically in polynomial time unless the specification of boundary values reduces the problem more than expected. 
 \end{frame}
 \section{Continuous Variations and Applications}
-\begin{frame}{Symptraic Evolution of Cooperative Behavior}
+\begin{frame}{Sympatric Evolution of Cooperative Behavior}
 	\textbf{Sympatric speciation} is the process of speciation without geographic isolation. 
 	
 	These questions, modified to be continuous give us some tools to think about Sympatric evolution of cooperative behavior. 
@@ -350,7 +350,7 @@ It is a relatively easy task to prove that no modularity partition can have a pa
 	\begin{block}{Continuous Formulation 1, Continuous Player Space with Mixed Strategies}
 		Let $\Omega$ be a domain and $\Delta_m$ be the $m$-simplex in which every mixed strategy lies. Let $\Phi:\Omega \rightarrow\Delta_m$ be a strategy profile. Where Payoffs are calculated as 
 		\begin{equation}
-			w(x|\Phi(x))=\sum_{i=1}^m \Phi_i(x)\int_\Omega K(x-y)\Phi_i(y)dy =:B(\Phi(x),\Phi(x)) 
+			w(x|\Phi)=\sum_{i=1}^m \Phi_i(x)\int_\Omega K(x-y)\Phi_i(y)dy =:B(\Phi(x),\Phi(x)) 
 		\end{equation} 
 		Where $K$ is a familiarity kernel and $B$ is a bilinear form. 
 	\end{block}
@@ -362,7 +362,7 @@ It is a relatively easy task to prove that no modularity partition can have a pa
 	\begin{block}{Optimization Challenge}
 		We are looking for continuous $\Phi$ such that for any $x$,
 		\begin{equation}
-			w(x|\Phi(x))\geq w(x|\tilde\Phi(x))\quad \forall \tilde \Phi(y) = \Phi (y) \text{ for } y\neq x
+			w(x|\Phi)\geq w(x|\tilde\Phi)\quad \forall \tilde \Phi(y) = \Phi (y) \text{ for } y\neq x
 		\end{equation}. 
 	\end{block}
 
@@ -370,7 +370,7 @@ It is a relatively easy task to prove that no modularity partition can have a pa
 \end{frame}
 
 \begin{frame}{Sympatric Evolution of Cooperative Behavior}
-	\begin{block}{There are noconstant continuous solutions to (10)}
+	\begin{block}{There are no nonconstant continuous solutions to (10)}
 		Suppose that $\Phi^\star$ satisfies (10), we will show that it must be constant. 
 	\end{block}
 \end{frame}
@@ -395,31 +395,54 @@ It is a relatively easy task to prove that no modularity partition can have a pa
 	\end{equation}
 	\begin{figure} 
 	\begin{tikzpicture}
-		\node (A) at (0,0)[fill = blue, circle]{};
-		\node (B) at (1,0)[fill = blue, circle]{};
-		\node (C) at (2,0)[fill = orange, circle]{};
-		\node (D) at (3,0)[fill = red, circle]{};
-		\node (E) at (4,0)[fill = red, circle]{};
+		\node (A) at (0,0)[fill = blue, circle, opacity = 0.8]{};
+		\node (B) at (1,0)[fill = blue, circle, opacity = 0.8]{};
+		\node (C) at (2,0)[fill = orange, circle, opacity = 0.8]{};
+		\node (D) at (3,0)[fill = red, circle, opacity =0.8]{};
+		\node (E) at (4,0)[fill = red, circle, opacity = 0.8]{};
 		
 		\draw (A)--(B)--(C)--(D)--(E);
 	\end{tikzpicture}
 	\caption{This represents a Nash Equilibrium if and only if $\alpha\geq \frac{1}{2}$}
 \end{figure}	
+	This poses the question: In a more general setting are there ``recognition thresholds" which define critical regions where sympatric evolution of cooperative behavior can occur? Are there critical domain sizes?   
 \end{frame}
 	
 \begin{frame}{Continuous Strategy and Continuous Player Space}
+	Now instead of using linear combinations of pure incomparable pure strategies, consider the game played in the domain $\Omega$ where a strategy profile $\Phi:\Omega \rightarrow M$ gives the payoff
+	\begin{equation}
+		w(x|\Phi)= \int_\Omega K(x-y)\rho(d(\Phi(y),\Phi(x)))dy
+	\end{equation}
+	Where $M$ is a metric space, $\rho(y)$ is a certain ``blurring" function which has $\rho (0)=1$ and $\rho(r)=0$ for some $r>r^*$ a recognition threshold. 
 \end{frame}
 
-\begin{frame}{Pure Coordination in the Continuous Setting}
+\begin{frame}{Easy Example}
+	Let $\Omega = [0,\alpha]$, let $\rho(r)=1$ for $r\leq r^*$ and $0$ otherwise and let $K(x)=\frac{1}{\kappa}$ for $|x|<\kappa$ and $0$ otherwise. 
+	\begin{equation}
+		w(x|\Phi)=\int_0^\alpha K(x-y)\rho(|\Phi(y)-\Phi(x)|)dy
+	\end{equation} 
+
+	\begin{block}{There exists a continuous non-constant Nash Equilibrium}
+		We can show that 
+		\begin{equation}
+			\Phi(x)=\begin{cases}
+					0&x<\kappa\\
+					\frac{x-\kappa}{\alpha-2\kappa}&\kappa<x<\alpha-\kappa\\
+					1&\alpha-\kappa<x
+			\end{cases}
+		\end{equation}
+		Is a Nash equilibrium when $r^*(\alpha-2\kappa)>\kappa$. 
+	\end{block}
 \end{frame}
 
-\begin{frame}{Metric Strategy Space}
+\begin{frame}{Limiting Example}
+	If $r^*\rightarrow0$ then a continuous non-constant Nash Equilibrium is impossible. Again this points to the existence of a critical recognition threshold. 
 \end{frame}
-
-
-\end{document}
 
 \section*{}
 \begin{frame}{Conclusion}
 	content...
 \end{frame}
+
+\end{document}
+
