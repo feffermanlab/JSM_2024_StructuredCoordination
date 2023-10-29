@@ -1,34 +1,128 @@
 import time 
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import networkx as nx
 import matplotlib.animation as animation
 import matplotlib.colors as mcolors
+import pandas as pd
 import random
 import orbit
 
 def do_this():
-    print("We start by generating a random connected graph")
+    #print("We start by generating a random connected graph")
     n = 20
-    p = 0.6
-    G = nx.watts_strogatz_graph(n,round(n*p),0)
+    p = 0.2
+    #G = nx.watts_strogatz_graph(n,round(n*p),0)
     #G=nx.random_regular_graph(round(n*p),n)
     #G=nx.random_tree(n)
-    print("Then we can create an orbit object from this graph")
-    myOrbit = orbit.Orbit(G,[random.randint(0,40) for i in range(len(G.nodes))])
-    print(myOrbit.report)
-    cliques = find_cliques(myOrbit)
+    #print("Then we can create an orbit object from this graph")
+    #myOrbit = orbit.Orbit(G,[random.randint(0,40) for i in range(len(G.nodes))])
+    #print(myOrbit.report)
+    #cliques = find_cliques(myOrbit)
     #for i in range(1,len(cliques)):
-    print("Energy Threshold:{}".format(G.number_of_edges() - (n/2)))
-    print(myOrbit.energy)    
-    print("the orbit has a limit with {} cliques".format(len(cliques)))
-    myOrbit.draw(frames = (-1,), node_size= 50)
+    #print("Energy Threshold:{}".format(G.number_of_edges() - (n/2)))
+    #print(myOrbit.energy)    
+    #print("the orbit has a limit with {} cliques".format(len(cliques)))
+    #myOrbit.draw(frames = (-1,), node_size= 50)
     #myOrbit.animation()
     
+    #dfkreg = scan_kreg(1,1,10,2,100,1)
+    #dfkreg.to_excel("Scan.xlsx", sheet_name ="kreg", index = False)
+   
+    #dfws = scan_ws(1,0.02,1,2,100,0,0.5)
+    #dfws.to_excel("Scan.xlsx", sheet_name = "ws", index = False)
+
+    #dfkreg = pd.read_excel("Scan.xlsx", sheet_name = "kreg")
+
+    #n = len(dfkreg["n"])
+    #eqs = dfkreg["equilibrium"].sum()
+    #cycle2s = dfkreg["2cycle"].sum()
+    #cycle3s = dfkreg["3cycle"].sum()
+    
+    #fig, ax = plt.subplots()
+    #kreg = ax.scatter(x= dfkreg["Edge Density"],y = dfkreg["ClusterNumber"], c = dfkreg["n"], cmap = "seismic")
+    #ax.set_title("Cluster Number by Edge Density among k-regular Graphs")
+    #ax.set_xlabel("Edge Density")
+    #ax.set_ylabel("Cluster Number")
+    #fig.colorbar(kreg, label = "vertices")
+
+    #ax.text(0.25, 20, 'n = {} \nEquilibria = {} \n2-cycles = {} \n3-cycles = {}'.format(n,eqs,cycle2s,cycle3s), style='italic',
+    #    bbox={'facecolor': 'grey', 'alpha': 0.5, 'pad': 10})
+
+    #dfkreg.plot.scatter(x="Edge Density", y = "ClusterNumber", c = "equilibrium")
+    #plt.show()
+    
+    #########------------------------------------------------
+    dfws = pd.read_excel("Scan.xlsx", sheet_name = "ws")
+    newdfew = dfws[(dfws["equilibrium"])|(dfws["2cycle"])]
+    dfws = newdfew
+
+    n = len(dfws["n"])
+    eqs = dfws["equilibrium"].sum()
+    cycle2s = dfws["2cycle"].sum()
+    cycle3s = dfws["3cycle"].sum()
+    
+    fig, ax = plt.subplots()
+    ws = ax.scatter(x= dfws["Edge Density"],y = dfws["ClusterNumber"], c = dfws["n"], cmap = "seismic")
+    ax.set_title("Cluster Number by Edge Density among \nWatts Strogatz Random Graphs")
+    ax.set_xlabel("Edge Density")
+    ax.set_ylabel("Cluster Number")
+    fig.colorbar(ws, label = "vertices")
+
+    ax.text(0.27, 14, 'n = {} \nEquilibria = {} \n2-cycles = {} \n3-cycles = {}'.format(n,eqs,cycle2s,cycle3s), style='italic',
+        bbox={'facecolor': 'grey', 'alpha': 0.5, 'pad': 10})
+
+    #dfkreg.plot.scatter(x="Edge Density", y = "ClusterNumber", c = "equilibrium")
+    plt.show()
     
 
 
+def scan_kreg(resn, resk, repeat, minn, maxn, mink):
+    df = pd.DataFrame({"Run Number":[], "n":[], "Edge Density":[], 
+                        "ClusterNumber":[],
+                        "equilibrium":[],"2cycle":[], "3cycle":[],
+                        "EndTime":[]})
+    index = 1
+    for n in np.arange(minn,maxn,resn):
+        print("n={}".format(n))
+        for k in np.arange(mink,n/2,resk):
+            k=round(k)
+            for r in np.arange(repeat): 
+                if (n*k)%2 ==0:
+                    G=nx.random_regular_graph(k,n)
+                    if nx.is_connected(G)== True:
+                        myOrbit = orbit.Orbit(G,[random.randint(0,40) for i in range(len(G.nodes))])
+                        NodeNumber=myOrbit.size
+                        df.loc[index] = [index,NodeNumber,myOrbit.graph.number_of_edges()/(NodeNumber*(NodeNumber-1)/2),
+                             count_cliques(myOrbit),
+                             myOrbit.eq, myOrbit.cycle2, myOrbit.cycle3, myOrbit.iter] 
+                        index=index+1
+    print(df)
+    return(df)
 
+def scan_ws(resn, resp, repeat, minn, maxn, minp, maxp):
+    df = pd.DataFrame({"Run Number":[], "n":[], "Edge Density":[], 
+                        "ClusterNumber":[],
+                        "equilibrium":[],"2cycle":[], "3cycle":[],
+                        "EndTime":[]})
+    index = 1
+    for n in np.arange(minn,maxn,resn):
+        print("n={}".format(n))
+        for p in np.arange(minp,maxp, resp):
+            for k in np.arange(2,n/2):
+                k = round(k)
+                for r in np.arange(repeat): 
+                    G = nx.watts_strogatz_graph(n,k,p)
+                    if nx.is_connected(G)== True:
+                        myOrbit = orbit.Orbit(G,[random.randint(0,40) for i in range(len(G.nodes))])
+                        NodeNumber=myOrbit.size
+                        df.loc[index] = [index,NodeNumber,myOrbit.graph.number_of_edges()/(NodeNumber*(NodeNumber-1)/2),
+                            count_cliques(myOrbit),
+                            myOrbit.eq, myOrbit.cycle2, myOrbit.cycle3, myOrbit.iter] 
+                        index=index+1
+    print(df)
+    return(df)
 
 def gen_connected_graph(n,p):
     ''' 
@@ -99,13 +193,9 @@ def find_cliques(sol):
         print("There is no equilibrium or 2-cycle in this orbit")
     return Q 
 
-#This function is a work in progress, I will not call it below
-def count_cliques(n,p,count):
-    clique_count = np.zeros(count)
-    for ii in np.arange(0,count):
-        cliques = find_cliques(orbit.Orbit(gen_connected_graph(n,p)))
-        clique_count[ii] = len(cliques)
-    return clique_count        
+def count_cliques(orbit):
+    Q=find_cliques(orbit)
+    return(len(Q))      
 
 
 do_this()

@@ -111,28 +111,28 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \begin{frame}
 	{Equilibra: Terminology} %%%This will need to change
 	In order to discuss these ideas we need a definition
-	\begin{block}{\textbf{Clique}}
+	\begin{block}{\textbf{Cluster}}
 		A subgraph of $G$ spanned by all of the vertices using a particular strategy. 
 	\end{block}  
 	and some notation
 	\begin{block}{Notation}
 		\begin{tabular}{rp{9cm}} 
-			$Q(\mathbf{u})$& The set of all cliques in a strategy profile $\mathbf{u}$ \\
-			$q^i$& A clique in $Q(\mathbf{u})$ in which vertices use strategy $i$\\
-			$\partial q^i$& Vertices in $q_i$ which have neighbors in other cliques\\
+			$Q(\mathbf{u})$& The set of all clusters in a strategy profile $\mathbf{u}$ \\
+			$q^i$& A cluster in $Q(\mathbf{u})$ in which vertices use strategy $i$\\
+			$\partial q^i$& Vertices in $q_i$ which have neighbors in other clusters\\
 		\end{tabular}
 	\end{block}
 \end{frame} 	
-\begin{frame}{Preliminary Results}
+\begin{frame}{Simple Graphs with Nice Properties}
 	\begin{block}{The only equilibrium in $K_n$ is the trivial equilibrium}
-		Suppose there is a equilibrium coloring $\mathbf{u^*}$ with $m\geq2$ cliques, $q^{c_1},...,q^{c_m}$. Because every pair of vertices shares an edge, $w(v,c_i|\uu)=|q^{c_i}|$ if $v\notin q^{c_i}$, and $w(v,c_i|\uu)=|q^{c_i}|-1$ if $v\in q^{c_i}$.  Consider a vertex $v_1\in q^{c_1}$. Because it is at equilibrium $$w(v_1,c_1|\uu^*)=\max_C\{w(v_1,c|\uu^*)\}=:a.$$
+		Suppose there is a equilibrium coloring $\mathbf{u^*}$ with $m\geq2$ clusters, $q^{c_1},...,q^{c_m}$. Because every pair of vertices shares an edge, $w(v,c_i|\uu)=|q^{c_i}|$ if $v\notin q^{c_i}$, and $w(v,c_i|\uu)=|q^{c_i}|-1$ if $v\in q^{c_i}$.  Consider a vertex $v_1\in q^{c_1}$. Because it is at equilibrium $$w(v_1,c_1|\uu^*)=\max_C\{w(v_1,c|\uu^*)\}=:a.$$
 		Therefore $|q^{c_1}|=a+1$. Moreover $w(v_1,c_2|\uu^*)\leq a$ so $|q^{c_2}|\leq a$.
 		Now consider a vertex  $v_2\in q^{c_2}$. $w(v_2,c_2|\uu^*)=|q^{c_2}|-1\leq a-1$ and $w(v_2,c_1|\uu^*)=a+1$. 
 		Thus $\uu^*_2=c_2\notin \argmax\{w(v_2,c|\uu^*)\}$ so $\uu^*$ is not an equilibrium.  
 	\end{block}
 \end{frame}
 
-\begin{frame}{Preliminary Results}
+\begin{frame}{Simple Graphs with Nice Properties}
 	\begin{block}{$K_{n,m}$ admits an equilibrium with $d$ cliques iff $d|n$ and $d|m$}
 		$\impliedby$ It is easy to construct an equilibrium strategy profile with $d$ cliques
 		
@@ -144,7 +144,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 	In general the process of finding equilibria is equivalent to finding this kind of vertex partition.
 	
 	\begin{equation}
-		P=\cup_{i=1}^m P^{c_i}\text{ where } x\in P^{c_i}\Rightarrow |\Gamma(x)\cap P^{c_i}|\geq |\Gamma(x)\cap P^{c_j}|\, \forall i,j 
+		\mathcal{P}= \{P^{c}\}_{c\in C} \text{ where } x\in P^{c}\Rightarrow |\Gamma(x)\cap P^{c}|\geq |\Gamma(x)\cap P^{d}|\, \forall c,d \in C 
 	\end{equation}
 	There are other similar kinds of graph partitions
 	\begin{itemize}
@@ -168,10 +168,22 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 	
 	\begin{itemize}
 		\item Energy-like estimates: Neither $1-Q$ (modularity) nor the number of edges which connect different cliques are appropriate energies for this context
-		\item Extremal Techniques: Describing necessary conditions on clique boundaries by investigating minimal separators \footnote{B\'ela Bollob\'as. ``Extremal Graph Theory"}
+		\item Extremal Techniques: Describing necessary conditions on cluster boundaries by investigating minimal separators \footnote{B\'ela Bollob\'as. ``Extremal Graph Theory"}
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Numerical Results}
+	\begin{figure}
+		\caption{Really great idea of the numerical power we have}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Cycles}
+	When viewed as a dynamical system we also see the (common) emergence of cycles. We conjecture that $n$-cycles with $n>2$ are impossible. 
+	\begin{figure}
+		\includegraphics[width =  \linewidth]{images/OralFig4v2}
+	\end{figure} 
+\end{frame}
 
 \begin{frame}{Stability}
 	When viewed as a dynamical system, stability can be considered in multiple ways 
@@ -179,15 +191,8 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 		\item Local Stability - A vertex is stable to a single perturbation
 		\item Global Stability - Every vertex is stable to a single perturbation
 		\item Convergent Stability - Every ``nearby" strategy profile evolves into this strategy profile
-		\item Structural Stability - A strategy profile is stable to perturbations of the graph structure.\footnote{Ely, Jeffery C. ``Local Conventions"}$^,$\footnote{Kirkland, S. Li Y. McAlister J. S. Zhang X. ``Edge Addition and the change in Kemeny's Constant"}
+		\item Structural Stability - A strategy profile is stable to perturbations of the graph structure.\footnote{Ely, Jeffery C. ``Local Conventions"}
 	\end{itemize}
-\end{frame}
-
-\begin{frame}{Cycles}
-	When viewed as a dynamical system we also see the (common) emergence of cycles. We conjecture that $n$-cycles with $n>2$ are impossible. 
-	\begin{figure}
-	\includegraphics[width =  \linewidth]{images/OralFig4v2}
-	\end{figure} 
 \end{frame}
 
 \begin{frame}{Goals and Further Questions}
@@ -197,7 +202,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 		\item Find analytically tractable stability criteria in multiple senses
 		\item Use energy-like estimates to describe basins of stability for equilibria
 		\item Use techniques from extremal graph theory to describe possible equilibria by the structure of the graph by which they are admitted
-		\item Summarize with some computational results relating edge density or connectance to clique number 
+		\item Summarize with some computational results relating edge density or ``connectance" to clique number 
 	\end{itemize}
 \end{frame}
 
@@ -212,7 +217,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \begin{frame}{Intuition}
 	Suppose that in  a signaling network $G$
 	\begin{itemize}
-		\item Each vertex uses exactly one language to send a receive signals. 
+		\item Each vertex uses exactly one language at any one time to send a receive signals. 
 		\item A subset of vertices are assigned languages which they cannot change
 		\item Translation of the signal is costly relative to transmission. 
 	\end{itemize}
@@ -232,7 +237,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \begin{frame}{Partitioning}
 	As before this becomes a partitioning problem but with an added components
 	\begin{block}{Boundary Value Problem }
-		For a graph $G(V,E)$, $B\subset V$ and $F:B\rightarrow C$, find a partition $\mathcal{P}=\cup_{i=1}^mP^{c_i}$ such that 
+		For a graph $G(V,E)$, $B\subset V$ and $F:B\rightarrow C$, find a partition $\mathcal{P}=\{P^{c}\}_{c\in C}$ such that 
 		\begin{equation}
 			\begin{split}
 				i)\quad & |\Gamma(x)\cap P^{\uu_x}|\geq |\Gamma(x)\cap P^{c}|\,\forall x\in V, c\in C \\
@@ -305,39 +310,83 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 			\end{tikzpicture}\\
 			$Q=0.2809$&&$Q=0.2603$\\
 			Modularity Partition &&Not a Modularity Partition\\
-			not an equilibrium&& equilibrium
+			not an equilibrium&& equilibrium\\
+			not a min. cut partition&&min. cut partition
 		\end{tabular}
 	\end{figure}
 	
 \end{frame}
 
 \begin{frame}{Partitioning}
-It is a relatively easy task to prove that no modularity partition can have a part with only 1 vertex. 
+We can prove that if a modularity partition has a cluster of size one, that single vertex cannot have half or more of its neighbors in a cluster together.  
 \begin{figure}
-\begin{tikzpicture}
-	\node (E1) at (0,0){};
-	\node (E2) at (0,-1){};
-	\node (EQU) at (3,-0.4){};
-	\node (Q1) at (6,0){};
-	\node (Q2) at (6,-1){};
-	\node (U1) at (4,-2.5){};
-	\node (U2) at (2,-2.5){};
-	\node (U3) at (3,-3){};
-	
-	
-	\node[fit=(E1)(EQU)(E2), draw, ellipse, fill = orange, opacity = 0.2 ,inner sep=2pt]{};
-	\node[fit=(Q1)(EQU)(Q2), draw, ellipse,fill = blue, opacity = 0.2, inner sep=2pt]{};
-	\node[fit=(U1)(EQU)(U2), draw, ellipse,inner sep=2pt]{};
-	
-	\node (Ename) at (0,0.75){Minimum Cut Partitions};
-	\node(Qname) at (6,0.75){Modularity Partitions};
-	\node(Uname) at (-0.2,-2.5){Equilibrium Partitions};
-\end{tikzpicture}
+\begin{tabular}{ccc}
+		\begin{tikzpicture}
+		\node(a) [circle, fill, inner sep =1.5pt] at (0,0){};
+		\node(b) [circle, fill, inner sep =1.5pt] at (1.5,0){};
+		\node(c) [circle, fill, inner sep =1.5pt] at (0,1.5){};
+		\node(d) [circle, fill, inner sep =1.5pt] at (1.5,1.5){};
+		\node(e) [circle, fill, inner sep =1.5pt] at (3.5,0.75){};
+		
+		\draw(b)--(a)--(d)--(c)--(b)--(e)--(d);
+		
+		\node[fit=(a)(b)(c)(d),dashed,draw, rectangle,rounded corners=10,inner sep=5pt] {};
+		\node[fit=(e),dashed, draw, rectangle,rounded corners=10,inner sep=20pt] {};
+		
+		
+		
+	\end{tikzpicture}&&\begin{tikzpicture}
+		\node (A) [draw = black, circle] at (0,0){$K_4$};
+		\node (B) [draw = black, circle] at (3,0){$K_4$};
+		\node (C) [draw = black, circle] at (1.5,-1.5){$K_4$};
+		\node(a)[circle, fill, inner sep =1.5pt] at (1.5,0){};
+		
+		\draw (A)--(a)--(B);
+		\draw (a)--(C);
+		
+		\node[fit=(A),dashed,draw, rectangle,rounded corners=10,inner sep=5pt] {};
+		\node[fit=(B),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+		\node[fit=(C),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+		\node[fit=(a),dashed, draw, rectangle,rounded corners=10,inner sep=10pt] {};
+		
+	\end{tikzpicture}\vspace{0.25cm}\\
+	not a modularity partition&&Modularity partition\\
+	not an equilibrium && not an equilibrium \\
+	min. cut partition &\hspace{0.25cm} & min. cut partition 
+\end{tabular} 
 \end{figure}
 \end{frame}
+
+\begin{frame}{Partitioning}
+	\begin{figure}
+			\centering
+		\begin{tikzpicture}
+			\node (E1) at (0,0){};
+			\node (E2) at (0,1){};
+			\node (EQU) at (3,-0.4){};
+			\node (Q1) at (6,0){};
+			\node (Q2) at (6,1){};
+			\node (U1) at (3.5,-2){};
+			\node (U2) at (2.5,-2){};
+			
+			\node[fit=(E1)(EQU)(E2), draw, ellipse, fill = orange, opacity = 0.2 ,inner sep=2pt]{};
+			\node[fit=(Q1)(EQU)(Q2), draw, ellipse,fill = blue, opacity = 0.2, inner sep=2pt]{};
+			\node[fit=(U1)(EQU)(U2), draw, ellipse,inner sep=2pt]{};
+			
+			\node (Ename) at (0,1.75){Minimum Cut Partitions};
+			\node(Qname) at (6,1.75){Modularity Partitions};
+			\node(Uname) at (0.2,-2){Equilibrium Partitions};
+		\end{tikzpicture}
+	\end{figure}
+	We can use the relationships between these three partitions to get a better understanding of what equilibrium partitions look like and how they can be approximated. 
+\end{frame}
+
 \begin{frame}
 	{A note on complexity class}
-	Almost all partitioning problems are in complexity class NP. Finding a modularity paritition in particular can be shown to be NP complete\footnote{Brandes, U. Delling, D. Gaertler, M. G\"orke, R. Hoefer, M. Nikoloski Z. Wagner, D. ``On Modularity - NP-Completeness and Beyond"}. Because of the similarities between these partitions, it's unlikely that we can find an algorithm to solve the boundary value problem that runs deterministically in polynomial time unless the specification of boundary values reduces the problem more than expected. 
+	Almost all partitioning problems are in complexity class $\mathcal{NP}$. Finding a modularity paritition in particular can be shown to be $\mathcal{NP}$ complete\footnote{Brandes, U. Delling, D. Gaertler, M. G\"orke, R. Hoefer, M. Nikoloski Z. Wagner, D. ``On Modularity - NP-Completeness and Beyond"}. We can say certainly that finding an equilibrium partition is $\mathcal{NP}$ hard
+	\begin{block}{Finding an Equilibrium Partition is $\mathcal{NP}$ hard}
+		The process to check if a partition is an equilibrium partition can be done in $n\cdot |C|\leq n^2$ operations. It is checkable in polynomial time so the problem is certainly in $\mathcal{NP}$. 
+	\end{block}
 \end{frame}
 \section{Continuous Variations and Applications}
 \begin{frame}{Sympatric Evolution of Cooperative Behavior}
@@ -366,12 +415,16 @@ It is a relatively easy task to prove that no modularity partition can have a pa
 		\end{equation}. 
 	\end{block}
 
-	For the game posed above, perhaps there are no continuous non constant $\Phi$ which satisfy this condition. 
+	For the game posed above, there are no continuous non constant $\Phi$ which satisfy this condition. 
 \end{frame}
 
 \begin{frame}{Sympatric Evolution of Cooperative Behavior}
 	\begin{block}{There are no nonconstant continuous solutions to (10)}
-		Suppose that $\Phi^\star$ satisfies (10), we will show that it must be constant. 
+		Suppose that $\Phi^\star\in C^0(\Omega)$ satisfies (10), and is non-constant 
+		The convolution $K*\Phi^\star_i$ is clearly continuous and  non-constant for any $i$ for which $\Phi^\star_i$ is not constant.  There exists an $\hat x\in \Omega$ such that$(K*\Phi^\star_i)(\hat x)\geq(K*\Phi^\star_j)(\hat x)$ for all $j$ and in particular $(K*\Phi^\star_i)(\hat x)>(K*\Phi^\star_l)(\hat x)>0$ for some $l$, lest $\Phi^\star$ be constant in all of $\Omega$. Thus $\mathbf{a}\cdot (K*\Phi^\star)(\hat x)$ is maximized when $\mathbf{a}=e_i$. Let  \begin{equation}\tilde{\Phi}(x)=\begin{cases} e_i&x=\hat x\\
+				\Phi^\star(x)&x\neq \hat x \end{cases}
+		\end{equation}
+	Observe  $w(\hat x, \tilde{\Phi})=(K*\Phi_i^\star)(\hat x)>w(\hat x, \Phi^\star)$, so $\Phi^*$ does not solve (10).
 	\end{block}
 \end{frame}
 	

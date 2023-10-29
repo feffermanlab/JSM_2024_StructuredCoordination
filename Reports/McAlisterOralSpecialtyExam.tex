@@ -147,6 +147,14 @@
 		\subsection{Numerical Results}\label{numericalresults}
 		To support these methods, we may also rely on numerical findings. Despite the complexity of predicting equilibria from a graph and understanding its basins of stability, the dynamical system itself is quite straight forward to simulate and thus numerical findings are readily available to support our analytical goals. 
 		
+		For instance, there is an intuitive relationship between the edge density of a graph and the number of clusters it may admit at equilibrium. We can explore this relationship by generating many random graphs and finding equilibria by giving random initial conditions and solving the initial value problem (Fig. \ref{NumericalScan}). 
+		\begin{figure}
+			\includegraphics[width=\linewidth]{images/KregNumericalScan}
+			\includegraphics[width = \linewidth]{images/WSNumericalScan}
+			\caption{A scatter plot showing the cluster number and edge density of many limits (equilibria or 2-cycles) in randomly generated $k$-regular graphs (above) or Watts-Strogatz graphs (below) given random initial conditions.}
+			\label{NumericalScan}
+		\end{figure}
+		
 		%%Section here Showing off how good the numerics are
 		
 		It is crucial to point out that when viewed like an initial value problem, it is not always true that a sequence of strategy profiles converge to an equilibrium. It is very common for cycling to occur (Fig. \ref{cycle}). We see that these are quite common when we simulate these systems. However, it is interesting to note that $n$-cycles with $n\geq 3$ have never been observed. Indeed, we conjecture that such a cycle is, in general, impossible although we do not yet have a proof. Any $n$-cycle is a result of the simultaneous update that governs the behavior of the system. If the same game were to be played with sequential update (equivalent to the high-inertia setting described in the Introduction) then no such cycling can exist because every update can only reduce the number of edges which connect vertices of different strategies. (That is to say, the number of edges connected different clusters is an appropriate energy in the sequential case).
