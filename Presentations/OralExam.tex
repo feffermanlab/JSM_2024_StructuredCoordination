@@ -134,7 +134,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 
 \begin{frame}{Simple Graphs with Nice Properties}
 	\begin{block}{$K_{n,m}$ admits an equilibrium with $d$ cliques iff $d|n$ and $d|m$}
-		$\impliedby$ It is easy to construct an equilibrium strategy profile with $d$ cliques
+		$\impliedby$ It is easy to construct an equilibrium strategy profile with $d$ clusters
 		
 		$\implies$ I argue by contradiction. $K_{n,m}=E^n+E^m$  Without loss of generality suppose that $d$ is not a divisor of $m$. Suppose $\uu^*$ is an equilibrium strategy profile with $d>1$ cliques. $d$ does not divide $m$ so $\exists$ strategies $i$ and $j$ such that $|q^i\cap E^m|>|q^j\cap E^m|$. If $\uu^*$ is at equilibrium it must follow that $q^j\cap E^n=\emptyset$. It then follows $q^j\cap E^m =\emptyset$. If $q^j$ is empty then there are not $d$ cliques in $\uu^*$. This contradiction proves the result.   
 	\end{block}
@@ -174,7 +174,15 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 
 \begin{frame}{Numerical Results}
 	\begin{figure}
-		\caption{Really great idea of the numerical power we have}
+		\includegraphics[width = 0.85\linewidth]{images/kregNumericalScan}
+		\caption{Caption}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Numerical Results}
+	\begin{figure}
+		\includegraphics[width = 0.85\linewidth]{images/wsNumericalScan}
+		\caption{Caption}
 	\end{figure}
 \end{frame}
 
@@ -395,8 +403,8 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 	These questions, modified to be continuous give us some tools to think about Sympatric evolution of cooperative behavior. 
 \end{frame}
 
-\begin{frame}{Sympatric Evolution of Cooperative Behavior}
-	\begin{block}{Continuous Formulation 1, Continuous Player Space with Mixed Strategies}
+\begin{frame}{Mixed Strategy Concept}
+	\begin{block}{Continuous Player Space with Mixed Strategies}
 		Let $\Omega$ be a domain and $\Delta_m$ be the $m$-simplex in which every mixed strategy lies. Let $\Phi:\Omega \rightarrow\Delta_m$ be a strategy profile. Where Payoffs are calculated as 
 		\begin{equation}
 			w(x|\Phi)=\sum_{i=1}^m \Phi_i(x)\int_\Omega K(x-y)\Phi_i(y)dy =:B(\Phi(x),\Phi(x)) 
@@ -406,7 +414,7 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 	Are there any non-constant, continuous $\Phi$ which are Nash Equilibria? 
 \end{frame}
 
-\begin{frame}{Sympatric Evolution of Cooperative Behavior}
+\begin{frame}{Mixed Strategy Concept}
 	Are there any non-constant, continuous $\Phi$ which are Nash Equilibria?
 	\begin{block}{Optimization Challenge}
 		We are looking for continuous $\Phi$ such that for any $x$,
@@ -418,7 +426,7 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 	For the game posed above, there are no continuous non constant $\Phi$ which satisfy this condition. 
 \end{frame}
 
-\begin{frame}{Sympatric Evolution of Cooperative Behavior}
+\begin{frame}{Mixed Strategy Concept}
 	\begin{block}{There are no nonconstant continuous solutions to (10)}
 		Suppose that $\Phi^\star\in C^0(\Omega)$ satisfies (10), and is non-constant 
 		The convolution $K*\Phi^\star_i$ is clearly continuous and  non-constant for any $i$ for which $\Phi^\star_i$ is not constant.  There exists an $\hat x\in \Omega$ such that$(K*\Phi^\star_i)(\hat x)\geq(K*\Phi^\star_j)(\hat x)$ for all $j$ and in particular $(K*\Phi^\star_i)(\hat x)>(K*\Phi^\star_l)(\hat x)>0$ for some $l$, lest $\Phi^\star$ be constant in all of $\Omega$. Thus $\mathbf{a}\cdot (K*\Phi^\star)(\hat x)$ is maximized when $\mathbf{a}=e_i$. Let  \begin{equation}\tilde{\Phi}(x)=\begin{cases} e_i&x=\hat x\\
@@ -428,7 +436,7 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 	\end{block}
 \end{frame}
 	
-\begin{frame}{Sympatric Evolution of Cooperative Behavior}
+\begin{frame}{Mixed Strategy Concept}
 	This is not altogether surprising
 	\begin{itemize}
 		\item When strategies are discrete and the payoff matrix is the identity, then being around "nearby" strategies is not beneficial. 
@@ -437,7 +445,7 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 	Instead we ought to look at strategies which are comparable under a ``blurred" payoff matrix. 
 \end{frame}
 
-\begin{frame}{Discrete Player Space with comparable strategies}
+\begin{frame}{Comparable Strategy Concept}
 	Consider this symmetric payoff matrix
 	\begin{equation}
 		\begin{bmatrix}
@@ -461,40 +469,47 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 	This poses the question: In a more general setting are there ``recognition thresholds" which define critical regions where sympatric evolution of cooperative behavior can occur? Are there critical domain sizes?   
 \end{frame}
 	
-\begin{frame}{Continuous Strategy and Continuous Player Space}
+\begin{frame}{Comparable Strategy Concept}
 	Now instead of using linear combinations of pure incomparable pure strategies, consider the game played in the domain $\Omega$ where a strategy profile $\Phi:\Omega \rightarrow M$ gives the payoff
 	\begin{equation}
 		w(x|\Phi)= \int_\Omega K(x-y)\rho(d(\Phi(y),\Phi(x)))dy
 	\end{equation}
-	Where $M$ is a metric space, $\rho(y)$ is a certain ``blurring" function which has $\rho (0)=1$ and $\rho(r)=0$ for some $r>r^*$ a recognition threshold. 
+	Where $M$ is a metric space equipped with the metric $d$, $\rho(y)$ is a certain recognition function which has $\rho (0)=1$ and $\rho(r)=0$ for some $r>r^\star$ a recognition threshold. 
 \end{frame}
 
 \begin{frame}{Easy Example}
-	Let $\Omega = [0,\alpha]$, let $\rho(r)=1$ for $r\leq r^*$ and $0$ otherwise and let $K(x)=\frac{1}{\kappa}$ for $|x|<\kappa$ and $0$ otherwise. 
+	Let $\Omega \subset \mathbb{R}^n$, let $\rho(r)=1$ for $r\leq r^\star$ and $0$ otherwise and let $K(x)=\frac{1}{\alpha(n)\kappa}$ for $|x|<\kappa$ and $0$ otherwise. 
 	\begin{equation}
-		w(x|\Phi)=\int_0^\alpha K(x-y)\rho(|\Phi(y)-\Phi(x)|)dy
+		w(x|\Phi)=\int_\Omega K(x-y)\rho(|\Phi(y)-\Phi(x)|)dy
 	\end{equation} 
 
-	\begin{block}{There exists a continuous non-constant Nash Equilibrium}
-		We can show that 
-		\begin{equation}
-			\Phi(x)=\begin{cases}
-					0&x<\kappa\\
-					\frac{x-\kappa}{\alpha-2\kappa}&\kappa<x<\alpha-\kappa\\
-					1&\alpha-\kappa<x
-			\end{cases}
-		\end{equation}
-		Is a Nash equilibrium when $r^*(\alpha-2\kappa)>\kappa$. 
+	\begin{block}{$\Phi:\Omega\to M$ is a Nash Equilibrium if $\Phi\in C^{0,1}(\Omega;M)$ with Lipschitz Constant $L\leq \frac{r^\star}{\kappa}$}
+		We can show that under these conditions $w(x|\Phi)=\frac{1}{\alpha(n)\kappa} vol(\Omega\cap supp_y K(x-y))$ which is the max possible fitness and so it is trivially a Nash Equilibrium. 
 	\end{block}
 \end{frame}
 
 \begin{frame}{Limiting Example}
-	If $r^*\rightarrow0$ then a continuous non-constant Nash Equilibrium is impossible. Again this points to the existence of a critical recognition threshold. 
+	\begin{itemize}
+		\item If $r^\star\rightarrow0$ then a continuous non-constant Nash Equilibrium is impossible.
+		
+		\item If $\kappa > diam(\Omega)$ then again every continuous solution must have $diam (\Phi(\Omega))<r^\star$
+	\end{itemize}
+	Consider $\kappa$ describing the edge density of the graph. This second limiting example is analogous to the result about equilibria in $K_n$.
+	 
 \end{frame}
 
 \section*{}
 \begin{frame}{Conclusion}
-	content...
+	\begin{itemize}
+		\item Chapter 1 - Understanding the structured coordination game with a discrete player space through time. 
+		\item Chapter 2 - Constructing equilibrium solutions to the structured coordination game with a discrete player space
+		\item Chapter 3 - Characterizing equilibrium of the structured coordination game in a continuous player space and continuous strategy space. 
+	\end{itemize}
+\end{frame} 
+
+\begin{frame}{Thank you}
+	\centering
+	\Large Questions?
 \end{frame}
 
 \end{document}
