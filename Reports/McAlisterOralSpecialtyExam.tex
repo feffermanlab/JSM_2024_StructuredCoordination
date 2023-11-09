@@ -157,14 +157,14 @@
 		
 		%%Section here Showing off how good the numerics are
 		
-		It is crucial to point out that when viewed like an initial value problem, it is not always true that a sequence of strategy profiles converge to an equilibrium. It is very common for cycling to occur (Fig. \ref{cycle}). We see that these are quite common when we simulate these systems. However, it is interesting to note that $n$-cycles with $n\geq 3$ have never been observed. Indeed, we conjecture that such a cycle is, in general, impossible although we do not yet have a proof. Any $n$-cycle is a result of the simultaneous update that governs the behavior of the system. If the same game were to be played with sequential update (equivalent to the high-inertia setting described in the Introduction) then no such cycling can exist because every update can only reduce the number of edges which connect vertices of different strategies. (That is to say, the number of edges connected different clusters is an appropriate energy in the sequential case).
+		It is crucial to point out that when viewed like an initial value problem, it is not always true that a sequence of strategy profiles converge to an equilibrium. It is very common for cycling to occur (Fig. \ref{cycle}). We see that these are quite common when we simulate these systems. However, it is interesting to note that $n$-cycles with $n\geq 3$ have never been observed. Indeed, we conjecture that such a cycle is, in general, impossible although we do not yet have a proof. Any $n$-cycle is a result of the simultaneous update that governs the behavior of the system. If the same game were to be played with sequential update (equivalent to the high-inertia setting described in the Introduction), then no such cycling can exist because every update can only reduce the number of edges which connect vertices of different strategies. (That is to say, the number of edges connected different clusters is an appropriate energy in the sequential case).
 		
 		\begin{figure}
 			\includegraphics[width =  \linewidth]{images/OralFig4v2}
 			\caption{Two strategy profiles which together make up a 2-cycle. In the profile on the left, every vertex is playing its best response to the profile on the right and the same is true the other way around.}
 			\label{cycle} 
 		\end{figure}
-		\subsection{stability}\label{stability}
+		\subsection{Stability}\label{stability}
 		In addition to understanding equilibria structurally, we also aim to classify equilibria by their stability. The first and most approachable way we will think of stability is as local stability. We say a vertex is locally stable if the perturbation of a single nearby vertex will not change the strategy of the original vertex in the next iteration. This is equivalent to the vertex being at a \textit{proper} fitness maximum (the $\argmax$ is of size 1). 
 		
 		The natural next stability concept is global stability where every vertex is locally stable. We seek to find a more easily checkable algebraic condition than confirming that every vertex is at a proper fitness maximum. The global stability concept is definitionally identical to the Evolutionary Stable Strategy concept from evolutionary game theory\cite{Apaloo2009,Nowak2006} but to properly discuss flows in this dynamical system we need a stronger concept like convergent stability. The idea that ``near by" strategies will converge to a given equilibrium with probability 1 requires a definition of ``near by" which is less clear in the discrete case when strategies do not exist in a vector space. However, strategy profiles can be compared using the metric $d(\uu_1,\uu_2)=\sum_{v\in V}(\delta(\uu_{1,v},\uu_{2,v}))$.
@@ -212,15 +212,15 @@
 		
 		Note that a minimum cut partition requires exactly $|C|$ parts. Otherwise, the minimum cut partition would always be the trivial partition. The simplicity of the minimum edge cut partition allows us to understand the intersection between minimum edge cut partitions and equilibrium partitions. 
 
-		\begin{lemma}{Every Minimum Cut Partition with clusters of size $>1$ corresponds to an equilibrium partition.}
+		\begin{lemma}{Every Minimum Cut Partition with all clusters having size $>1$ corresponds to an equilibrium partition.}
 		\end{lemma}
 		\begin{proof} 
-			Suppose that $\mathcal{P_\star}=\{P_\star^c\}_{c\in C}$ is a minimum cut partition of $G(V,E)$ corresponding to a strategy profile $\uu^\star$ which is not an equilibrium. Therefore $\exists v_\star\in V$ which is using strategy $r\in C $ for which $w(v,r|\uu)<w(v,s|\uu)\iff |\Gamma(v_\star)\cap P_\star^{r}|<|\Gamma(v_\star)\cap P_\star^s|$ for some $s\in C$. Let $\hat\uu$ be a new strategy profile where $\hat\uu_v=\uu_v^\star$ for all $v\neq v_\star$ and $\hat\uu_{v_\star}=s$. Call the corresponding partition $\hat{\mathcal{P}}$. We can easily compute that
+			Suppose that $\mathcal{P_\star}=\{P_\star^c\}_{c\in C}$ is a minimum cut partition of $G(V,E)$ corresponding to a strategy profile $\uu^\star$ which is not an equilibrium. Therefore $\exists v_\star\in V$ which is using strategy $r\in C $ for which $w(v,r|\uu)<w(v,s|\uu)\iff |\Gamma(v_\star)\cap P_\star^{r}|<|\Gamma(v_\star)\cap P_\star^s|$ for some $s\in C$. Let $\hat\uu$ be a new strategy profile where $\hat\uu_v=\uu_v^\star$ for all $v\neq v_\star$ and $\hat\uu_{v_\star}=s$. Call the corresponding partition $\hat{\mathcal{P}}$.  Note that $\hat{\mathcal{P}}$ is still a partition with the same number of clusters because removing a vertex from any cluster does not leave it empty by assumption. We can easily compute that
 			\begin{equation}
 				\begin{split} 
-					E(\uu^\star)-E(\hat\uu) &=-\sum_v\sum_w A\delta(\uu_v^\star,\uu_2^\star)+\sum_v\sum_w A\delta(\hat\uu_v,\hat\uu_w)\\
-					&=-\sum_{v\neq v_\star}\left[\sum_{w\neq v_\star}A\delta(\uu^\star_w,\uu^\star_v)+A\delta(\uu^\star_{v_\star},\uu^\star_v)\right]+\sum_{w\neq v_\star}A\delta(\uu^\star_{v_\star},\uu^\star_w)\\
-					&\quad+\sum_{v\neq v_\star}\left[\sum_{w\neq v_\star}A\delta(\hat\uu_w,\hat\uu_v)+A\delta(\hat\uu_{v_\star},\hat\uu_v)\right]+\sum_{w\neq v_\star}A\delta(\hat\uu_{v_\star},\hat\uu_w)
+					E(\uu^\star)-E(\hat\uu) &=-\sum_v\sum_w A_{vw}\delta(\uu_v^\star,\uu_w^\star)+\sum_v\sum_w A_{vw}\delta(\hat\uu_v,\hat\uu_w)\\
+					&=-\sum_{v\neq v_\star}\left[\sum_{w\neq v_\star}A_{vw}\delta(\uu^\star_w,\uu^\star_v)+A_{vw}\delta(\uu^\star_{v_\star},\uu^\star_v)\right]-\sum_{w\neq v_\star}A_{vw}\delta(\uu^\star_{v_\star},\uu^\star_w)\\
+					&\quad+\sum_{v\neq v_\star}\left[\sum_{w\neq v_\star}A_{vw}\delta(\hat\uu_w,\hat\uu_v)+A_{vw}\delta(\hat\uu_{v_\star},\hat\uu_v)\right]+\sum_{w\neq v_\star}A_{vw}\delta(\hat\uu_{v_\star},\hat\uu_w)
 				\end{split}
 			\end{equation}
 			Because $v_\star$ is the only vertex which has changed strategy in the new strategy profile, and because of the symmetry of the adjacency matrix and the Kronecker delta function this reduces to
@@ -233,11 +233,11 @@
 			which is clearly positive. Thus $\mathcal{P}_\star$ was not a minimum cut partition. This contradiction proves the result.    
 		\end{proof}
 
-	Another type of partition which provides us with an exciting way to investigate equilibrium partitions is the modularity partition. The modularity partition, which is typically used for community detection \cite{Newman2006,Clauset2004}, is the partition which maximizes the quantity $Q(\uu)$.
+	Another type of partition which provides us with an exciting way to investigate equilibrium partitions is the modularity partition.  Modularity is a measure of well a partition separates a network into closely connected groups which are themselves sparsely connected. The modularity partition, which is typically used for community detection \cite{Newman2006,Clauset2004}, is the partition which maximizes modularity,  $Q(\uu)$.
 		\begin{equation}\label{modform1}
 			Q(\uu) = \frac{1}{2m}\sum_{v,w}\left[A_{vw}-\frac{d_vd_w}{2m}\right]\delta(\uu_v,\uu_w)
 		\end{equation}
-		Equation \eqref{modform1} is equivalent to the formulation
+		where $d_v$ is the degree of vertex $v$. Equation \eqref{modform1} is equivalent to the formulation
 		\begin{equation}\label{modform2}
 			Q(\uu)=\sum_{c\in C}\frac{e^{cc}}{m}-\left(\frac{a^c}{2m}\right)^2
 		\end{equation}
@@ -250,10 +250,10 @@
 		Each of these formulations of modularity may be helpful in understanding equilibrium partitions through modularity. One crucial difference between the modularity partition and the minimum edge cut partition is that the modularity partition does not require that every cluster be non-empty. As before, we can use our understanding of modularity partitions to inform our understanding of equilibrium partitions. 
 		
 		\begin{lemma}
-			 If a modularity partition has a cluster with just one vertex, strictly fewer than half of that vertex's neighbors can be clustered together. 
+			 If a modularity partition has a cluster with just one vertex, that one vertex must share an edge with multiple clusters
 		\end{lemma}
 		\begin{proof}
-			Suppose by way of contradiction that a modularity partition of the connected graph $G$, $\mathcal{P}_\star$, has $n+1$ clusters and $P_\star^{n+1}={v}.$ $v$ is adjacent to at least one other vertex, so it shares edges with clusters $P_\star^n,...,P_\star^{n-k}$. Without loss of generality, suppose the majority of the neighbors of $v$ are in $P_\star^n$. Consider a new partition, $\hat{\mathcal{P}}$, in which every cluster remains unchanged except $\hat{P}^n= P_\star^n\cap P_\star^{n+1}$. Let $e^{ii}_\star$ and $\hat{e}^{ii}$ be the number of edges within the cluster $i$ for $\mathcal{P}_\star$ and $\hat{\mathcal{P}}$, respectively, and let $a^i_\star$ and $\hat{a}^i$ be the degree sum of the vertices in cluster $i$ in each partition. Note that
+			Suppose by way of contradiction that a modularity partition of the connected graph $G$, $\mathcal{P}_\star$, has $n+1$ clusters and $P_\star^{n+1}={v}$ and $v$ is adjacent to some number of vertices which are all in the cluster $P_\star^n$. Consider a new partition, $\hat{\mathcal{P}}$, in which every cluster remains unchanged except $\hat{P}^n= P_\star^n\cup P_\star^{n+1}$. Let $e^{ii}_\star$ and $\hat{e}^{ii}$ be the number of edges within the cluster $i$ for $\mathcal{P}_\star$ and $\hat{\mathcal{P}}$, respectively, and let $a^i_\star$ and $\hat{a}^i$ be the degree sum of the vertices in cluster $i$ in each partition. Note that
 			\begin{equation}
 				\begin{split}
 					\hat{e}^{ii} &= \begin{cases}
@@ -268,14 +268,14 @@
 			\end{equation} 
 			where $d_v$ is the degree of vertex $v$. Note also that $e_\star^{n+1,n+1}=0$. This means that we can calculate  \begin{equation}
 				\begin{split}
-					Q(\hat{\mathcal{P}})-Q(\mathcal{P}^\star)&= \sum_{i=1}^n \frac{\hat e^{ii}}{m}-\left(\frac{\hat a^i}{2m}\right)^2-\sum_{i=1}^{n+1} \frac{e_\star^{ii}}{m}-\left(\frac{a_\star^i}{2m}\right)^2\\
+					Q(\hat{\mathcal{P}})-Q(\mathcal{P}^\star)&= \sum_{i=1}^n \left[\frac{\hat e^{ii}}{m}-\left(\frac{\hat a^i}{2m}\right)^2\right]-\sum_{i=1}^{n+1}\left[ \frac{e_\star^{ii}}{m}-\left(\frac{a_\star^i}{2m}\right)^2\right]\\
 					&=\frac{\hat{e}^{nn}}{m}-\frac{(\hat{a}^n)^2}{4m^2}-\frac{e_\star^{nn}+e_\star^{n+1,n+1}}{m}+\frac{(a^n_\star)^2}{4m^2}+\frac{d_v^2}{4m^2}\\
-					&= \frac{|\Gamma(v)\cap P_\star^{n}|}{m}+\frac{-\hat (a^n)^2+{a^n_\star}^2+d_v^2}{4m^2}\\
-					&= \frac{|\Gamma(v)\cap P_\star^{n}|}{m}+\frac{-{a^n_\star}^2-d_v^2-2a^n_\star d_v+{a^n_\star}^2+d_v^2}{4m^2}\\
+					&= \frac{|\Gamma(v)\cap P_\star^{n}|}{m}+\frac{-(\hat {a}^n)^2+(a^n_\star)^2+d_v^2}{4m^2}\\
+					&= \frac{|\Gamma(v)\cap P_\star^{n}|}{m}+\frac{-(a^n_\star)^2-d_v^2-2a^n_\star d_v+(a^n_\star)^2+d_v^2}{4m^2}\\
 					&=\frac{|\Gamma(v)\cap P_\star^{n}|}{m}-\frac{2a^n_\star d_v}{4m^2}
 				\end{split}
 			\end{equation} 
-		Thus we need only show that $|\Gamma(v)\cap P_\star^n|>\frac{a_\star^nd_v}{2m}$ to complete the proof. If $|\Gamma(v)\cap P_\star^n|> \frac{d_v}{2}$, then the inequality is satisfied. Moreover, if $|\Gamma(v)\cap P_\star^n|=\frac{d_v}{2}$ then there is at least 1 edge which is not incident to a vertex in $P_\star^n$ ($a_\star^n<m$), and again the inequality is satisfied. Having satisfied the inequality, we have found a new partition which has higher modularity and so $\mathcal{P}^\star$ was not a modularity partition. This contradiction proves the result.
+		Thus we need only show that $|\Gamma(v)\cap P_\star^n|>\frac{a_\star^nd_v}{2m}$ to complete the proof.  If $v$ only shares edges with vertices in $P_\star^n$ then $|\Gamma(v)\cap P_\star^n|=d_v$. we have that $1>\frac{a_\star^n}{2m}$. This is necessarily true because $a_\star^n$ is strictly less than the degree sum in the entire graph, $2m$.  Having satisfied the inequality, we have found a new partition which has higher modularity and so $\mathcal{P}^\star$ was not a modularity partition. This contradiction proves the result.
 		\end{proof}
 
 	\begin{figure}

@@ -26,7 +26,7 @@
 \usepackage{tikz}
 \usetikzlibrary{calc, shapes, fit}
 
-\title{A Discrete Structured Coordination Game and its Applications in Theoretical Ecology}
+\title{Spatially Structured Coordination Games and their Applications in Theoretical Ecology}
 \author{John McAlister}
 \institute[Fefferman Lab]{Univeristy of Tennessee - Knoxville}
 \begin{document}
@@ -37,7 +37,7 @@
 	\end{frame}
 \section{Introduction}
 \begin{frame}{The Coordination Game}
-	The Coordination game, at its most basic, is a two player game with the following payoff matrix
+	The coordination game, at its most basic, is a two player game with the following payoff matrix:
 	\begin{center} 
 		\begin{tabular}{c|cc}
 			&A&B\\
@@ -47,12 +47,12 @@
 		\end{tabular}
 	\end{center}
 	
-	With the assumption that $a>d$ and $b>c$. It has two Pure Strategy Nash equilibria, $(A,A), (B,B)$, and a mixed strategy Nash equilibrium where both players play strategy $A$ with probability $p=\frac{b-d}{a+b-c-d}$.
+	where $a>d$ and $b>c$. It has two pure strategy Nash equilibria, $(A,A), (B,B)$, and a mixed strategy Nash equilibrium where both players play strategy $A$ with probability $p=\frac{b-d}{a+b-c-d}$.
 \end{frame}
 \begin{frame}{The Coordination Game}
 	The game can also be considered among many players where pairs of players are selected to play uniformly randomly.
 	\begin{itemize}
-		\item Using myopic best response as a replicator dynamic, A group playing this game with \textit{high inertia} and $\varepsilon$\textit{-noise} will converge to the Risk Dominant Nash Equilibrium \footnote{Kandori, Michihiro, et al. “Learning, Mutation, and Long Run Equilibria in Games.”}
+		\item Using myopic best response as a replicator dynamic, a group playing this game with \textit{high inertia} and $\varepsilon$\textit{-noise} will converge to the risk dominant Nash equilibrium \footnote{Kandori, Michihiro, et al. “Learning, Mutation, and Long Run Equilibria in Games.”}
 		
 		\item Changing the way in which the pairs are selected can lead to different equilibrium selection \footnote{Robson, Arthur J., and Fernando Vega-Redondo. "Efficient equilibrium selection in evolutionary games with random matching."}
 		
@@ -60,21 +60,21 @@
 	\end{itemize}
 \end{frame}
 \begin{frame}{The Structured Coordination Game}
-	If player selection is not uniform random across all players we call this a structured coordination game. 
+	If player selection is not uniform random across all players, we call this a structured coordination game. 
 	\begin{itemize}
 		\item Complete Graphs (Identical to unstructured game)
 		\item Circular Cities
 		\item Square Lattice 
 	\end{itemize}
-	Each of these previous studies have taken the approach of using symmetry to reduce the state space, considering a transition matrix without noise and establishing a distance between states through mutation. \footnote{Ellison, Glenn. ``Learning Local Interactions and Coordination."}$^,$\footnote{Weidenholzer, Simon. ``Coordination games and local interactions: a survey of the game theoretic literature."}
+	Each of these previous studies have taken the approach of using symmetry to reduce the state space, considering a transition matrix without noise, and establishing a distance between states through mutation. \footnote{Ellison, Glenn. ``Learning Local Interactions and Coordination."}$^,$\footnote{Weidenholzer, Simon. ``Coordination games and local interactions: a survey of the game theoretic literature."}
 \end{frame}
 
 \begin{frame}{The Structured Coordination Game}
-	Consider this most general setting: For a connected graph $G(V,E)$ each vertex $v\in V$ plays a strategy $c$ from a set of pure strategies $C$. and the payoff for $v$ is given by \begin{equation}
+	Consider this most general setting: for a connected graph $G(V,E)$ each vertex $v\in V$ plays a strategy $c$ from a set of pure strategies $C$.  The payoff for $v$ is given by \begin{equation}
 		w(v,c|\uu)=|\{x\in \Gamma (v);\uu_x=c\}|
 	\end{equation}
-	where $\uu$ is the strategy profile and $\uu_x$ is the strategy that $x$ is using. 
-	In this case the game is at its most simple where the Payoff matrix is simply $I_n$. Note, however, we are not limited to only 2 strategies as before. 
+	where $\uu$ is the strategy profile and $\uu_x$ is the strategy that $x$ is using, and $\Gamma(v)$ is the set of neighbors of $v$. 
+	This is the case wherein the payoff matrix is simply $I_m$. Note that we are not limited to only 2 strategies as before. 
 \end{frame}
 
 \begin{frame}{The Structured Coordination Game as a Dynamical System}
@@ -90,13 +90,13 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \end{frame}
 
 \begin{frame}{Goals and Questions}
-	It is clear to see that Equilibria in the dynamical system are Nash Equilibria of the game. There are many questions that arise from this system:
+	It is clear to see that equilibria in the dynamical system are Nash equilibria of the game. There are many questions that arise from this system:
 	\begin{itemize}
-		\item Can we Characterize Equilibria for a general graph (or a particular topology) and determine stability conditions?
+		\item Can we characterize equilibria for a general graph (or a particular topology) and determine stability conditions?
 		
-		\item Given a set of ``boundary conditions" can we find a strategic interpolation which is a Nash Equilibrium?
+		\item Given a set of ``boundary conditions," can we find a strategic interpolation which is a Nash equilibrium?
 		
-		\item What might a strategically continuous version of this game look like and what can it tell us about cooperative behaviors in ecology?
+		\item What might a strategically continuous version of this game look like, and what can it tell us about cooperative behaviors in ecology?
 	\end{itemize}
 \end{frame}
 \section{Equilibria and Stability}
@@ -118,56 +118,36 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 	\begin{block}{Notation}
 		\begin{tabular}{rp{9cm}} 
 			$Q(\mathbf{u})$& The set of all clusters in a strategy profile $\mathbf{u}$ \\
-			$q^i$& A cluster in $Q(\mathbf{u})$ in which vertices use strategy $i$\\
-			$\partial q^i$& Vertices in $q_i$ which have neighbors in other clusters\\
+			$q^c$& A cluster in $Q(\mathbf{u})$ in which vertices use strategy $c$\\
+			$\partial q^c$& Vertices in $q_c$ which have neighbors in other clusters\\
 		\end{tabular}
 	\end{block}
 \end{frame} 	
 \begin{frame}{Simple Graphs with Nice Properties}
 	\begin{block}{The only equilibrium in $K_n$ is the trivial equilibrium}
-		Suppose there is a equilibrium coloring $\mathbf{u^*}$ with $m\geq2$ clusters, $q^{c_1},...,q^{c_m}$. Because every pair of vertices shares an edge, $w(v,c_i|\uu)=|q^{c_i}|$ if $v\notin q^{c_i}$, and $w(v,c_i|\uu)=|q^{c_i}|-1$ if $v\in q^{c_i}$.  Consider a vertex $v_1\in q^{c_1}$. Because it is at equilibrium $$w(v_1,c_1|\uu^*)=\max_C\{w(v_1,c|\uu^*)\}=:a.$$
-		Therefore $|q^{c_1}|=a+1$. Moreover $w(v_1,c_2|\uu^*)\leq a$ so $|q^{c_2}|\leq a$.
-		Now consider a vertex  $v_2\in q^{c_2}$. $w(v_2,c_2|\uu^*)=|q^{c_2}|-1\leq a-1$ and $w(v_2,c_1|\uu^*)=a+1$. 
-		Thus $\uu^*_2=c_2\notin \argmax\{w(v_2,c|\uu^*)\}$ so $\uu^*$ is not an equilibrium.  
+		Suppose there is a equilibrium strategy profile $\mathbf{u^\star}$ with $m\geq2$ clusters, $q^{c_1},...,q^{c_m}$. Because every pair of vertices shares an edge, $w(v,c_i|\uu)=|q^{c_i}|$ if $v\notin q^{c_i}$, and $w(v,c_i|\uu)=|q^{c_i}|-1$ if $v\in q^{c_i}$.  Consider a vertex $v_1\in q^{c_1}$. Because it is at equilibrium, $$w(v_1,c_1|\uu^\star)=\max_C\{w(v_1,c|\uu^\star)\}=:a.$$
+		Therefore $|q^{c_1}|=a+1$. Moreover $w(v_1,c_2|\uu^\star)\leq a$ so $|q^{c_2}|\leq a$.
+		Now consider a vertex  $v_2\in q^{c_2}$. $w(v_2,c_2|\uu^\star)=|q^{c_2}|-1\leq a-1$ and $w(v_2,c_1|\uu^\star)=a+1$. 
+		Thus $\uu^\star_2=c_2\notin \argmax\{w(v_2,c|\uu^\star)\}$ so $\uu^\star$ is not an equilibrium.  
 	\end{block}
 \end{frame}
 
 \begin{frame}{Simple Graphs with Nice Properties}
-	\begin{block}{$K_{n,m}$ admits an equilibrium with $d$ cliques iff $d|n$ and $d|m$}
+	\begin{block}{$K_{n,m}$ admits an equilibrium with $d$ clusters iff $d|n$ and $d|m$}
 		$\impliedby$ It is easy to construct an equilibrium strategy profile with $d$ clusters
 		
-		$\implies$ I argue by contradiction. $K_{n,m}=E^n+E^m$  Without loss of generality suppose that $d$ is not a divisor of $m$. Suppose $\uu^*$ is an equilibrium strategy profile with $d>1$ cliques. $d$ does not divide $m$ so $\exists$ strategies $i$ and $j$ such that $|q^i\cap E^m|>|q^j\cap E^m|$. If $\uu^*$ is at equilibrium it must follow that $q^j\cap E^n=\emptyset$. It then follows $q^j\cap E^m =\emptyset$. If $q^j$ is empty then there are not $d$ cliques in $\uu^*$. This contradiction proves the result.   
+		$\implies$ I argue by contradiction. $K_{n,m}=E_n+E_m$  Without loss of generality suppose that $d$ is not a divisor of $m$. Suppose $\uu^\star$ is an equilibrium strategy profile with $d>1$ cliques. $d$ does not divide $m$ so $\exists$ strategies $i$ and $j$ such that $|q^i\cap E_m|>|q^j\cap E_m|$. If $\uu^\star$ is at equilibrium it must follow that $q^j\cap E_n=\emptyset$. It then follows $q^j\cap E_m =\emptyset$. If $q^j$ is empty then there are not $d$ cliques in $\uu^\star$. This contradiction proves the result.   
 	\end{block}
 \end{frame}
 
-\begin{frame}{General Remarks on Equilibria}
-	In general the process of finding equilibria is equivalent to finding this kind of vertex partition.
-	
-	\begin{equation}
-		\mathcal{P}= \{P^{c}\}_{c\in C} \text{ where } x\in P^{c}\Rightarrow |\Gamma(x)\cap P^{c}|\geq |\Gamma(x)\cap P^{d}|\, \forall c,d \in C 
-	\end{equation}
-	There are other similar kinds of graph partitions
-	\begin{itemize}
-		\item Modularity Partitions
-		\item Minimum Cut Partitions
-	\end{itemize}
-	Problems in community detection rely heavily on these partitions but the game theory literature has not relied on insights from this field. 
-\end{frame}
 
-\begin{frame}{Barriers to Partitioning}
-	In the light of graph partitioning, this question is a special kind of community detection. Without more restrictions on the partition we run into problems: 
-	\begin{itemize}
-		\item We do not know a priori how many strategies will be present in an equilibrium (equivalently how many parts the graph will be partitioned into)\footnote{Newman, M. E. J. "Modularity and Community Structure in Networks."}
-		\item It is not assumed that a non-trivial equilibrium (non-trivial partition) exists
-		\item Sub-optimal equilibria are still of interest to us but may be missed by partitioning algorithms.\footnote{Clauset, Aaron, Newman, M. E. J., Moore, Cristopher. "Finding Community Structure in very large networks}  
-	\end{itemize}
-\end{frame}
 
 \begin{frame}{General Remarks on Equilibria}
-	To support what can be learned from the partitioning approach in this context we also want to investigate equilibria through other means
+	There are a number of ways we may approach our investigation
 	
 	\begin{itemize}
-		\item Energy-like estimates: Neither $1-Q$ (modularity) nor the number of edges which connect different cliques are appropriate energies for this context
+		\item Graph partitioning: Describing equilibria as graph partitions
+		\item Energy-like estimates: Neither $1-Q$ (modularity) nor the number of edges which connect different clusters are appropriate energies for this context
 		\item Extremal Techniques: Describing necessary conditions on cluster boundaries by investigating minimal separators \footnote{B\'ela Bollob\'as. ``Extremal Graph Theory"}
 	\end{itemize}
 \end{frame}
@@ -187,50 +167,40 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \end{frame}
 
 \begin{frame}{Cycles}
-	When viewed as a dynamical system we also see the (common) emergence of cycles. We conjecture that $n$-cycles with $n>2$ are impossible. 
+	When viewed as a dynamical system, we also see the (common) emergence of cycles. We conjecture that $n$-cycles with $n>2$ are impossible. 
 	\begin{figure}
 		\includegraphics[width =  \linewidth]{images/OralFig4v2}
 	\end{figure} 
 \end{frame}
 
 \begin{frame}{Stability}
-	When viewed as a dynamical system, stability can be considered in multiple ways 
+	When viewed as a dynamical system, stability can be considered in multiple ways.
 	\begin{itemize}
 		\item Local Stability - A vertex is stable to a single perturbation
 		\item Global Stability - Every vertex is stable to a single perturbation
 		\item Convergent Stability - Every ``nearby" strategy profile evolves into this strategy profile
-		\item Structural Stability - A strategy profile is stable to perturbations of the graph structure.\footnote{Ely, Jeffery C. ``Local Conventions"}
+		\item Structural Stability - A strategy profile is stable to perturbations of the graph structure\footnote{Ely, Jeffery C. ``Local Conventions"}
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Goals and Further Questions}
 	We hope to 
 	\begin{itemize}
-		\item Prove the $n$-cycle conjecture,
+		\item Prove the $n$-cycle conjecture
 		\item Find analytically tractable stability criteria in multiple senses
 		\item Use energy-like estimates to describe basins of stability for equilibria
 		\item Use techniques from extremal graph theory to describe possible equilibria by the structure of the graph by which they are admitted
-		\item Summarize with some computational results relating edge density or ``connectance" to clique number 
+		\item Support analytical results with numerical findings 
 	\end{itemize}
 \end{frame}
 
 
 \section{Boundary Value Problem}
 \begin{frame}{Boundary Value Problem}
-	A vital application of this idea is a boundary value conception of the problem.
+	A vital application of this game is a boundary value conception of the problem.
 	\begin{block}{Boundary Value Problem}
 		Suppose $B\subset V$ is a subset of vertices which are assigned strategies by $f:B\rightarrow C$. Is there a strategy profile such that $\uu_v=f(v)$ for all $v\in B$ and $\uu$ is an equilibrium strategy profile?
 	\end{block}
-\end{frame}
-\begin{frame}{Intuition}
-	Suppose that in  a signaling network $G$
-	\begin{itemize}
-		\item Each vertex uses exactly one language at any one time to send a receive signals. 
-		\item A subset of vertices are assigned languages which they cannot change
-		\item Translation of the signal is costly relative to transmission. 
-	\end{itemize}
-
-	How can we assign a ``language" to each vertex so that each vertex is minimizing their own ``translation" burden?
 \end{frame}
 
 \begin{frame}{Initial Thoughts}
@@ -245,7 +215,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \begin{frame}{Partitioning}
 	As before this becomes a partitioning problem but with an added components
 	\begin{block}{Boundary Value Problem }
-		For a graph $G(V,E)$, $B\subset V$ and $F:B\rightarrow C$, find a partition $\mathcal{P}=\{P^{c}\}_{c\in C}$ such that 
+		For a graph $G(V,E)$, $B\subset V$ and $f:B\rightarrow C$, find a partition $\mathcal{P}=\{P^{c}\}_{c\in C}$ such that 
 		\begin{equation}
 			\begin{split}
 				i)\quad & |\Gamma(x)\cap P^{\uu_x}|\geq |\Gamma(x)\cap P^{c}|\,\forall x\in V, c\in C \\
@@ -253,7 +223,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 			\end{split}
 		\end{equation}
 	\end{block}
-	In this case, we have extra restrictions on the partition which make partitioning results themselves very helpful. Consider the natural correspondence between partitions and strategy profiles.
+	In this case, we have extra restrictions on the partition which make partitioning results very helpful. Consider the natural correspondence between partitions and strategy profiles.
 \end{frame}
 
 \begin{frame}{Minimum Cut Partitioning}
@@ -268,7 +238,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 
 \begin{frame}{Minimum Cut Partitioning}
 	\begin{block}{Every Minimum Cut Partition with parts of size $>1$ corresponds to an equilibrium partition.}
-		Suppose that $\mathcal{P_\star}=\cup_{c\in C}P_\star^c$ is a minimum cut partition of $G(V,E)$ corresponding to a strategy profile $\uu^\star$ which is not an equilibrium. Therefore $\exists v\in V$ which is using strategy $r\in C $ which for which $w(v,r|\uu)<w(v,s|\uu)\iff |\Gamma(v_\star)\cap P_\star^{r}|<|\Gamma(v_\star)\cap P_\star^s|$ for some $s\in C$. Let $\hat\uu$ be a new strategy profile where $\hat\uu_v=\uu_v^\star$ for all $v\neq v_\star$ and $\hat\uu_{v_\star}=s$. Call the corresponding partition $\hat{\mathcal{P}}$. We can easily compute that
+		Suppose that $\mathcal{P_\star}=\{P_\star^c\}$ is a minimum cut partition of $G(V,E)$ corresponding to a strategy profile $\uu^\star$ which is not an equilibrium. Therefore $\exists v\in V$ which is using strategy $r\in C $ which for which $w(v,r|\uu)<w(v,s|\uu)\iff |\Gamma(v_\star)\cap P_\star^{r}|<|\Gamma(v_\star)\cap P_\star^s|$ for some $s\in C$. Let $\hat\uu$ be a new strategy profile where $\hat\uu_v=\uu_v^\star$ for all $v\neq v_\star$ and $\hat\uu_{v_\star}=s$. Call the corresponding partition $\hat{\mathcal{P}}$. We can easily compute that
 		\begin{equation}
 			E(\uu^\star)-E(\hat\uu) = -2\sum _{v\neq v_\star}A\delta(\uu^\star_v,\uu^\star_{v_\star})+2\sum _{v\neq v_\star}A\delta(\hat\uu_v,\hat\uu_{v_\star})
 		\end{equation}
@@ -280,7 +250,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 	\begin{equation}
 		Q(\uu) = \frac{1}{2m}\sum_{v,w}\left[A_{vw}-\frac{d_vd_w}{2m}\right]\delta(\uu_v,\uu_w)
 	\end{equation}
-	let $B=[[A_{ij}-\frac{d_id_j}{2m}]]$ be the modularity matrix let $\chi^{c}(\uu)=[\delta (\uu_i,c)]_{i=1}^n$ then (7) is equivalent to 
+	let $B=[[A_{ij}-\frac{d_id_j}{2m}]]$ be the modularity matrix let $\chi^{c}(\uu)=[\delta (\uu_i,c)]_{i=1}^n$ then (6) is equivalent to 
 	\begin{equation}
 		Q(\uu)= \frac{1}{2m}\sum_{c\in C} {\chi^c(\uu)}^TB\chi^c(\uu)
 	\end{equation}
@@ -288,7 +258,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \end{frame}
 
 \begin{frame}{Modularity Partitioning}
-	There are modularity partitions which do not correspond to equilibria and there are equilibria which do not correspond to modularity partitions
+	There are modularity partitions which do not correspond to equilibria and there are equilibria which do not correspond to modularity partitions.
 	\begin{figure}
 		\begin{tabular}{ccc}
 			\begin{tikzpicture}
@@ -326,7 +296,7 @@ It may be that $|\argmax|>1$ so we break ties in the following way ($\varepsilon
 \end{frame}
 
 \begin{frame}{Partitioning}
-We can prove that if a modularity partition has a cluster of size one, that single vertex cannot have half or more of its neighbors in a cluster together.  
+We can prove that, if a modularity partition has a cluster of size one, that single vertex must share an edge with multiple other clusters.
 \begin{figure}
 \begin{tabular}{ccc}
 		\begin{tikzpicture}
@@ -391,31 +361,33 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 
 \begin{frame}
 	{A note on complexity class}
-	Almost all partitioning problems are in complexity class $\mathcal{NP}$. Finding a modularity paritition in particular can be shown to be $\mathcal{NP}$ complete\footnote{Brandes, U. Delling, D. Gaertler, M. G\"orke, R. Hoefer, M. Nikoloski Z. Wagner, D. ``On Modularity - NP-Completeness and Beyond"}. We can say certainly that finding an equilibrium partition is $\mathcal{NP}$ hard
+	 Finding a modularity partition with more than 2 clusters can be shown to be $\mathcal{NP}$ complete\footnote{Brandes, U. Delling, D. Gaertler, M. G\"orke, R. Hoefer, M. Nikoloski Z. Wagner, D. ``On Modularity - NP-Completeness and Beyond"}. We can say certainly that finding an equilibrium partition is $\mathcal{NP}$ hard
 	\begin{block}{Finding an Equilibrium Partition is $\mathcal{NP}$ hard}
 		The process to check if a partition is an equilibrium partition can be done in $n\cdot |C|\leq n^2$ operations. It is checkable in polynomial time so the problem is certainly in $\mathcal{NP}$. 
 	\end{block}
 \end{frame}
 \section{Continuous Variations and Applications}
 \begin{frame}{Sympatric Evolution of Cooperative Behavior}
-	\textbf{Sympatric speciation} is the process of speciation without geographic isolation. 
+	\textbf{Sympatric speciation} is the process of speciation without geographic isolation.  This system, modified to be continuous, gives us some tools to think about sympatric evolution of cooperative behavior. 
 	
-	These questions, modified to be continuous give us some tools to think about Sympatric evolution of cooperative behavior. 
+	\begin{block}{Sympatric Solution}
+		A Sympatric Solution is a Nash equilibrium with a strategic gradient. That is, a continuous, non-constant Nash equilibrium. 
+	\end{block}
 \end{frame}
 
 \begin{frame}{Mixed Strategy Concept}
 	\begin{block}{Continuous Player Space with Mixed Strategies}
-		Let $\Omega$ be a domain and $\Delta_m$ be the $m$-simplex in which every mixed strategy lies. Let $\Phi:\Omega \rightarrow\Delta_m$ be a strategy profile. Where Payoffs are calculated as 
+		Let $\Omega$ be a domain and $\Delta_m$ be the $m$-simplex in which every mixed strategy lies. Let $\Phi:\Omega \rightarrow\Delta_m$ be a strategy profile, where payoffs are calculated as 
 		\begin{equation}
 			w(x|\Phi)=\sum_{i=1}^m \Phi_i(x)\int_\Omega K(x-y)\Phi_i(y)dy =:B(\Phi(x),\Phi(x)) 
 		\end{equation} 
 		Where $K$ is a familiarity kernel and $B$ is a bilinear form. 
 	\end{block}
-	Are there any non-constant, continuous $\Phi$ which are Nash Equilibria? 
+	Are there any non-constant, continuous $\Phi$ which are Nash equilibria? 
 \end{frame}
 
 \begin{frame}{Mixed Strategy Concept}
-	Are there any non-constant, continuous $\Phi$ which are Nash Equilibria?
+	Are there any non-constant, continuous $\Phi$ which are Nash equilibria?
 	\begin{block}{Optimization Challenge}
 		We are looking for continuous $\Phi$ such that for any $x$,
 		\begin{equation}
@@ -427,17 +399,17 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 \end{frame}
 
 \begin{frame}{Mixed Strategy Concept}
-	\begin{block}{There are no nonconstant continuous solutions to (10)}
-		Suppose that $\Phi^\star\in C^0(\Omega)$ satisfies (10), and is non-constant 
+	\begin{block}{There are no nonconstant continuous solutions to (9)}
+		Suppose that $\Phi^\star\in C^0(\Omega)$ satisfies (9), and is non-constant 
 		The convolution $K*\Phi^\star_i$ is clearly continuous and  non-constant for any $i$ for which $\Phi^\star_i$ is not constant.  There exists an $\hat x\in \Omega$ such that$(K*\Phi^\star_i)(\hat x)\geq(K*\Phi^\star_j)(\hat x)$ for all $j$ and in particular $(K*\Phi^\star_i)(\hat x)>(K*\Phi^\star_l)(\hat x)>0$ for some $l$, lest $\Phi^\star$ be constant in all of $\Omega$. Thus $\mathbf{a}\cdot (K*\Phi^\star)(\hat x)$ is maximized when $\mathbf{a}=e_i$. Let  \begin{equation}\tilde{\Phi}(x)=\begin{cases} e_i&x=\hat x\\
 				\Phi^\star(x)&x\neq \hat x \end{cases}
 		\end{equation}
-	Observe  $w(\hat x, \tilde{\Phi})=(K*\Phi_i^\star)(\hat x)>w(\hat x, \Phi^\star)$, so $\Phi^*$ does not solve (10).
+	Observe  $w(\hat x, \tilde{\Phi})=(K*\Phi_i^\star)(\hat x)>w(\hat x, \Phi^\star)$, so $\Phi^*$ does not solve (9).
 	\end{block}
 \end{frame}
 	
 \begin{frame}{Mixed Strategy Concept}
-	This is not altogether surprising
+	This is not altogether surprising:
 	\begin{itemize}
 		\item When strategies are discrete and the payoff matrix is the identity, then being around "nearby" strategies is not beneficial. 
 		\item When strategies are discrete, the model is not entirely biologically relevant. 
@@ -464,7 +436,7 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 		
 		\draw (A)--(B)--(C)--(D)--(E);
 	\end{tikzpicture}
-	\caption{This represents a Nash Equilibrium if and only if $\alpha\geq \frac{1}{2}$}
+	\caption{This represents a Nash equilibrium if and only if $\alpha\geq \frac{1}{2}$}
 \end{figure}	
 	This poses the question: In a more general setting are there ``recognition thresholds" which define critical regions where sympatric evolution of cooperative behavior can occur? Are there critical domain sizes?   
 \end{frame}
@@ -483,8 +455,8 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 		w(x|\Phi)=\int_\Omega K(x-y)\rho(|\Phi(y)-\Phi(x)|)dy
 	\end{equation} 
 
-	\begin{block}{$\Phi:\Omega\to M$ is a Nash Equilibrium if $\Phi\in C^{0,1}(\Omega;M)$ with Lipschitz Constant $L\leq \frac{r^\star}{\kappa}$}
-		We can show that under these conditions $w(x|\Phi)=\frac{1}{\alpha(n)\kappa} vol(\Omega\cap supp_y K(x-y))$ which is the max possible fitness and so it is trivially a Nash Equilibrium. 
+	\begin{block}{$\Phi:\Omega\to M$ is a Nash Equilibrium if $\Phi\in C^{0,1}(\Omega;M)$ with Lipschitz constant $L\leq \frac{r^\star}{\kappa}$}
+		We can show that under these conditions $w(x|\Phi)=\frac{1}{\alpha(n)\kappa} vol(\Omega\cap supp_y K(x-y))$ which is the max possible fitness and so it is trivially a Nash equilibrium. 
 	\end{block}
 \end{frame}
 
@@ -501,15 +473,49 @@ We can prove that if a modularity partition has a cluster of size one, that sing
 \section*{}
 \begin{frame}{Conclusion}
 	\begin{itemize}
-		\item Chapter 1 - Understanding the structured coordination game with a discrete player space through time. 
+		\item Chapter 1 - Understanding the structured coordination game with a discrete player space through time
 		\item Chapter 2 - Constructing equilibrium solutions to the structured coordination game with a discrete player space
-		\item Chapter 3 - Characterizing equilibrium of the structured coordination game in a continuous player space and continuous strategy space. 
+		\item Chapter 3 - Characterizing equilibrium of the structured coordination game in a continuous player space and continuous strategy space
 	\end{itemize}
 \end{frame} 
 
 \begin{frame}{Thank you}
 	\centering
 	\Large Questions?
+\end{frame}
+
+\begin{frame}{Partitioning and the IVP approach}
+	In general the process of finding equilibria is equivalent to finding this kind of vertex partition.
+	
+	\begin{equation}
+		\mathcal{P}= \{P^{c}\}_{c\in C} \text{ where } x\in P^{c}\Rightarrow |\Gamma(x)\cap P^{c}|\geq |\Gamma(x)\cap P^{d}|\, \forall c,d \in C 
+	\end{equation}
+	There are other similar kinds of graph partitions
+	\begin{itemize}
+		\item Modularity Partitions
+		\item Minimum Cut Partitions
+	\end{itemize}
+	Problems in community detection rely heavily on these partitions but the game theory literature has not relied on insights from this field. 
+\end{frame}
+
+\begin{frame}{Barriers to Partitioning for the IVP}
+	In the light of graph partitioning, this question is a special kind of community detection. Without more restrictions on the partition we run into problems: 
+	\begin{itemize}
+		\item We do not know a priori how many strategies will be present in an equilibrium (equivalently how many parts the graph will be partitioned into)\footnote{Newman, M. E. J. "Modularity and Community Structure in Networks."}
+		\item It is not assumed that a non-trivial equilibrium (non-trivial partition) exists
+		\item Sub-optimal equilibria are still of interest to us but may be missed by partitioning algorithms.\footnote{Clauset, Aaron, Newman, M. E. J., Moore, Cristopher. "Finding Community Structure in very large networks}  
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Boundary Value Problem Intuition}
+	Suppose that in  a signaling network $G$
+	\begin{itemize}
+		\item Each vertex uses exactly one language at any one time to send a receive signals. 
+		\item A subset of vertices are assigned languages which they cannot change
+		\item Translation of the signal is costly relative to transmission. 
+	\end{itemize}
+	
+	How can we assign a ``language" to each vertex so that each vertex is minimizing their own ``translation" burden?
 \end{frame}
 
 \end{document}
