@@ -35,7 +35,7 @@ def main(start,end):
                 if (o.solution[0]==o.solution[1]).all():
                     df.loc[index]=(graphnumber, n, p, len(set(p)))
                     index = index +1
-                    if len(set(p))>1:o.draw()
+                    if len(set(p))>1:o.draw(circ = True)
                     #if len(set(p))==1:o.draw()
         graphnumber= graphnumber +1
         #This cannot yet differentiate between partitions which are identical on the basis of graphical symetry. 

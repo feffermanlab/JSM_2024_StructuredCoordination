@@ -67,7 +67,7 @@ class Orbit:
         self.report = result[5]
         self.energy = np.array(result[6])
 
-    def draw(self,frames =(-1,), dim=None, node_size = 20):
+    def draw(self,frames =(-1,), dim=None, node_size = 20,  circ= False):
         '''
         Draws the last n colorings of the orbit arranged as subplots
 
@@ -80,6 +80,9 @@ class Orbit:
             to be as close to square as possible
         node_size: int, optional
             The size of the nodes for networkx.draw()
+        circ : bool, optional
+            if the nodes should be drawn in a circular layout for networkx.draw(). By default
+            it is false
         '''
         #calculate dimensions
         n=len(frames)
@@ -98,7 +101,8 @@ class Orbit:
                 for i in range(0,len(strats))}
 
         #get position so that each frame uses the same arrangement
-        pos=nx.spring_layout(self.graph)
+        if circ: pos = nx.circular_layout(self.graph)
+        else: pos=nx.spring_layout(self.graph)
 
         plt.figure()
         for ii in np.arange(0,n):
