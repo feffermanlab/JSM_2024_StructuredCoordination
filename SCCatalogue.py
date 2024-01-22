@@ -15,40 +15,52 @@ import orbit
 
 def main(start,end):
     Atlas = nx.graph_atlas_g()[start:end]
+   
     #order 2: 3
-    #order 3: [4,5]
-    #order 4: [6,11]
+    #order 3: [6,7]
+    #order 4: [13,18]
     #order 5: [26,52]
     #order 6: [75, 208]
+    #order 7: [270, 1252]
 
-    df = pd.DataFrame({"name":[],"n":[], "partition":[], "ClusterNumber":[]})
-    configList = [[0],genConfigs(1),genConfigs(2),genConfigs(3),genConfigs(4),genConfigs(5),genConfigs(6)]
+    #Set up a dataframe to collect the relavent information
+    df = pd.DataFrame({"name":[],"n":[], "partition":[], "degSQ":[],"ClusterNumber":[], "iso":[]})
+    #generatie the lists of partitions to check once at the beginning of the method
+    configList = [[0],genConfigs(1),genConfigs(2),genConfigs(3),genConfigs(4),genConfigs(5),genConfigs(6),genConfigs(7)]
+    
+    #Start counting graphs
     graphnumber = start
     index = 0
+
     for G in Atlas:
+        #For each graph in the atlas, check to see if it's connected
         if(nx.is_connected(G)):
-            print(graphnumber)
+            if graphnumber%10 == 0:print(graphnumber)
+
             n = G.number_of_nodes()
             partitions = configList[n]
+
+            #Check every possible partition (Fewer then B(n))
             for p in partitions:
+                #Generate the orbit with only 2 time steps 
                 o = orbit.Orbit(G,p,2)
                 if (o.solution[0]==o.solution[1]).all():
-                    df.loc[index]=(graphnumber, n, p, len(set(p)))
+                    #If nothing changed between step 0 and 1, it's an equilibrium 
+                    s = degreeSeqs(o,np.floor(n/2)) #Find the degree sequence of each part of the partion
+                    
+                    #Check to see if that partitioned degree sequence has been observed before 
+                    #as a way of checking potential isomorphic partitions
+                    t = df[df["name"]==graphnumber]
+                    iso = False
+                    for r in t['degSQ']:
+                        iso = r == s 
+
+                    #add all the information to the data base the prepare consider the next partition    
+                    df.loc[index]=(graphnumber, n, p, s, len(set(p)),iso)
                     index = index +1
-                    if len(set(p))>1:o.draw(circ = True)
-                    #if len(set(p))==1:o.draw()
         graphnumber= graphnumber +1
-        #This cannot yet differentiate between partitions which are identical on the basis of graphical symetry. 
-    decomposable =df[df['ClusterNumber']>1]
-    decomposable.to_excel("Decomposable6.xlsx", sheet_name ="decomposable6", index = False)
-    decomposable = list(set(decomposable['name']))
-    print(decomposable)
-    #for n in range(start,end):
-    #   print(n)
-    #    if not(n in decomposable): 
-    #        print("true")
-    #        nx.draw(Atlas[n-start])
-    #        plt.show()
+
+    df.to_excel("PartitionCatalogue.xlsx", sheet_name="partitionCatalogue", index = False)
     return df
 
 
@@ -93,5 +105,19 @@ def canonicalConfig(config):
         cl[i]=digits.index(l[i])
     return(cl)
 
+'''Take a partition of a graph and return a set of degree sequences for each part'''
+def degreeSeqs(orbit, max):
+    sol = orbit.solution[1]
+    g = orbit.graph
+    degSet = list()
+    for i in range(0,int(max)):
+        vs = sol==i
+        s = [j for j, x in enumerate(vs) if x]
+        deg = g.degree(s)
+        ret = [int(x[1]) for x in deg]
+        ret.sort()
+        degSet.append(ret)
+        degSet.sort()
+    return(degSet)
 
-print(main(75,209))
+print(main(3,1253))
