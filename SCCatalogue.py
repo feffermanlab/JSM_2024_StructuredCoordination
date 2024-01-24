@@ -5,6 +5,7 @@ import matplotlib.animation as animation
 import matplotlib as mpl
 import pandas as pd
 import copy 
+from itertools import permutations
 import random
 import orbit
 
@@ -65,10 +66,14 @@ def main(start,end):
                     isoto = -1
                     for j in idx:
                         r =t.loc[j,"degSQ"]
-                        if r == s : ##keep track of where r is in the df
-                            iso = True 
-                            isoto = j 
-                            break
+                        p1 = t.loc[j,"partition"]
+                        ps = permutePartition(p)
+                        for p2 in ps:
+                            if isoDetect(G, p1, p2) : ##This almost works but we need to check all the partition permutation
+                                iso = True 
+                                isoto = j 
+                                break
+                            if iso:break 
 
 
                     #Check to see if parts of the partition are connected
@@ -88,7 +93,7 @@ def main(start,end):
     df.insert(0,"pnumber",df.index.tolist(),True)
     df.to_excel("PartitionCatalogue.xlsx", sheet_name="partitionCatalogue", index = False)
     print(df[df['iso']])
-    print('there are {} potential isomorphisms'.format(
+    print('there are {} isomorphisms'.format(
        len(df[df['iso']]["name"])))
     return df
 
@@ -151,8 +156,8 @@ def degreeSeqs(orbit, max):
 
 
 def isoDetect(g, p1, p2):
-    nx.draw(g)
-    plt.show()
+    #nx.draw(g)
+    #plt.show()
     G1 = copy.deepcopy(g)
     G2 = copy.deepcopy(g)
     n = len(g.nodes)
@@ -163,26 +168,53 @@ def isoDetect(g, p1, p2):
             G1.add_edge(i,n)
             n=n+1
     #To G2 add pendant vertices ot every node according to the part of the partition P2 it's in
-    nx.draw(G1)
-    plt.show()
+    #nx.draw(G1)
+    #plt.show()
     n=len(g.nodes)
     for i in np.arange(0,len(p2)):
         for j in np.arange(0,p2[i]+1):
             G2.add_node(n)
             G2.add_edge(i,n)
             n=n+1
-    nx.draw(G2)
-    plt.show()
+    #nx.draw(G2)
+    #plt.show()
     return(nx.is_isomorphic(G1, G2))
+
+def permutePartition(p):
+    l = list(permutations(range(0,max(p)+1)))
+    #print(l)
+    ret = list()
+    for r in l:
+        #print(r)
+        s = np.zeros(len(p),dtype=int)
+        for i in np.arange(len(p)):
+            s[i] = int(r.index(p[i]))
+        ret.append(s)
+    return(ret)
 
 #print(main(3,1253))
 
 
 def test():
-    G= nx.graph_atlas_g()[31]
-    p1= [0,0,1,1,0]
-    p2 = [1,0,0,0,1]
-    print( isoDetect(G,p1,p2))
+    #G= nx.graph_atlas_g()[31]
+    #p1= [0,0,1,1,0]
+    #p2 = [1,0,0,0,1]
+    #print( isoDetect(G,p1,p2))
+
+    print(permutePartition([0,0,1,1,0,1]))
+
+#test()
 
 
-test()
+def analysis():
+    df = pd.read_excel("PartitionCatalogue.xlsx", sheet_name="partitionCatalogue")
+    newdf = df[df['iso']==False]
+    
+    #find out how many different partitions there are for graphs on n vertices
+    for i in range(2,8):
+        l = len(newdf[newdf['n']==i])
+        print ('for graphs on {} vertices there are {} total partitions'.format(i,l))
+    
+    #find out how many indecomposable 
+
+analysis()
