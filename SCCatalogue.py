@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib as mpl
 import pandas as pd
+import copy 
 import random
 import orbit
 
@@ -24,7 +25,13 @@ def main(start,end):
     #order 7: [270, 1252]
 
     #Set up a dataframe to collect the relavent information
-    df = pd.DataFrame({"name":[],"n":[], "partition":[], "degSQ":[],"ClusterNumber":[], "iso":[]})
+    df = pd.DataFrame({"name":[],
+                       "n":[], 
+                       "partition":[],
+                        "degSQ":[],
+                        "ClusterNumber":[],
+                        "iso":[],
+                        "isoto":[]})
     #generatie the lists of partitions to check once at the beginning of the method
     configList = [[0],genConfigs(1),genConfigs(2),genConfigs(3),genConfigs(4),genConfigs(5),genConfigs(6),genConfigs(7)]
     
@@ -35,32 +42,54 @@ def main(start,end):
     for G in Atlas:
         #For each graph in the atlas, check to see if it's connected
         if(nx.is_connected(G)):
-            if graphnumber%10 == 0:print(graphnumber)
+
+            #progress tracking
+            if graphnumber%10 == 0:print('{} %% done'.format(graphnumber/end*100))
 
             n = G.number_of_nodes()
             partitions = configList[n]
-
             #Check every possible partition (Fewer then B(n))
             for p in partitions:
                 #Generate the orbit with only 2 time steps 
                 o = orbit.Orbit(G,p,2)
                 if (o.solution[0]==o.solution[1]).all():
                     #If nothing changed between step 0 and 1, it's an equilibrium 
-                    s = degreeSeqs(o,np.floor(n/2)) #Find the degree sequence of each part of the partion
                     
+                    #Find the degree sequence of each part of the partion
                     #Check to see if that partitioned degree sequence has been observed before 
                     #as a way of checking potential isomorphic partitions
+                    s = degreeSeqs(o,np.floor(n/2))
                     t = df[df["name"]==graphnumber]
+                    idx = t.index.tolist()
                     iso = False
-                    for r in t['degSQ']:
-                        iso = r == s 
+                    isoto = -1
+                    for j in idx:
+                        r =t.loc[j,"degSQ"]
+                        if r == s : ##keep track of where r is in the df
+                            iso = True 
+                            isoto = j 
+                            break
+
+
+                    #Check to see if parts of the partition are connected
+                    con = True
+                    for i in range(0,int(max(p))+1):
+                        vs = o.solution[1]==i
+                        l = [j for j, x in enumerate(vs) if x]
+                        if len(l)>0 and not nx.is_connected(G.subgraph(l)):
+                            con = False
+                            break
+                        
 
                     #add all the information to the data base the prepare consider the next partition    
-                    df.loc[index]=(graphnumber, n, p, s, len(set(p)),iso)
+                    if con : df.loc[index]=(graphnumber, n, p, s, len(set(p)),iso,isoto)
                     index = index +1
         graphnumber= graphnumber +1
-
+    df.insert(0,"pnumber",df.index.tolist(),True)
     df.to_excel("PartitionCatalogue.xlsx", sheet_name="partitionCatalogue", index = False)
+    print(df[df['iso']])
+    print('there are {} potential isomorphisms'.format(
+       len(df[df['iso']]["name"])))
     return df
 
 
@@ -120,4 +149,40 @@ def degreeSeqs(orbit, max):
         degSet.sort()
     return(degSet)
 
-print(main(3,1253))
+
+def isoDetect(g, p1, p2):
+    nx.draw(g)
+    plt.show()
+    G1 = copy.deepcopy(g)
+    G2 = copy.deepcopy(g)
+    n = len(g.nodes)
+    #To G1 add pendant vertices to every node according to the part of the partition P1  it's in
+    for i in np.arange(0,len(p1)):
+        for j in np.arange(0,p1[i]+1):
+            G1.add_node(n)
+            G1.add_edge(i,n)
+            n=n+1
+    #To G2 add pendant vertices ot every node according to the part of the partition P2 it's in
+    nx.draw(G1)
+    plt.show()
+    n=len(g.nodes)
+    for i in np.arange(0,len(p2)):
+        for j in np.arange(0,p2[i]+1):
+            G2.add_node(n)
+            G2.add_edge(i,n)
+            n=n+1
+    nx.draw(G2)
+    plt.show()
+    return(nx.is_isomorphic(G1, G2))
+
+#print(main(3,1253))
+
+
+def test():
+    G= nx.graph_atlas_g()[31]
+    p1= [0,0,1,1,0]
+    p2 = [1,0,0,0,1]
+    print( isoDetect(G,p1,p2))
+
+
+test()
