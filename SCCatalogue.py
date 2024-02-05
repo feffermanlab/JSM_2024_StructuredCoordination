@@ -212,9 +212,27 @@ def analysis():
     
     #find out how many different partitions there are for graphs on n vertices
     for i in range(2,8):
-        l = len(newdf[newdf['n']==i])
+        tempdf = newdf[newdf['n']==i] 
+        l = len(tempdf)
         print ('for graphs on {} vertices there are {} total partitions'.format(i,l))
+        clusternumberlist= list()
+        for j in range(1,max(tempdf['ClusterNumber'])+1):
+            clusternumberlist.append(len(tempdf[tempdf['ClusterNumber']==j]))
+            print('there are {} partitions with {} parts'.format(clusternumberlist[-1],j))
+
     
+    
+    for ik in range(2,8):
+        print('for graphs on {} vertices'.format(ik))
+        dfx = newdf[newdf['n']==ik]
+        pcounts = list()
+        for i in range(min(dfx['name']),max(dfx['name'])+1):
+            pcounts.append( len(dfx[dfx['name']==i]['name']))
+            if len(dfx[dfx['name']==i]['name'])==10: print(i)
+        for j in range(min(pcounts),max(pcounts)+1):
+            print('There are {} graphs with {} partitions'.format(pcounts.count(j), j ))
+            
+
     #find out how many indecomposable 
 
 analysis()
