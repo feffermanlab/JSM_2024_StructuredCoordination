@@ -207,7 +207,7 @@ def test():
 
 
 def analysis():
-    df = pd.read_excel("PartitionCatalogue.xlsx", sheet_name="partitionCatalogue")
+    df = pd.read_excel("DataFiles\PartitionCatalogue.xlsx", sheet_name="partitionCatalogue")
     newdf = df[df['iso']==False]
     
     #find out how many different partitions there are for graphs on n vertices
