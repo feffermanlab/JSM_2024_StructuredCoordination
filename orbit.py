@@ -25,6 +25,8 @@ class Orbit:
             True if the solution ends in a two-cycle
         cycle3 : bool
             True if the solution ends in a three-cycle
+        cycle4 : bool
+            True if the solution ends in a four-cycle
         energy : nparray
             array of energies (ints) at each time step until a limit is reached
         report : str
@@ -34,7 +36,7 @@ class Orbit:
         draw(n=1, dim=None)
             Shows a figure with the final n steps of orbit colored on the graph
         get_limit()
-            Returns the last coloring in the orbit it the orbit ends in an equilibrium,
+            Returns the last coloring in the orbit if the orbit ends in an equilibrium,
             the last two colorings if the orbit ends in a two-cycle, and the last three
             if the orbit ends in a three-cycle
         animate()
@@ -64,8 +66,9 @@ class Orbit:
         self.eq= result[2]
         self.cycle2= result[3]
         self.cycle3= result[4]
-        self.report = result[5]
-        self.energy = np.array(result[6])
+        self.cycle4 = result[5]
+        self.report = result[6]
+        self.energy = np.array(result[7])
 
     def draw(self,frames =(-1,), dim=None, node_size = 20,  circ= False):
         '''
@@ -177,6 +180,7 @@ class Orbit:
         eq=False
         cycle2 = False
         cycle3=False
+        cycle4=False
 
         while not finished:
             #Add a new coloring according to the update rule
@@ -186,9 +190,10 @@ class Orbit:
             #Check to see if the solution has reached a limit
             if iter>=37:
                 eq = (sol[-1]==sol[-2]).all() and (sol[-1]==sol[-3]).all()
-                cycle2 = (sol[-1]==sol[-3]).all() and (sol[-1]==sol[-5]).all() and (sol[-1]==sol[-37]).all()
-                cycle3 = (sol[-1]==sol[-4]).all() and (sol[-1]==sol[-7]).all() and (sol[-1]==sol[-37]).all()
-            finished = iter>=iter_limit or eq or cycle2 or cycle3
+                cycle2 = (sol[-1]==sol[-3]).all() and (sol[-1]==sol[-5]).all() and (sol[-1]==sol[-37]).all() and (not eq)
+                cycle3 = (sol[-1]==sol[-4]).all() and (sol[-1]==sol[-7]).all() and (sol[-1]==sol[-37]).all() and (not eq)
+                cycle4 = (sol[-1]==sol[-5]).all() and (sol[-1]==sol[-9]).all() and (sol[-1]==sol[-37]).all() and (not eq) and (not cycle2)
+            finished = iter>=iter_limit or eq or cycle2 or cycle3 or cycle4
 
         # Once the solution has reached a limit, build the report 
         if eq:
@@ -197,12 +202,14 @@ class Orbit:
             str="The orbit ended in a 2 cycle"
         elif cycle3:
             str="The orbit ended in a 3 cycle"
+        elif cycle4:
+            str="The orbit ended in a 4 cycle"
         else: 
             str= "The orbit not result in an equilibrium or small limit cycle. A limit may exist, try again with a larger iter_limit"
         report = "terminated in {} iterations. {}".format(iter, str)
 
         #return a list of 6 different objects
-        return [sol,iter, eq, cycle2, cycle3,report,E]
+        return [sol,iter, eq, cycle2, cycle3,cycle4, report,E]
     
     def __F__(self,y):
         '''
@@ -267,6 +274,8 @@ class Orbit:
             return self.solution[-2:]
         elif self.cycle3:
             return self.solution[-3:]
+        elif self.cycle4:
+            return self.soltuion[-4:]
         else:
             print("Orbit has no equilibrium or small limit cycle")
             return self.solution[-5:]
