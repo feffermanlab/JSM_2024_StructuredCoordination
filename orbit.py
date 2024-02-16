@@ -275,7 +275,7 @@ class Orbit:
         elif self.cycle3:
             return self.solution[-3:]
         elif self.cycle4:
-            return self.soltuion[-4:]
+            return self.solution[-4:]
         else:
             print("Orbit has no equilibrium or small limit cycle")
             return self.solution[-5:]

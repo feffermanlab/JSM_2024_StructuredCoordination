@@ -104,10 +104,8 @@ def OrbitModularity(sol):
     p = sol.get_limit()
     part = list()
     for i in list(set(p)):
-        print(max(p))
         l= p == i 
         parti = [j for j, x in enumerate(l) if x ]
-        print("in part {} are vertices {}".format(i, parti))
         part.append(parti)
     q = nx.community.modularity(G,part)
     return(q)
