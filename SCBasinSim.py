@@ -119,4 +119,4 @@ def main(series, n, minExpd, maxExpd, reps,m ):
 if __name__=="__main__":
     df = main(args.series,args.n,args.minExpd,args.maxExpd,args.reps,args.m)
     print(df)
-    df.to_csv("DataFiles\SCBasinResults{}.csv".format(args.series),index = True)
+    df.to_csv("DataFiles\SCBasinResults{}.csv".format(args.series),index = False)

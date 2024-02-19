@@ -436,19 +436,35 @@
 \end{frame}
 \section{Basins of Stability}
 \begin{frame}{Simulation Methods}
-	content...
+	On larger graphs, It becomes impractical to check every partition so we take a different approach to finding equilibria
+	\begin{block}{Initial Value Problem}
+		Given a strategy profile $\uu(t)$ compute the next strategy profile by computing best responses.
+		\begin{equation*}
+			\uu(t+1)=\big[\argmax_{c\in C}|\{x\in\Gamma(v); \uu_x(t)=c\} |]_{v\in V}
+		\end{equation*}
+		This gives a (non-unique) solution to the initial value problem resulting in an equilibrium or $n$-cycle\footnote{or the sequence does not converge to a limit}.
+	\end{block}
+\end{frame}
+\begin{frame}{Simulation Methods}
+	Each Nash equilibrium (and corresponding equilibrium partition) therefore has a (possibly overlapping) basin of stability. One crucial question is to understand the size of the basin of stability corresponding to the trivial equilibrium partition. 
+	\begin{block}{Simulation Design}
+		For each Erd\'os-Renyi random graph, solve the IVP for 500 random initial conditions and record how many of them result in a trivial partition. 
+	\end{block}
 \end{frame}
 \begin{frame}{Results}
 	con
 \end{frame}
 \section{Broader Simulation}
 \begin{frame}{Simulation Methods}
-	content...
+	
 \end{frame}
 \begin{frame}{Results}
 	content...
 \end{frame}
-\begin{frame}{Conjectures}
-	content...
+\begin{frame}{Observations and Conjectures}
+	\begin{itemize}
+		\item The computation time for solving the IVP is linear in graph size
+		\item $n$-cycles occur with probability zero for $n>2$. 
+	\end{itemize}
 \end{frame}
 \end{document}
