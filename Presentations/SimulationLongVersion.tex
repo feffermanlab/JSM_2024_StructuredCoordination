@@ -40,7 +40,7 @@
 \end{frame}
 \section{Introduction}
 \begin{frame}{The Coordination Game}
-	The coordination game with neutral options, is an incredibly simple game:
+		The coordination game with neutral options, is an incredibly simple game:
 	\begin{center} 
 		\begin{tabular}{c|cc}
 			&A&B\\
@@ -49,19 +49,19 @@
 			B&0,0&1,1
 		\end{tabular}
 	\end{center}
-	This is a critical case in the general $n$ player coordination game and has been understudied by economists and ecologists\footnote{Kandori, Michihiro, et al. “Learning, Mutation, and Long Run Equilibria in Games.”}\footnote{Ellison, Glenn. "Basins of attraction, long-run stochastic stability, and the speed of step-by-step evolution."}
 	
+	There are two pure strategy Nash equilibria $(A,A), (B,B)$, and a mixed strategy Nash equilibrium where both players play strategy $A$ with probability $p=\frac{1}{2}$.
 \end{frame}
 
 \begin{frame}{The Structured Coordination Game}
-	In the case of neutral options there are far more Nash Equilibria
+	When there are many players playing this game and interacting heterogeneously we can imagine the interaction taking place on a graph
 	\begin{figure}
 		\includegraphics[width=0.6\linewidth]{images/oralfig3v4}
 	\end{figure}
 \end{frame}
 
 \begin{frame}{Partitioning}
-	For small graphs, it is easy to catalogue the Nash equilibria. In order to do this we use vertex partitions.  
+	There is a very natural correspondence between strategy profiles and graph partitions 
 	\begin{block}{Strategic Partitions}
 		For a strategy profile $\uu:V\rightarrow C$ the corresponding partition is $Q:=\{q^c\}_{c\in C}$ where $q^c=\{v\in V|\uu(v)=c\}$
 	\end{block}  
@@ -79,43 +79,176 @@
 
 \section{Catalogue}
 \begin{frame}{Methods}
-	We seek to catalogue every equilibrium partition for very small graphs ($\leq 7$ vertices). We can use a brute force method because Checking if a partition is an equilibrium partition is an $\mathcal{O}(n^2)$ operation. 
+	Seeking to build a catalogue of equilibrium partitions for small graphs, we use a brute force method
+	\begin{block}{Checking if a partition is an equilibrium partition is $\mathcal{P}$ hard.}
+		We need only calculate the best response of each vertex in graph. If every vertex is playing its best response, then it is a Nash equilibrium and thus an equilibrium partition. This can be done with in at most $n^2$ operations. 
+	\end{block} 
+\end{frame}
+\begin{frame}{Checking for Isomorphisms}
 	
-	Challenges:
-	\begin{itemize}
-		\item Ensure that no partition is a refinement of another disconnected partition
-		\item Ensure no two partitions are isomorphic to one another
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Results}
-	\begin{itemize} 
-	\item The only equilibrium partitions on graphs of order 1, 2, or 3 are trivial partitions.  
-	\item Across all 996 connected graphs with at most 7 vertices, there are 2083 equilibrium partition.
-	\item 399 graphs only admit the trivial partition\footnote{They are ``indecomposable"  or ``0-indecomposable" a la Arditti et al. ``Robust Coordination of Linear Threshold Dynamics on Directed Weighted Networks} 
-	\item One graph on seven vertices admits 10 distinct equilibrium partitions
-	\item out of all partitions 9\% have 3 parts, 43\% have two parts and 48\% are trivial. 
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Results}
 	\begin{figure}
-		\includegraphics[width = \linewidth]{images/SimFig1v1}
-		\caption{The frequency of graph which admit $n$ distinct partitions for graphs of size 4, 5, 6, and 7. }
+		\centering
+		\scalebox{0.8}{
+		\begin{tabular}{|m{2cm}|m{5.5cm}|c|}
+			\hline
+			Type& Partition Diagram& Vector View \\
+			\hline
+			\hline
+			\raggedright
+			Isomorphic by way of relabeling & \begin{tikzpicture}
+				\node(a)[circle, fill, inner sep =1.5pt] at (0,0){};
+				\node(b)[circle, fill, inner sep = 1.5pt] at(0.5,-0.5){};
+				\node(c)[circle, fill, inner sep = 1.5pt] at(1,0){};
+				\node(d)[circle, fill, inner sep = 1.5pt] at(1.5,-0.5){};
+				\node(e)[circle, fill, inner sep = 1.5pt] at(2,0){};
+				
+				\draw (a)--(b)--(c)--(d)--(e);
+				
+				\node[fit=(a)(b)(c),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				\node[fit=(d)(e),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				
+				\node(label11) at (0.5,0.5){$p^1$};
+				\node(label12) at (1.75,0.5){$p^2$};
+				
+				\node(equal)at (2.5,-0.25){$\simeq$};
+				
+				\node(f)[circle, fill, inner sep =1.5pt] at (3,0){};
+				\node(g)[circle, fill, inner sep = 1.5pt] at(3.5,-0.5){};
+				\node(h)[circle, fill, inner sep = 1.5pt] at(4,0){};
+				\node(i)[circle, fill, inner sep = 1.5pt] at(4.5,-0.5){};
+				\node(j)[circle, fill, inner sep = 1.5pt] at(5,0){};
+				
+				\draw (f)--(g)--(h)--(i)--(j);
+				
+				\node[fit=(f)(g)(h),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				\node[fit=(i)(j),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				
+				\node(label21) at (3.5,0.5){$p^2$};
+				\node(label22) at (4.75,0.5){$p^1$};
+				
+			\end{tikzpicture} 
+			& $[1,1,1,2,2]\simeq[2,2,2,1,1]$\\
+			\hline \raggedright
+			Isomorphic by way of symmetry & \begin{tikzpicture}
+				\node(a)[circle, fill, inner sep =1.5pt] at (0,0){};
+				\node(b)[circle, fill, inner sep = 1.5pt] at(0.5,-0.5){};
+				\node(c)[circle, fill, inner sep = 1.5pt] at(1,0){};
+				\node(d)[circle, fill, inner sep = 1.5pt] at(1.5,-0.5){};
+				\node(e)[circle, fill, inner sep = 1.5pt] at(2,0){};
+				
+				\draw (a)--(b)--(c)--(d)--(e);
+				
+				\node[fit=(a)(b)(c),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				\node[fit=(d)(e),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				
+				\node(label11) at (0.5,0.5){$p^1$};
+				\node(label12) at (1.75,0.5){$p^2$};
+				
+				\node(equal)at (2.5,-0.25){$\simeq$};
+				
+				\node(f)[circle, fill, inner sep =1.5pt] at (3,0){};
+				\node(g)[circle, fill, inner sep = 1.5pt] at(3.5,-0.5){};
+				\node(h)[circle, fill, inner sep = 1.5pt] at(4,0){};
+				\node(i)[circle, fill, inner sep = 1.5pt] at(4.5,-0.5){};
+				\node(j)[circle, fill, inner sep = 1.5pt] at(5,0){};
+				
+				\draw (f)--(g)--(h)--(i)--(j);
+				
+				\node[fit=(f)(g),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				\node[fit=(h)(i)(j),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				
+				\node(label21) at (3.25,0.5){$p^2$};
+				\node(label22) at (4.5,0.5){$p^1$};
+				
+			\end{tikzpicture} 
+			& $[1,1,1,2,2]\simeq[2,2,1,1,1]$\\
+			\hline\raggedright
+			Isomorphic by way of symmetry and relabeling & \begin{tikzpicture}
+				\node(a)[circle, fill, inner sep =1.5pt] at (0,0){};
+				\node(b)[circle, fill, inner sep = 1.5pt] at(0.5,-0.5){};
+				\node(c)[circle, fill, inner sep = 1.5pt] at(1,0){};
+				\node(d)[circle, fill, inner sep = 1.5pt] at(1.5,-0.5){};
+				\node(e)[circle, fill, inner sep = 1.5pt] at(2,0){};
+				
+				\draw (a)--(b)--(c)--(d)--(e);
+				
+				\node[fit=(a)(b)(c),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				\node[fit=(d)(e),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				
+				\node(label11) at (0.5,0.5){$p^1$};
+				\node(label12) at (1.75,0.5){$p^2$};
+				
+				\node(equal)at (2.5,-0.25){$\simeq$};
+				
+				\node(f)[circle, fill, inner sep =1.5pt] at (3,0){};
+				\node(g)[circle, fill, inner sep = 1.5pt] at(3.5,-0.5){};
+				\node(h)[circle, fill, inner sep = 1.5pt] at(4,0){};
+				\node(i)[circle, fill, inner sep = 1.5pt] at(4.5,-0.5){};
+				\node(j)[circle, fill, inner sep = 1.5pt] at(5,0){};
+				
+				\draw (f)--(g)--(h)--(i)--(j);
+				
+				\node[fit=(f)(g),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				\node[fit=(h)(i)(j),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
+				
+				\node(label21) at (3.25,0.5){$p^1$};
+				\node(label22) at (4.5,0.5){$p^2$};
+				
+			\end{tikzpicture} 
+			& $[1,1,1,2,2]\simeq[1,1,2,2,2]$\\
+			\hline
+		\end{tabular}
+		}	
+		\caption{An example of the three different ways two labeled partitions of labeled graphs can be isomorphic to one another and the "vector view" which is how the computer stores the partition information.}
+		\label{isofigure}
 	\end{figure}
 	
 \end{frame}
-
 \begin{frame}{Results}
-	\begin{figure}
-		\includegraphics[width = \linewidth]{images/SimFig2}
-		\caption{The frequency of partitions with $n$ parts for graphs of size 4, 5, 6, and 7. }
-	\end{figure}
-	
+	\begin{table}[]
+		\centering
+		\begin{tabular}{c|cccccccccc}
+			&\multicolumn{10}{|c}{number of graphs with $n$ partitions}  \\
+			\hline 
+			Graph size&1&2&3&4&5&6&7&8&9&10\\
+			\hline 
+			1&1&0&0&0&0&0&0&0&0&0\\
+			2&1&0&0&0&0&0&0&0&0&0\\
+			3&2&0&0&0&0&0&0&0&0&0\\
+			4&4&2&0&0&0&0&0&0&0&0\\
+			5&13&8&0&0&0&0&0&0&0&0\\
+			6&48&43&13&6&2&0&0&0&0&0\\
+			7&319&297&128&56&25&15&8&3&1&1\\
+			\hline
+			Total&399&350&141&62&27&15&8&3&1&1
+		\end{tabular}
+		\caption{A table showing the number of connected graphs which admit $n$ different equilibrium partitions for $n$ from 1 to 10 up to isomorphism. Among graphs of size less or equal to seven, there are no graphs which admit more than 10 different partitions.}
+		\label{tab:CountPartitionNumber}
+	\end{table}
 \end{frame}
 
-
-
+\begin{frame}{Results}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{c|cccccc}
+			& \multicolumn{6}{|c}{number of partitions with $n$ parts} \\
+			\hline 
+			Graph Size&\multicolumn{2}{|c}{1}&\multicolumn{2}{c}{2}&\multicolumn{2}{c}{3}\\
+			\hline 
+			1&1&100\%&0&0\%&0&0\%\\
+			2&1&100\%&0&0\%&0&0\%\\
+			3&2&100\%&0&0\%&0&0\%\\
+			4&6&75\%&2&25\%&0&0\%\\
+			5&21&72\%&8&27\%&0&0\%\\
+			6&112&54\%&79&38\%&16&8\%\\
+			7&853&46\%&808&44\%&174&9\%\\
+			\hline
+			Total& 996&48\%&897&43\%&190&9\%
+		\end{tabular}
+		\caption{A table showing the number of distinct partitions with $n$ parts for each graph size from 1 to 7 vertices. }
+		\label{NumberClusters}
+	\end{table}
+\end{frame}
 \begin{frame}{Results}
 	\begin{figure}
 		\centering
@@ -301,7 +434,6 @@
 		\label{graph445}
 	\end{figure}
 \end{frame}
-
 \section{Basins of Stability}
 \begin{frame}{Simulation Methods}
 	On larger graphs, It becomes impractical to check every partition so we take a different approach to finding equilibria
@@ -332,193 +464,7 @@
 \begin{frame}{Observations and Conjectures}
 	\begin{itemize}
 		\item The computation time for solving the IVP is linear in graph size
-		\item $3$-cycles occur with probability zero. 
+		\item $n$-cycles occur with probability zero for $n>2$. 
 	\end{itemize}
-\end{frame}
-
-\section*{}
-\begin{frame}{Thank You}
-	\begin{itemize}
-		\item Thank you to Nina Fefferman and all the members of the Fefferman Lab who commented on this work
-		\item Thank you to Graham Derryberry for help using the cluster
-		\item The computation for this work was performed on the National Institute for Modeling Biological Systems (NIMBioS) computational resources at the University of Tennessee
-		\item All the code is available on the Fefferman Lab github: github.com/feffermanlab/JSM\_2024\_StructuredCoordination
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Checking for Isomorphisms}
-	
-	\begin{figure}
-		\centering
-		\scalebox{0.8}{
-			\begin{tabular}{|m{2cm}|m{5.5cm}|c|}
-				\hline
-				Type& Partition Diagram& Vector View \\
-				\hline
-				\hline
-				\raggedright
-				Isomorphic by way of relabeling & \begin{tikzpicture}
-					\node(a)[circle, fill, inner sep =1.5pt] at (0,0){};
-					\node(b)[circle, fill, inner sep = 1.5pt] at(0.5,-0.5){};
-					\node(c)[circle, fill, inner sep = 1.5pt] at(1,0){};
-					\node(d)[circle, fill, inner sep = 1.5pt] at(1.5,-0.5){};
-					\node(e)[circle, fill, inner sep = 1.5pt] at(2,0){};
-					
-					\draw (a)--(b)--(c)--(d)--(e);
-					
-					\node[fit=(a)(b)(c),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					\node[fit=(d)(e),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					
-					\node(label11) at (0.5,0.5){$p^1$};
-					\node(label12) at (1.75,0.5){$p^2$};
-					
-					\node(equal)at (2.5,-0.25){$\simeq$};
-					
-					\node(f)[circle, fill, inner sep =1.5pt] at (3,0){};
-					\node(g)[circle, fill, inner sep = 1.5pt] at(3.5,-0.5){};
-					\node(h)[circle, fill, inner sep = 1.5pt] at(4,0){};
-					\node(i)[circle, fill, inner sep = 1.5pt] at(4.5,-0.5){};
-					\node(j)[circle, fill, inner sep = 1.5pt] at(5,0){};
-					
-					\draw (f)--(g)--(h)--(i)--(j);
-					
-					\node[fit=(f)(g)(h),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					\node[fit=(i)(j),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					
-					\node(label21) at (3.5,0.5){$p^2$};
-					\node(label22) at (4.75,0.5){$p^1$};
-					
-				\end{tikzpicture} 
-				& $[1,1,1,2,2]\simeq[2,2,2,1,1]$\\
-				\hline \raggedright
-				Isomorphic by way of symmetry & \begin{tikzpicture}
-					\node(a)[circle, fill, inner sep =1.5pt] at (0,0){};
-					\node(b)[circle, fill, inner sep = 1.5pt] at(0.5,-0.5){};
-					\node(c)[circle, fill, inner sep = 1.5pt] at(1,0){};
-					\node(d)[circle, fill, inner sep = 1.5pt] at(1.5,-0.5){};
-					\node(e)[circle, fill, inner sep = 1.5pt] at(2,0){};
-					
-					\draw (a)--(b)--(c)--(d)--(e);
-					
-					\node[fit=(a)(b)(c),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					\node[fit=(d)(e),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					
-					\node(label11) at (0.5,0.5){$p^1$};
-					\node(label12) at (1.75,0.5){$p^2$};
-					
-					\node(equal)at (2.5,-0.25){$\simeq$};
-					
-					\node(f)[circle, fill, inner sep =1.5pt] at (3,0){};
-					\node(g)[circle, fill, inner sep = 1.5pt] at(3.5,-0.5){};
-					\node(h)[circle, fill, inner sep = 1.5pt] at(4,0){};
-					\node(i)[circle, fill, inner sep = 1.5pt] at(4.5,-0.5){};
-					\node(j)[circle, fill, inner sep = 1.5pt] at(5,0){};
-					
-					\draw (f)--(g)--(h)--(i)--(j);
-					
-					\node[fit=(f)(g),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					\node[fit=(h)(i)(j),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					
-					\node(label21) at (3.25,0.5){$p^2$};
-					\node(label22) at (4.5,0.5){$p^1$};
-					
-				\end{tikzpicture} 
-				& $[1,1,1,2,2]\simeq[2,2,1,1,1]$\\
-				\hline\raggedright
-				Isomorphic by way of symmetry and relabeling & \begin{tikzpicture}
-					\node(a)[circle, fill, inner sep =1.5pt] at (0,0){};
-					\node(b)[circle, fill, inner sep = 1.5pt] at(0.5,-0.5){};
-					\node(c)[circle, fill, inner sep = 1.5pt] at(1,0){};
-					\node(d)[circle, fill, inner sep = 1.5pt] at(1.5,-0.5){};
-					\node(e)[circle, fill, inner sep = 1.5pt] at(2,0){};
-					
-					\draw (a)--(b)--(c)--(d)--(e);
-					
-					\node[fit=(a)(b)(c),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					\node[fit=(d)(e),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					
-					\node(label11) at (0.5,0.5){$p^1$};
-					\node(label12) at (1.75,0.5){$p^2$};
-					
-					\node(equal)at (2.5,-0.25){$\simeq$};
-					
-					\node(f)[circle, fill, inner sep =1.5pt] at (3,0){};
-					\node(g)[circle, fill, inner sep = 1.5pt] at(3.5,-0.5){};
-					\node(h)[circle, fill, inner sep = 1.5pt] at(4,0){};
-					\node(i)[circle, fill, inner sep = 1.5pt] at(4.5,-0.5){};
-					\node(j)[circle, fill, inner sep = 1.5pt] at(5,0){};
-					
-					\draw (f)--(g)--(h)--(i)--(j);
-					
-					\node[fit=(f)(g),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					\node[fit=(h)(i)(j),dashed, draw, rectangle,rounded corners=10,inner sep=5pt] {};
-					
-					\node(label21) at (3.25,0.5){$p^1$};
-					\node(label22) at (4.5,0.5){$p^2$};
-					
-				\end{tikzpicture} 
-				& $[1,1,1,2,2]\simeq[1,1,2,2,2]$\\
-				\hline
-			\end{tabular}
-		}	
-		\caption{An example of the three different ways two labeled partitions of labeled graphs can be isomorphic to one another and the "vector view" which is how the computer stores the partition information.}
-		\label{isofigure}
-	\end{figure}
-	
-\end{frame}
-
-\begin{frame}{Notes on Complexity}
-	\begin{block}{Checking if a partition is an equilibrium partition is $\mathcal{P}$ hard.}
-		We need only calculate the best response of each vertex in graph. If every vertex is playing its best response, then it is a Nash equilibrium and thus an equilibrium partition. This can be done with in at most $n^2$ operations. 
-	\end{block}
-	\begin{block}{Corollary}
-		Finding an equilibrium partition of a graph given certain compatible constraints in $\mathcal{NP}$ hard. 
-	\end{block}
-\end{frame}
-
-\begin{frame}{Results}
-	\begin{table}[]
-		\centering
-		\begin{tabular}{c|cccccccccc}
-			&\multicolumn{10}{|c}{number of graphs with $n$ partitions}  \\
-			\hline 
-			Graph size&1&2&3&4&5&6&7&8&9&10\\
-			\hline 
-			1&1&0&0&0&0&0&0&0&0&0\\
-			2&1&0&0&0&0&0&0&0&0&0\\
-			3&2&0&0&0&0&0&0&0&0&0\\
-			4&4&2&0&0&0&0&0&0&0&0\\
-			5&13&8&0&0&0&0&0&0&0&0\\
-			6&48&43&13&6&2&0&0&0&0&0\\
-			7&319&297&128&56&25&15&8&3&1&1\\
-			\hline
-			Total&399&350&141&62&27&15&8&3&1&1
-		\end{tabular}
-		\caption{A table showing the number of connected graphs which admit $n$ different equilibrium partitions for $n$ from 1 to 10 up to isomorphism. Among graphs of size less or equal to seven, there are no graphs which admit more than 10 different partitions.}
-		\label{tab:CountPartitionNumber}
-	\end{table}
-\end{frame}
-
-\begin{frame}{Results}
-	\begin{table}[h!]
-		\centering
-		\begin{tabular}{c|cccccc}
-			& \multicolumn{6}{|c}{number of partitions with $n$ parts} \\
-			\hline 
-			Graph Size&\multicolumn{2}{|c}{1}&\multicolumn{2}{c}{2}&\multicolumn{2}{c}{3}\\
-			\hline 
-			1&1&100\%&0&0\%&0&0\%\\
-			2&1&100\%&0&0\%&0&0\%\\
-			3&2&100\%&0&0\%&0&0\%\\
-			4&6&75\%&2&25\%&0&0\%\\
-			5&21&72\%&8&27\%&0&0\%\\
-			6&112&54\%&79&38\%&16&8\%\\
-			7&853&46\%&808&44\%&174&9\%\\
-			\hline
-			Total& 996&48\%&897&43\%&190&9\%
-		\end{tabular}
-		\caption{A table showing the number of distinct partitions with $n$ parts for each graph size from 1 to 7 vertices. }
-		\label{NumberClusters}
-	\end{table}
 \end{frame}
 \end{document}

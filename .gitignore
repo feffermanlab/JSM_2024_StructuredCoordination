@@ -2,6 +2,7 @@
 *.png
 *.jpg
 *.prof
+*.csv
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

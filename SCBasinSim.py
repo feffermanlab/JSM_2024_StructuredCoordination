@@ -7,24 +7,40 @@ import random
 import argparse
 
 ##Read in arguments
+
+#"Global" variables
+series = [50,100,150,200,400]
+n = 200
+minExpd = 0.5
+maxExpd = 20
+reps = 10
+m = 500
+
+#total number of jobs
+r=100
+
 parser = argparse.ArgumentParser()
-parser.add_argument("series", 
-                    help = "The size of graphs in this series", 
-                    type = int)
-parser.add_argument("n",
-                    help = "number of graphs to be generated in this serires",
-                    type = int)
-parser.add_argument("minExpd",
-                    help = "Minimum mean degree",
-                    type = float)
-parser.add_argument("maxExpd",
-                    help = "Maximum mean degree",
-                    type = float)
-parser.add_argument("reps",
-                    help = "number of graphs generated with a particular mean degree",
-                    type = int)
-parser.add_argument("m",
-                    help = "Number of orbits to run on a single graph",
+#parser.add_argument("series", 
+#                    help = "The size of graphs in this series", 
+#                    type = int)
+#parser.add_argument("n",
+#                    help = "number of graphs to be generated in this serires",
+#                    type = int)
+#parser.add_argument("minExpd",
+#                    help = "Minimum mean degree",
+#                    type = float)
+#parser.add_argument("maxExpd",
+#                    help = "Maximum mean degree",
+#                    type = float)
+#parser.add_argument("reps",
+#                    help = "number of graphs generated with a particular mean degree",
+#                    type = int)
+#parser.add_argument("m",
+#                    help = "Number of orbits to run on a single graph",
+#                    type = int)
+
+parser.add_argument("Run",
+                    help = "Job number",
                     type = int)
 
 args = parser.parse_args()
@@ -55,7 +71,7 @@ def main(series, n, minExpd, maxExpd, reps,m ):
         a dataframe which includes all the data from the simulation. 
     '''
 
-    print('This run will attempt at most () orbits'.format(n*reps*m))
+    #print('This run will attempt at most {} orbits'.format(n*reps*m))
     iters = 0
     df = pd.DataFrame({"Graph Size":[],
                        "ED":[],
@@ -67,7 +83,7 @@ def main(series, n, minExpd, maxExpd, reps,m ):
                        })
     
     v = series 
-    print("Working on series-{}".format(v))
+    #print("Working on series-{}".format(v))
     for p in np.linspace(minExpd/(v-1),maxExpd/(v-1),n):
         for i in range(0,reps):
             g=nx.erdos_renyi_graph(v,p)
@@ -112,11 +128,30 @@ def main(series, n, minExpd, maxExpd, reps,m ):
 #minEcpd=0.5
 #maxExpd =20
 #reps = 10
-#m = 100
+#m = 500
 
-# This will run 1,000,000 orbits  
+# This will run 5,000,000 orbits  
 
 if __name__=="__main__":
-    df = main(args.series,args.n,args.minExpd,args.maxExpd,args.reps,args.m)
-    print(df)
-    df.to_csv("DataFiles\SCBasinResults{}.csv".format(args.series),index = False)
+    #job number
+    run = args.Run
+    #total number of orbits
+    total =len(series)*n*reps*m
+    seriestotal = total/len(series)
+
+    Expdspace = np.linspace(minExpd,maxExpd,n)
+
+    # orbits per job
+    q = int(total/r)
+    #series number
+    s = int(q*run/(n*reps*m))
+
+    #orbit in the current series
+    mod = (q*run)%(n*reps*m)
+    start = int(mod/ (reps*m))
+    end = int((mod+q)/(reps*m))
+    startExpd = Expdspace[start]
+    endExpd = Expdspace[end-1]
+    
+    df = main(series[s],end-start,startExpd,endExpd,reps,m)
+    df.to_csv("DataFiles/SCBasinResults{}.csv".format(args.Run),index = False)
