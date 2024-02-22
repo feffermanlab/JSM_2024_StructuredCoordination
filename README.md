@@ -20,3 +20,5 @@ PartitionTools.py is a collection of tools which are used in the simulations to 
 SCCatalogue, SCBasinSim and PartitionTools all depend on orbit
 
 SCBasinSim depends on PartitionTools
+
+All the Shell files and DataCollect.py are used to run the simulation on a cluster
