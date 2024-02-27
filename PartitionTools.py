@@ -41,8 +41,6 @@ def find_cliques(sol):
             if locs.any():
                 clique = G.subgraph(np.asarray(G.nodes)[locs])
                 Q.append(clique)
-    else:
-        print("There is no equilibrium or 2-cycle in this orbit")
     return Q 
 
 def count_cliques(orbit):

@@ -137,5 +137,5 @@ if __name__=="__main__":
                maxExpd,
                reps)
     endtime = time.time()
-    df.to_csv("Datafiles/SCBroadSim{}.csv".format(args.Run),index=False)
+    df.to_csv("DataFiles/SCBroadSim{}.csv".format(args.Run),index=False)
     print("attempting {} orbits took {} seconds".format(vres*n*reps,endtime-starttime))

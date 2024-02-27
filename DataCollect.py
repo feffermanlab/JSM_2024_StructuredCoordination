@@ -17,5 +17,5 @@ BroadDf = pd.read_csv("./DataFiles/SCBroadSim0.csv")
 for i in jobrange[1:]:
     path = "./DataFiles/SCBroadSim{}.csv".format(i)
     if os.path.isfile(path):
-        BasinDf = pd.concat((BasinDf, pd.read_csv(path)))
-BasinDf.to_csv("./DataFiles/SCBroadSimComplete.csv", index = False)
+        BroadDf = pd.concat((BroadDf, pd.read_csv(path)))
+BroadDf.to_csv("./DataFiles/SCBroadSimComplete.csv", index = False)
