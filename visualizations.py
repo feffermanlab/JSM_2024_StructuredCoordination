@@ -5,7 +5,7 @@ from statistics import mean
 
 
 
-
+#frequency of admitted partitions
 def Fig1():
     g1 = [1,0,0,0,0,0,0,0,0,0]
     g2 = [1,0,0,0,0,0,0,0,0,0]
@@ -59,6 +59,7 @@ def Fig1():
 
     plt.show()
 
+#frequency of partitions with n parts
 def Fig2():
     g4 = [6,2,0]
     g5 = [21,8,0]
@@ -88,6 +89,7 @@ def Fig2():
     ax.legend(labels = ["Order 4 - 8 partitions", "Order 5 - 29 partitions", "Order 6 - 207 partitions ", "Order 7 - 1835 paritions"])
     plt.show()
 
+#Basin of Stability for Consensus Equilibrium by Mean Degree
 def Fig3():
     TotalBasindf = pd.read_csv("./DataFiles/SCBasinSimComplete.csv")
 
@@ -157,6 +159,7 @@ def Fig3():
     ax.legend(labels = ["50", "100", "150 ", "200", "400"], title = "Graph Order")
     plt.show()
 
+#Mean Cluster Number by Graph Diameter
 def Fig4():
     TotalBroaddf = pd.read_csv("./DataFiles/SCBroadSimComplete.csv")
     fig = plt.figure()
@@ -237,14 +240,280 @@ def Fig4():
    
     plt.show()
 
-
+#Cluster Number by Edge Density
 def Fig5():
+
     TotalBroaddf = pd.read_csv("./DataFiles/SCBroadSimComplete.csv")
+    
+    eq = (TotalBroaddf[TotalBroaddf["EQ"]]).shape[0]
+    print(eq)
+    
+    cycle2 = (TotalBroaddf[TotalBroaddf["Cycle2"]]).shape[0]
+    print(cycle2)
+
+    cycle3 = (TotalBroaddf[TotalBroaddf["Cycle3"]]).shape[0]
+    print(cycle3)
+
+    cycle4 = (TotalBroaddf[TotalBroaddf["Cycle4"]]).shape[0]
+    print(cycle4)
+
+
+
     fig = plt.figure()
     ax = fig.gca()
 
-    ax.scatter(TotalBroaddf["ED"], TotalBroaddf["ClusterNumber"],c=TotalBroaddf["Graph Size"])
+    p1 = ax.scatter(TotalBroaddf["ED"], TotalBroaddf["ClusterNumber"],c=TotalBroaddf["Graph Size"])
+
+    ax.text(0.35, 15, 'n = {} \nEquilibria = {} \n2-cycles = {} \n3-cycles = {} \n4-cycles = {}'.format(eq + cycle2 + cycle3 +cycle4,eq,cycle2,cycle3,cycle4), style='italic',
+        bbox={'facecolor': 'grey', 'alpha': 0.5, 'pad': 10})
+
+
+    plt.xlabel( "Edge Density")
+    plt.ylabel("Cluster Number")
+    plt.title("Cluster Number by Edge Density")
+
+    fig.colorbar(p1, label = "Graph Order")
+    plt.show()
+
+    EQdf = TotalBroaddf[TotalBroaddf["EQ"]]
+    fig = plt.figure()
+    ax = fig.gca()
+
+    p1 = ax.scatter(EQdf["ED"], EQdf["ClusterNumber"],c=EQdf["Graph Size"])
+
+    plt.xlabel( "Edge Density")
+    plt.ylabel("Cluster Number")
+    plt.title("Cluster Number by Edge Density (among equilibria)")
+
+    fig.colorbar(p1, label = "Graph Order")
+    plt.show()
+
+    c2df = TotalBroaddf[TotalBroaddf["Cycle2"]]
+    fig = plt.figure()
+    ax = fig.gca()
+
+    p1 = ax.scatter(c2df["ED"], c2df["ClusterNumber"],c=c2df["Graph Size"])
+
+    plt.xlabel( "Edge Density")
+    plt.ylabel("Cluster Number")
+    plt.title("Cluster Number by Edge Density (among 2-cycles)")
+
+    fig.colorbar(p1, label = "Graph Order")
+    plt.show()
+
+#Cluster Number by Mean Degree
+def Fig6():
+    #TotalBroaddf = pd.read_csv("./DataFiles/SCBroadSimComplete.csv")
+    
+    #meanDegree = list()
+    #for i in range(0,len(TotalBroaddf['Graph Size'])):
+    #    ddist = TotalBroaddf.iloc[i]['DegreeSequence']
+    #    ddist = [int(s) for s in ddist[1:-1].split(',')]
+    #    meanDegree.append(mean(ddist))
+    #TotalBroaddf.insert(5, "MeanDegree", meanDegree)
+
+    #TotalBroaddf.to_csv("./TotalBroadWithMeanDegree")
+
+    TotalBroaddf = pd.read_csv("./DataFiles/SCBroadSimWithMeanDegree.csv")
+
+    eq = (TotalBroaddf[TotalBroaddf["EQ"]]).shape[0]
+    print(eq)
+    
+    cycle2 = (TotalBroaddf[TotalBroaddf["Cycle2"]]).shape[0]
+    print(cycle2)
+
+    cycle3 = (TotalBroaddf[TotalBroaddf["Cycle3"]]).shape[0]
+    print(cycle3)
+
+    cycle4 = (TotalBroaddf[TotalBroaddf["Cycle4"]]).shape[0]
+    print(cycle4)
+
+
+
+    fig = plt.figure()
+    ax = fig.gca()
+
+    p1 = ax.scatter(TotalBroaddf["MeanDegree"], TotalBroaddf["ClusterNumber"],c=TotalBroaddf["Graph Size"])
+
+    ax.text(17.5, 15, 'n = {} \nEquilibria = {} \n2-cycles = {} \n3-cycles = {} \n4-cycles = {}'.format(eq + cycle2 + cycle3 +cycle4,eq,cycle2,cycle3,cycle4), style='italic',
+        bbox={'facecolor': 'grey', 'alpha': 0.5, 'pad': 10})
+
+
+    plt.xlabel( "Mean Degree")
+    plt.ylabel("Cluster Number")
+    plt.title("Cluster Number by Mean Degree")
+
+    fig.colorbar(p1, label = "Graph Order")
+    plt.show()
+
+#Cluster Number by Centralization
+def Fig7():
+    #TotalBroaddf = pd.read_csv("./DataFiles/SCBroadSimWithMeanDegree.csv")
+    
+    #centralization = list()
+    #for i in range(0,len(TotalBroaddf['Graph Size'])):
+    #    ddist = TotalBroaddf.iloc[i]['DegreeSequence']
+    #    ddist = [int(s) for s in ddist[1:-1].split(',')]
+    #    centralization.append(np.std(ddist))
+    #TotalBroaddf.insert(6, "Centralization", centralization)
+
+    #TotalBroaddf.to_csv("./DataFiles/SCBroadSim_MD_C.csv")
+
+    TotalBroaddf = pd.read_csv("./DataFiles/SCBroadSim_MD_C")
+
+    eq = (TotalBroaddf[TotalBroaddf["EQ"]]).shape[0]
+    print(eq)
+    
+    cycle2 = (TotalBroaddf[TotalBroaddf["Cycle2"]]).shape[0]
+    print(cycle2)
+
+    cycle3 = (TotalBroaddf[TotalBroaddf["Cycle3"]]).shape[0]
+    print(cycle3)
+
+    cycle4 = (TotalBroaddf[TotalBroaddf["Cycle4"]]).shape[0]
+    print(cycle4)
+
+
+
+    fig = plt.figure()
+    ax = fig.gca()
+
+    p1 = ax.scatter(TotalBroaddf["Centralization"], TotalBroaddf["ClusterNumber"],c=TotalBroaddf["Graph Size"])
+
+    ax.text(4.25, 15, 'n = {} \nEquilibria = {} \n2-cycles = {} \n3-cycles = {} \n4-cycles = {}'.format(eq + cycle2 + cycle3 +cycle4,eq,cycle2,cycle3,cycle4), style='italic',
+        bbox={'facecolor': 'grey', 'alpha': 0.5, 'pad': 10})
+
+
+    plt.xlabel( "Centralization")
+    plt.ylabel("Cluster Number")
+    plt.title("Cluster Number by Centralization")
+
+    fig.colorbar(p1, label = "Graph Order")
+    plt.show()
+
+#Heat map of Equilibrium Proportion    
+def Fig8():
+    TotalBroaddf = pd.read_csv("./DataFiles/SCBroadSim_MD_C")
+
+    minissimumMD = min(TotalBroaddf["MeanDegree"])
+    maxissimumMD = max(TotalBroaddf["MeanDegree"])
+    xres =40
+    yres =40
+
+    X = np.zeros((yres,xres))
+    for i in range(0,xres):
+        print(i)
+        for j in range(0,xres):
+            minsize = 50+(i/yres)*400
+            maxsize = 50+((i+1)/yres)*400
+            minMD = minissimumMD+(j/xres)*(maxissimumMD-minissimumMD)
+            maxMD = minissimumMD+((j+1)/xres)*(maxissimumMD-minissimumMD)
+            Tempdf = TotalBroaddf[TotalBroaddf["Graph Size"].between(minsize,maxsize,inclusive="left")]
+            Tempdf = Tempdf[Tempdf["MeanDegree"].between(minMD,maxMD,inclusive="left")]
+            if not Tempdf.empty: X[yres -1-i,j]= Tempdf[Tempdf["EQ"]].shape[0]/Tempdf.shape[0]
+            else: X[yres-1-i,j]=np.nan 
+    print(X)
+
+    fig = plt.figure()
+    ax = fig.gca()
+
+    p1 = ax.imshow(X)
+
+    xtics = np.linspace(-0.5,xres-0.5, 5)
+    xticlabs = [np.round(minissimumMD + item /xres*(maxissimumMD-minissimumMD)) for item in xtics ]
+    plt.xticks(ticks = xtics, labels= xticlabs)
+
+    ytics = np.linspace(-0.5,yres-0.5, 5)
+    yticlabs = [np.round(450 - item /yres*(400)) for item in np.linspace(0,yres,5) ]
+    plt.yticks(ticks = ytics, labels= yticlabs)
+
+    plt.xlabel("Mean Degree")
+    plt.ylabel("Graph Order")
+    plt.title("Heat map of Equilibrium Proportion")
+
+    fig.colorbar(p1, label = "Equilibrium Proportion")
 
     plt.show()
 
-Fig5()
+    #showing 4 cycles
+    cycle4df = TotalBroaddf[TotalBroaddf["Cycle4"]]
+    c4x = [xres*(item-minissimumMD)/(maxissimumMD-minissimumMD)for item in cycle4df["MeanDegree"]]
+    c4y = [yres*(450-item)/400 for item in cycle4df["Graph Size"]]
+
+    fig = plt.figure()
+    ax = fig.gca()
+
+    p1 = ax.imshow(X)
+    p2 = ax.scatter(c4x,c4y,c='black')
+
+    xtics = np.linspace(-0.5,xres-0.5, 5)
+    xticlabs = [np.round(minissimumMD + item /xres*(maxissimumMD-minissimumMD)) for item in xtics ]
+    plt.xticks(ticks = xtics, labels= xticlabs)
+
+    ytics = np.linspace(-0.5,yres-0.5, 5)
+    yticlabs = [np.round(450 - item /yres*(400)) for item in np.linspace(0,yres,5) ]
+    plt.yticks(ticks = ytics, labels= yticlabs)
+
+    plt.xlabel("Mean Degree")
+    plt.ylabel("Graph Order")
+    plt.title("Heat map of Equilibrium Proportion (with 4-cycles shown)")
+
+    fig.colorbar(p1, label = "Equilibrium Proportion")
+
+    plt.show()
+
+#Heat map of Cluster Number
+def Fig9():
+    TotalBroaddf = pd.read_csv("./DataFiles/SCBroadSim_MD_C")
+    Stabledf = TotalBroaddf[TotalBroaddf["Cycle4"]==False]
+
+
+    minissimumMD = min(Stabledf["MeanDegree"])
+    maxissimumMD = max(Stabledf["MeanDegree"])
+    xres =60
+    yres =60
+
+    X = np.zeros((yres,xres))
+    for i in range(0,xres):
+        print(i)
+        for j in range(0,xres):
+            minsize = 50+(i/yres)*400
+            maxsize = 50+((i+1)/yres)*400
+            minMD = minissimumMD+(j/xres)*(maxissimumMD-minissimumMD)
+            maxMD = minissimumMD+((j+1)/xres)*(maxissimumMD-minissimumMD)
+            Tempdf = Stabledf[Stabledf["Graph Size"].between(minsize,maxsize,inclusive="left")]
+            Tempdf = Tempdf[Tempdf["MeanDegree"].between(minMD,maxMD,inclusive="left")]
+            if not Tempdf.empty:
+                X[yres-1-i,j]= mean(Tempdf["ClusterNumber"])
+            else: X[yres-1-i,j]=np.nan 
+    print(X)
+
+    fig = plt.figure()
+    ax = fig.gca()
+
+    p1 = ax.imshow(X)
+
+    xtics = np.linspace(-0.5,xres-0.5, 5)
+    xticlabs = [np.round(minissimumMD + item /xres*(maxissimumMD-minissimumMD)) for item in xtics ]
+    plt.xticks(ticks = xtics, labels= xticlabs)
+
+    ytics = np.linspace(-0.5,yres-0.5, 5)
+    yticlabs = [np.round(450 - item /yres*(400)) for item in np.linspace(0,yres,5) ]
+    plt.yticks(ticks = ytics, labels= yticlabs)
+
+    plt.xlabel("Mean Degree")
+    plt.ylabel("Graph Order")
+    plt.title("Heat map of Average Cluster Number")
+
+    fig.colorbar(p1, label = "Average Cluster Number")
+
+    plt.show()
+    
+
+#Fig3()
+#Fig4()
+#Fig5()
+#Fig6()
+#Fig7()
+#Fig8()
+Fig9()
