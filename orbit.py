@@ -190,9 +190,9 @@ class Orbit:
             #Check to see if the solution has reached a limit
             if iter>=37:
                 eq = (sol[-1]==sol[-2]).all() and (sol[-1]==sol[-3]).all()
-                cycle2 = (sol[-1]==sol[-3]).all() and (sol[-1]==sol[-5]).all() and (sol[-1]==sol[-37]).all() and (not eq)
-                cycle3 = (sol[-1]==sol[-4]).all() and (sol[-1]==sol[-7]).all() and (sol[-1]==sol[-37]).all() and (not eq)
-                cycle4 = (sol[-1]==sol[-5]).all() and (sol[-1]==sol[-9]).all() and (sol[-1]==sol[-37]).all() and (not eq) and (not cycle2)
+                cycle2 = self.__check_n_cycle__(sol,2,37)
+                cycle3 = self.__check_n_cycle__(sol,3,37)
+                cycle4 = self.__check_n_cycle__(sol,3,37)
             finished = iter>=iter_limit or eq or cycle2 or cycle3 or cycle4
 
         # Once the solution has reached a limit, build the report 
@@ -373,3 +373,30 @@ class Orbit:
         for jj in range(0,self.size):
             ordered_cols[jj,:]=cols[list(self.graph.nodes)[jj]]   
         return ordered_cols
+    
+
+    def __check_n_cycle__(self,y, n, req):
+        ''' 
+        A hidden method to check for n-cycles
+
+        Parameters
+        ----------
+        y : list
+            a list of strategy profiles
+
+        n : int
+            the cycle number to be considered
+
+        req: int
+            The number of steps for which the solution must look like 
+            a cycle before it is accepted as a cycle 
+
+        Returns
+        -----------
+        ncycle : bool
+            True when y does include an n-cycle as observed for the required time
+            False when this is not the case.
+        '''
+        for i in range(0, req-n):
+            if (y[-1-i]!=y[-1-i-n]).any():return(False)
+        return (True)

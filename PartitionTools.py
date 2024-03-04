@@ -109,11 +109,37 @@ def OrbitModularity(sol):
     return(q)
 
 
-def test():
-    G = nx.erdos_renyi_graph(10,0.4)
-    o = orbit.Orbit(G)
-    q =OrbitModularity(o)
-    return(q)
+def Isolate4cycle(sol):
+    if not sol.cycle4: return()
+    G = sol.graph
+
+    p = sol.solution[-4:]
+
+    p12 = p[-1]==p[-2]
+    print(p12)
+    p23 = p[-2]==p[-3]
+    print(p23)
+    p34 = p[-3]==p[-4]
+    print(p34)
+
+    const = np.logical_and(p12, p23)
+    const = np.logical_and(const,p34)
+    print(const)
+    ch = [(not p) for p in const]
+    
+    print("nodes that change")
+    print(ch)
+    print(sum(ch))
+    focalnodes = np.repeat(False,G.number_of_nodes())
+    for v in range(0,G.number_of_nodes()):
+        focalnodes[v]= ch[v]
+        adj = [ n for n in G[v]]
+        focalnodes[adj] = True
+    print("nodes which neighbor nodes that change or change themselves")    
+    print(focalnodes)
+    print(sum(focalnodes))
+
+        
 
 
 

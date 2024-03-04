@@ -9,15 +9,26 @@ import argparse
 ##Read in arguments
 
 #"Global" variables
-series = [50,100,150,200,400]
-n = 200
-minExpd = 0.5
-maxExpd = 20
-reps = 10
-m = 500
+#series = [50,100,150,200,400]
+#n = 200
+#minExpd = 0.5
+#maxExpd = 20
+#reps = 10
+#m = 500
+
+#For Testing
+series = [40,]
+n=5
+minExpd =2
+maxExpd = 5
+reps = 2
+m = 250
 
 #total number of jobs
-r=100
+#r=100
+
+#For testing
+r=1
 
 parser = argparse.ArgumentParser()
 #parser.add_argument("series", 
@@ -86,6 +97,7 @@ def main(series, n, minExpd, maxExpd, reps,m ):
     #print("Working on series-{}".format(v))
     for p in np.linspace(minExpd/(v-1),maxExpd/(v-1),n):
         for i in range(0,reps):
+            print("Working on graph {}". format(iters+1))
             g=nx.erdos_renyi_graph(v,p)
             if not nx.is_connected(g):break
             dist = np.zeros(m, dtype= int)
@@ -99,18 +111,17 @@ def main(series, n, minExpd, maxExpd, reps,m ):
                 elif o.cycle2:lims[x]=2
                 elif o.cycle3:lims[x]=3
                 elif o.cycle4:lims[x]=4
-                else:lims[x]=0
 
             #Build cluster distribution
             e = max(dist)
             pdf = np.zeros(e+1)
             for j in range(0,e+1):
                 pdf[j] = sum(k == j for k in dist)
-
             #Build Limit Dist:
             limDist=np.zeros(5) 
-            for j in range(0,4):
+            for j in range(0,5):
                 limDist[j] = sum(k==j for k in lims)  
+
             edgenumber = g.number_of_edges()
             t = 2* edgenumber/ (v**2-v)
             nt = (2*(edgenumber-v-1))/(v**2-3*v+2)
@@ -154,4 +165,5 @@ if __name__=="__main__":
     endExpd = Expdspace[end-1]
     
     df = main(series[s],end-start,startExpd,endExpd,reps,m)
-    df.to_csv("DataFiles/SCBasinResults{}.csv".format(args.Run),index = False)
+    #df.to_csv("DataFiles/SCBasinResults{}.csv".format(args.Run),index = False)\
+    print(df)
