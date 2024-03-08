@@ -1,6 +1,6 @@
 # Scructured Coordination
 
-This repository continains a collection of tools for the anaysis of an n-player, n-strategy coordination game on a network with neutral options. 
+This repository contains a collection of tools for the analysis of an n-player, n-strategy coordination game on a network with neutral options. 
 Considering the game as a dynamical system we describe orbits, equilibria, and stability.  
 
 The Class Orbit is a (non-unique) solution to the initial value problem. Given a initial strategy profile (which will
