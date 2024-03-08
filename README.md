@@ -21,6 +21,8 @@ simulations mentioned above are compile it into one process.
 
 PartitionTools.py is a collection of tools which are used in the simulations to measure partitions
 
-SCCatalogue, SCBasinSim and PartitionTools all depend on orbit
+SCCatalogue, SCBasinSim, SCBroadSim, and PartitionTools all depend on orbit
+SCBasinSim and SCBroadSim depend on PartitionTools
 
-SCBasinSim depends on PartitionTools
+The Jupiter Notebook McAlisterProjectDemo.ipynb steps through the functionality of the orbit class. 
+(note the visualizations are not supported on when run in VScode)
