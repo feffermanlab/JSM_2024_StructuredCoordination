@@ -3,6 +3,7 @@
 *.jpg
 *.prof
 *.csv
+*.xlsx
 
 /Reports*
 
