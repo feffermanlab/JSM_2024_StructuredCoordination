@@ -4,6 +4,8 @@
 *.prof
 *.csv
 
+/Reports*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
