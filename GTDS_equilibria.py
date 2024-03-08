@@ -198,4 +198,3 @@ def count_cliques(orbit):
     return(len(Q))      
 
 
-do_this()

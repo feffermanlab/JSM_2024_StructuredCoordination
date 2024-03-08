@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=RunBroadSim
-#SBATCH --output=%x_%A_%a.out
+#SBATCH --output=logs/%x_%A_%a.out
 #SBATCH --array=0-99
 #SBATCH --mem-per-cpu=1G
 

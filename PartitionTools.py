@@ -3,6 +3,34 @@ import random
 import numpy as np
 import orbit 
 
+
+def gen_connected_graph(n,p):
+    ''' 
+    function to generate a connected graph
+
+    Parameters
+    -----------
+    n : int
+        The number of vertices in the graph
+    p : float
+        The edge liklihood value for the Erdos Renyi graph generation
+
+    Returns 
+    ----------
+    G : nx.Graph
+        A conneceted graph
+    '''
+
+    #start by generating a random Erdos Renyi Graph
+    G=nx.erdos_renyi_graph(n,p)
+
+    #get a list of connected components and connect them 
+    comps=list(nx.connected_components(G))
+    for ii in np.arange(0,len(comps)-1):
+        G.add_edge(random.choice(list(comps[ii])),random.choice(list(comps[ii+1])))
+    
+    return G
+
 def find_cliques(sol):
     '''
     A function to return the cliques of a equilibrium coloring
@@ -116,28 +144,17 @@ def Isolate4cycle(sol):
     p = sol.solution[-4:]
 
     p12 = p[-1]==p[-2]
-    print(p12)
     p23 = p[-2]==p[-3]
-    print(p23)
     p34 = p[-3]==p[-4]
-    print(p34)
 
     const = np.logical_and(p12, p23)
     const = np.logical_and(const,p34)
-    print(const)
     ch = [(not p) for p in const]
-    
-    print("nodes that change")
-    print(ch)
-    print(sum(ch))
     focalnodes = np.repeat(False,G.number_of_nodes())
     for v in range(0,G.number_of_nodes()):
         focalnodes[v]= ch[v]
         adj = [ n for n in G[v]]
         focalnodes[adj] = True
-    print("nodes which neighbor nodes that change or change themselves")    
-    print(focalnodes)
-    print(sum(focalnodes))
 
         
 
