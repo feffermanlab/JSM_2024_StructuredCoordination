@@ -5,7 +5,8 @@
 *.csv
 *.xlsx
 
-/Reports*
+Reports/
+DataFiles/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
