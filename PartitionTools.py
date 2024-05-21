@@ -1,6 +1,8 @@
 import networkx as nx
 import random
 import numpy as np
+from math import comb
+from mpmath import *
 import orbit 
 
 
@@ -120,8 +122,6 @@ def ntangle_compare(g1,g2, subns = None, n = 100, KSresolution = 1000):
         Dn.append(max(abs(cdf1-cdf2)))
     return(Dn)
 
-
-
 def OrbitModularity(sol):
     if not sol.eq: return (2)
     G= sol.graph
@@ -135,7 +135,6 @@ def OrbitModularity(sol):
         part.append(parti)
     q = nx.community.modularity(G,part)
     return(q)
-
 
 def Isolate4cycle(sol):
     if not sol.cycle4: return()
@@ -156,8 +155,21 @@ def Isolate4cycle(sol):
         adj = [ n for n in G[v]]
         focalnodes[adj] = True
 
-        
-
+def ConnectedProb(n,p):
+    mp.dps = 50  
+    print(n)
+    print(p)
+    fi= list()
+    fi.append(mpf(0))
+    fi.append(mpf(1))
+    for ii in range(2,n+1):
+        sum = 0
+        fs = fi[1:]
+        combin = [mpf(comb(ii-1,x)) for x in range(0, ii-1)]
+        exps = [mpf((1-p)**(x*(ii-x))) for x in range(1,ii)]
+        elems = [mpf(fs[x]*combin[x]*exps[x]) for x in range(0,ii-1)] 
+        fi.append(mpf(1 - np.sum(elems)))
+    return (fi[-1])
 
 
 

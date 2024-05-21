@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from statistics import mean 
+import PartitionTools
 
 
 
@@ -162,6 +163,62 @@ def Fig3():
 
     ax.legend(labels = ["50", "100", "150 ", "200", "400"], title = "Graph Order")
     plt.show()
+    
+    
+def Fig3A():
+    TotalBasindf = pd.read_csv("./DataFiles/SCBasinSim_CP.csv")
+    S50Basindf = TotalBasindf[TotalBasindf['Graph Size']==50]
+    S100Basindf = TotalBasindf[TotalBasindf['Graph Size']==100]
+    S150Basindf = TotalBasindf[TotalBasindf['Graph Size']==150]
+    S200Basindf = TotalBasindf[TotalBasindf['Graph Size']==200]
+    S400Basindf = TotalBasindf[TotalBasindf['Graph Size']==400]
+    
+    fig = plt.figure()
+    ax = fig.gca()
+
+    z50 = np.polyfit(10**(S50Basindf['connectedProbability']),10**(S50Basindf['BasinSize']),1)
+    p50 = np.poly1d(z50)
+
+    z100 = np.polyfit(10**(S100Basindf['connectedProbability']),10**(S100Basindf['BasinSize']),1)
+    p100 = np.poly1d(z100)
+
+    z150 = np.polyfit(10**(S150Basindf['connectedProbability']),10**(S150Basindf['BasinSize']),1)
+    p150 = np.poly1d(z150)
+
+    z200 = np.polyfit(10**(S200Basindf['connectedProbability']),10**(S200Basindf['BasinSize']),1)
+    p200 = np.poly1d(z200)
+    
+    z400 = np.polyfit(10**(S400Basindf['connectedProbability']),10**(S400Basindf['BasinSize']),1)
+    p400 = np.poly1d(z400)
+
+    l50 = ax.scatter(10**(S50Basindf['connectedProbability']),10**(S50Basindf['BasinSize']), c = "b")
+    l100 = ax.scatter(10**(S100Basindf['connectedProbability']),10**(S100Basindf['BasinSize']), c = "r")
+    l150 = ax.scatter(10**S150Basindf['connectedProbability'],10**(S150Basindf['BasinSize']), c = "orange")
+    l200 = ax.scatter(10**S200Basindf['connectedProbability'],10**S200Basindf['BasinSize'], c = "g")
+    l400 = ax.scatter(10**S400Basindf['connectedProbability'],10**S400Basindf['BasinSize'], c = "violet")
+    plt.plot(10**(S50Basindf['connectedProbability']),p50(10**(S50Basindf['connectedProbability'])),c="b")
+    plt.plot(10**(S100Basindf['connectedProbability']),p100(10**(S100Basindf['connectedProbability'])),c="r")
+    plt.plot(10**(S150Basindf['connectedProbability']),p150(10**(S150Basindf['connectedProbability'])),c="orange")
+    plt.plot(10**(S200Basindf['connectedProbability']),p200(10**(S200Basindf['connectedProbability'])),c="g")
+    plt.plot(10**(S400Basindf['connectedProbability']),p400(10**(S400Basindf['connectedProbability'])),c="violet")
+
+    plt.xlabel("Probability of Connectedness")
+    plt.ylabel("Relative size of Basin of Stability") 
+    plt.title("Basin of Stability for Consensus Equilibrium by Probability of Connectedness")
+
+    xtics = np.linspace(1,10,5)
+    xticlabs = [np.round(np.log10(item),2) for item in xtics ]
+    plt.xticks(ticks = xtics, labels= xticlabs)
+
+    ytics = np.linspace(1,10, 5)
+    yticlabs = [np.round(np.log10(item),2) for item in ytics ]
+    plt.yticks(ticks = ytics, labels= yticlabs)
+
+    plt.ylim(1,10)
+    plt.xlim(1,10)
+
+    ax.legend(labels = ["50", "100", "150 ", "200", "400"], title = "Graph Order")
+    plt.show()   
 
 #Mean Cluster Number by Graph Diameter
 def Fig4():
@@ -433,6 +490,29 @@ def Fig8():
 
     p1 = ax.imshow(X)
 
+    Y = np.linspace(50,450,1000)
+    X1= [((np.log(y)-np.log(-np.log(0.1)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X2= [((np.log(y)-np.log(-np.log(0.2)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X3= [((np.log(y)-np.log(-np.log(0.3)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X4= [((np.log(y)-np.log(-np.log(0.4)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X5= [((np.log(y)-np.log(-np.log(0.5)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X6= [((np.log(y)-np.log(-np.log(0.6)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X7= [((np.log(y)-np.log(-np.log(0.7)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X8= [((np.log(y)-np.log(-np.log(0.8)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X9= [((np.log(y)-np.log(-np.log(0.9)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+
+    ploty = [(450-y)*yres/400 for y in Y]
+
+    l1  = ax.plot(X1, ploty, c='k')
+    l2  = ax.plot(X2, ploty, c='k')
+    l3  = ax.plot(X3, ploty, c='k')
+    l4  = ax.plot(X4, ploty, c='k')
+    l5  = ax.plot(X5, ploty, c='k')
+    l6  = ax.plot(X6, ploty, c='k')
+    l7  = ax.plot(X7, ploty, c='k')
+    l8  = ax.plot(X8, ploty, c='k')
+    l9  = ax.plot(X9, ploty, c='k')
+
     xtics = np.linspace(-0.5,xres-0.5, 5)
     xticlabs = [np.round(minissimumMD + item /xres*(maxissimumMD-minissimumMD)) for item in xtics ]
     plt.xticks(ticks = xtics, labels= xticlabs)
@@ -440,6 +520,8 @@ def Fig8():
     ytics = np.linspace(-0.5,yres-0.5, 5)
     yticlabs = [np.round(450 - item /yres*(400)) for item in np.linspace(0,yres,5) ]
     plt.yticks(ticks = ytics, labels= yticlabs)
+
+    plt.ylim(yres-0.5,-0.5)
 
     plt.xlabel("Mean Degree")
     plt.ylabel("Graph Order")
@@ -508,6 +590,29 @@ def Fig9():
 
     p1 = ax.imshow(X)
 
+    Y = np.linspace(50,450,1000)
+    X1= [((np.log(y)-np.log(-np.log(0.1)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X2= [((np.log(y)-np.log(-np.log(0.2)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X3= [((np.log(y)-np.log(-np.log(0.3)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X4= [((np.log(y)-np.log(-np.log(0.4)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X5= [((np.log(y)-np.log(-np.log(0.5)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X6= [((np.log(y)-np.log(-np.log(0.6)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X7= [((np.log(y)-np.log(-np.log(0.7)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X8= [((np.log(y)-np.log(-np.log(0.8)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X9= [((np.log(y)-np.log(-np.log(0.9)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+
+    ploty = [(450-y)*yres/400 for y in Y]
+
+    l1  = ax.plot(X1, ploty, c='w')
+    l2  = ax.plot(X2, ploty, c='w')
+    l3  = ax.plot(X3, ploty, c='w')
+    l4  = ax.plot(X4, ploty, c='w')
+    l5  = ax.plot(X5, ploty, c='w')
+    l6  = ax.plot(X6, ploty, c='w')
+    l7  = ax.plot(X7, ploty, c='w')
+    l8  = ax.plot(X8, ploty, c='w')
+    l9  = ax.plot(X9, ploty, c='w')
+
     xtics = np.linspace(-0.5,xres-0.5, 5)
     xticlabs = [np.round(minissimumMD + item /xres*(maxissimumMD-minissimumMD)) for item in xtics ]
     plt.xticks(ticks = xtics, labels= xticlabs)
@@ -515,6 +620,8 @@ def Fig9():
     ytics = np.linspace(-0.5,yres-0.5, 5)
     yticlabs = [np.round(450 - item /yres*(400)) for item in np.linspace(0,yres,5) ]
     plt.yticks(ticks = ytics, labels= yticlabs)
+
+    plt.ylim(yres-0.5,-0.5)
 
     plt.xlabel("Mean Degree")
     plt.ylabel("Graph Order")
@@ -525,10 +632,134 @@ def Fig9():
     plt.show()
     
 
+def Fig10():
+        #TotalBroaddf=pd.read_csv("./DataFiles/SCBroadSim_CPComplete.csv")
+    #conProb = list()
+    #for i in range(0,len(TotalBroaddf['Graph Size'])):
+       # n = TotalBroaddf.iloc[i]['Graph Size']
+      #  p = TotalBroaddf.iloc[i]['MeanDegree']/(n-1)
+     #   conProb.append(PartitionTools.ConnectedProb(n,p))
+    #TotalBroaddf.insert(9,"connectedProbability", conProb)
+
+    #TotalBroaddf.to_csv("./DataFiles/SCBroadSim_CP.csv")
+    TotalBroaddf = pd.read_csv("./DataFiles/SCBroadSim_CPComplete.csv")
+    Stabledf = TotalBroaddf[TotalBroaddf["Cycle4"]==False]
+
+
+    minissimumMD = min(Stabledf["MeanDegree"])
+    maxissimumMD = max(Stabledf["MeanDegree"])
+    xres =60
+    yres =60
+
+    X = np.zeros((yres,xres))
+    for i in range(0,xres):
+        print(i)
+        for j in range(0,xres):
+            minsize = 50+(i/yres)*400
+            maxsize = 50+((i+1)/yres)*400
+            minMD = minissimumMD+(j/xres)*(maxissimumMD-minissimumMD)
+            maxMD = minissimumMD+((j+1)/xres)*(maxissimumMD-minissimumMD)
+            Tempdf = Stabledf[Stabledf["Graph Size"].between(minsize,maxsize,inclusive="left")]
+            Tempdf = Tempdf[Tempdf["MeanDegree"].between(minMD,maxMD,inclusive="left")]
+            if not Tempdf.empty:
+                X[yres-1-i,j]= mean(Tempdf["connectedProbability"])
+            else: X[yres-1-i,j]=np.nan 
+    print(X)
+
+    fig = plt.figure()
+    ax = fig.gca()
+
+    p1 = ax.imshow(X)
+
+    Y = np.linspace(50,450,1000)
+    X1= [((np.log(y)-np.log(-np.log(0.1)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X2= [((np.log(y)-np.log(-np.log(0.2)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X3= [((np.log(y)-np.log(-np.log(0.3)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X4= [((np.log(y)-np.log(-np.log(0.4)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X5= [((np.log(y)-np.log(-np.log(0.5)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X6= [((np.log(y)-np.log(-np.log(0.6)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X7= [((np.log(y)-np.log(-np.log(0.7)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X8= [((np.log(y)-np.log(-np.log(0.8)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+    X9= [((np.log(y)-np.log(-np.log(0.9)))-minissimumMD)*xres/(maxissimumMD-minissimumMD) for y in Y]
+
+    ploty = [(450-y)*yres/400 for y in Y]
+
+    l1  = ax.plot(X1, ploty, c='k')
+    l2  = ax.plot(X2, ploty, c='k')
+    l3  = ax.plot(X3, ploty, c='k')
+    l4  = ax.plot(X4, ploty, c='k')
+    l5  = ax.plot(X5, ploty, c='k')
+    l6  = ax.plot(X6, ploty, c='k')
+    l7  = ax.plot(X7, ploty, c='k')
+    l8  = ax.plot(X8, ploty, c='k')
+    l9  = ax.plot(X9, ploty, c='k')
+
+    xtics = np.linspace(-0.5,xres-0.5, 5)
+    xticlabs = [np.round(minissimumMD + item /xres*(maxissimumMD-minissimumMD)) for item in xtics ]
+    plt.xticks(ticks = xtics, labels= xticlabs)
+
+    ytics = np.linspace(-0.5,yres-0.5, 5)
+    yticlabs = [np.round(450 - item /yres*(400)) for item in np.linspace(0,yres,5) ]
+    plt.yticks(ticks = ytics, labels= yticlabs)
+
+
+    plt.ylim(yres-0.5,-0.5)
+
+
+    plt.xlabel("Mean Degree")
+    plt.ylabel("Graph Order")
+    plt.title("Heat map of probability of connectedness")
+
+    fig.colorbar(p1, label = "probability of connectedness")
+
+    plt.show()
+
+#def connectProb():
+    #calculate connected probability on Basin Data
+    # TotalBasindf = pd.read_csv("./DataFiles/SCBasinSimComplete.csv")
+
+    # #compute Trivial equilibrium basin size
+    # sizes = list()
+    # non_conv_sol = 0
+    # for i in range(0,len(TotalBasindf['Graph Size'])):
+    #     dist = TotalBasindf.iloc[i]['ClusterDist']
+    #     dist = [int(s.lstrip()) for s in dist[1:-1].split('.')[:-1]]
+    #     sizes.append(dist[1]/sum(dist[1:]))
+    #     non_conv_sol = non_conv_sol+dist[0]
+
+    # TotalBasindf.insert(7,"BasinSize",sizes)
+
+    # print("Thre are {} non convergent solutions".format(non_conv_sol))
+    # #compute MeanDegree
+    # meanDegree = list()
+    # for i in range(0,len(TotalBasindf['Graph Size'])):
+    #     ddist = TotalBasindf.iloc[i]['DegreeSequence']
+    #     ddist = [int(s) for s in ddist[1:-1].split(',')]
+    #     meanDegree.append(mean(ddist))
+    # TotalBasindf.insert(5, "MeanDegree", meanDegree)
+
+    # conProb = list()
+    # for i in range(0,len(TotalBasindf['Graph Size'])):
+    #     n = TotalBasindf.iloc[i]['Graph Size']
+    #     p = TotalBasindf.iloc[i]['MeanDegree']/(n-1)
+    #     conProb.append(PartitionTools.ConnectedProb(n,p))
+    # TotalBasindf.insert(9,"connectedProbability", conProb)
+
+    # TotalBasindf.to_csv("./DataFiles/SCBasinSim_CP.csv")
+    # print('Basin Simulation Complete')
+
+
+
+
+#connectProb()
+        
+#Fig3A()
+
 #Fig3()
 #Fig4()
 #Fig5()
 #Fig6()
 #Fig7()
-Fig8()
-#Fig9()
+#Fig8()
+Fig9()
+#Fig10()
