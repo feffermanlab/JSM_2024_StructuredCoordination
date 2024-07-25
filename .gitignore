@@ -4,7 +4,7 @@
 *.prof
 *.csv
 *.xlsx
-
+*.tiff
 Reports/
 DataFiles/
 

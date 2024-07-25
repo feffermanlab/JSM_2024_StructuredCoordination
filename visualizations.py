@@ -122,46 +122,52 @@ def Fig3():
     
     #print(S50Basindf)
 
-    fig = plt.figure()
+    fig = plt.figure(figsize = (9.6,4.6), dpi = 100)
     ax = fig.gca()
 
-    l50 = ax.scatter(S50Basindf['ED'],S50Basindf['BasinSize'], c = "b")
-    l100 = ax.scatter(S100Basindf['ED'],S100Basindf['BasinSize'], c = "r")
-    l150 = ax.scatter(S150Basindf['ED'],S150Basindf['BasinSize'], c = "orange")
-    l200 = ax.scatter(S200Basindf['ED'],S200Basindf['BasinSize'], c = "g")
-    l400 = ax.scatter(S400Basindf['ED'],S400Basindf['BasinSize'], c = "violet")
+    l50 = ax.scatter(S50Basindf['ED'],S50Basindf['BasinSize'], c = "b", marker = ".")
+    l100 = ax.scatter(S100Basindf['ED'],S100Basindf['BasinSize'], c = "r",marker = "^")
+    l150 = ax.scatter(S150Basindf['ED'],S150Basindf['BasinSize'], c = "orange",marker = "x")
+    l200 = ax.scatter(S200Basindf['ED'],S200Basindf['BasinSize'], c = "g",marker = "+")
+    l400 = ax.scatter(S400Basindf['ED'],S400Basindf['BasinSize'], c = "violet",marker = "s")
 
     plt.xlabel("Edge Density")
     plt.ylabel("Relative size of basin of stability") 
     plt.title("Basin of Stability for Consensus Equilibrium by Edge Density")
 
-    ax.legend(labels = ["50", "100", "150 ", "200", "400"], title = "Graph Order")
+    ax.legend(labels = ["50", "100", "150 ", "200", "400"], title = "Graph Order") 
+    plt.savefig("Fig11Top.tiff", dpi = 600 )
     plt.show()
+   
 
-    fig = plt.figure()
+
+    fig = plt.figure(figsize = (9.6,4.6),dpi =100)
     ax = fig.gca()
 
-    l50 = ax.scatter(S50Basindf['NormED'],S50Basindf['BasinSize'], c = "b")
-    l100 = ax.scatter(S100Basindf['NormED'],S100Basindf['BasinSize'], c = "r")
-    l150 = ax.scatter(S150Basindf['NormED'],S150Basindf['BasinSize'], c = "orange")
-    l200 = ax.scatter(S200Basindf['NormED'],S200Basindf['BasinSize'], c = "g")
-    l400 = ax.scatter(S400Basindf['NormED'],S400Basindf['BasinSize'], c = "violet")
+    l50 = ax.scatter(S50Basindf['NormED'],S50Basindf['BasinSize'], c = "b", marker = ".")
+    l100 = ax.scatter(S100Basindf['NormED'],S100Basindf['BasinSize'], c = "r", marker = "^")
+    l150 = ax.scatter(S150Basindf['NormED'],S150Basindf['BasinSize'], c = "orange",marker = "x")
+    l200 = ax.scatter(S200Basindf['NormED'],S200Basindf['BasinSize'], c = "g", marker = "+")
+    l400 = ax.scatter(S400Basindf['NormED'],S400Basindf['BasinSize'], c = "violet",marker = "s")
+
+
     plt.show()
 
-    fig = plt.figure()
+    fig = plt.figure(figsize = (9.6,4.6),dpi =100)
     ax = fig.gca()
 
-    l50 = ax.scatter(S50Basindf['MeanDegree'],S50Basindf['BasinSize'], c = "b")
-    l100 = ax.scatter(S100Basindf['MeanDegree'],S100Basindf['BasinSize'], c = "r")
-    l150 = ax.scatter(S150Basindf['MeanDegree'],S150Basindf['BasinSize'], c = "orange")
-    l200 = ax.scatter(S200Basindf['MeanDegree'],S200Basindf['BasinSize'], c = "g")
-    l400 = ax.scatter(S400Basindf['MeanDegree'],S400Basindf['BasinSize'], c = "violet")
+    l50 = ax.scatter(S50Basindf['MeanDegree'],S50Basindf['BasinSize'], c = "b", marker = ".")
+    l100 = ax.scatter(S100Basindf['MeanDegree'],S100Basindf['BasinSize'], c = "r", marker = "^")
+    l150 = ax.scatter(S150Basindf['MeanDegree'],S150Basindf['BasinSize'], c = "orange",marker = "x")
+    l200 = ax.scatter(S200Basindf['MeanDegree'],S200Basindf['BasinSize'], c = "g",marker = "+")
+    l400 = ax.scatter(S400Basindf['MeanDegree'],S400Basindf['BasinSize'], c = "violet",marker = "s")
 
     plt.xlabel("Mean Degree")
     plt.ylabel("Relative size of Basin of Stability") 
     plt.title("Basin of Stability for Consensus Equilibrium by Mean Degree")
 
     ax.legend(labels = ["50", "100", "150 ", "200", "400"], title = "Graph Order")
+    plt.savefig("Fig11Bottom.tiff", dpi = 600 )
     plt.show()
     
     
@@ -173,7 +179,7 @@ def Fig3A():
     S200Basindf = TotalBasindf[TotalBasindf['Graph Size']==200]
     S400Basindf = TotalBasindf[TotalBasindf['Graph Size']==400]
     
-    fig = plt.figure()
+    fig = plt.figure(figsize = (9.6,4.6),dpi =100)
     ax = fig.gca()
 
     z50 = np.polyfit(10**(S50Basindf['connectedProbability']),10**(S50Basindf['BasinSize']),1)
@@ -191,11 +197,11 @@ def Fig3A():
     z400 = np.polyfit(10**(S400Basindf['connectedProbability']),10**(S400Basindf['BasinSize']),1)
     p400 = np.poly1d(z400)
 
-    l50 = ax.scatter(10**(S50Basindf['connectedProbability']),10**(S50Basindf['BasinSize']), c = "b")
-    l100 = ax.scatter(10**(S100Basindf['connectedProbability']),10**(S100Basindf['BasinSize']), c = "r")
-    l150 = ax.scatter(10**S150Basindf['connectedProbability'],10**(S150Basindf['BasinSize']), c = "orange")
-    l200 = ax.scatter(10**S200Basindf['connectedProbability'],10**S200Basindf['BasinSize'], c = "g")
-    l400 = ax.scatter(10**S400Basindf['connectedProbability'],10**S400Basindf['BasinSize'], c = "violet")
+    l50 = ax.scatter(10**(S50Basindf['connectedProbability']),10**(S50Basindf['BasinSize']), c = "b",marker = ".")
+    l100 = ax.scatter(10**(S100Basindf['connectedProbability']),10**(S100Basindf['BasinSize']), c = "r",marker = "^")
+    l150 = ax.scatter(10**S150Basindf['connectedProbability'],10**(S150Basindf['BasinSize']), c = "orange",marker = "x")
+    l200 = ax.scatter(10**S200Basindf['connectedProbability'],10**S200Basindf['BasinSize'], c = "g",marker = "+")
+    l400 = ax.scatter(10**S400Basindf['connectedProbability'],10**S400Basindf['BasinSize'], c = "violet",marker = "s")
     plt.plot(10**(S50Basindf['connectedProbability']),p50(10**(S50Basindf['connectedProbability'])),c="b")
     plt.plot(10**(S100Basindf['connectedProbability']),p100(10**(S100Basindf['connectedProbability'])),c="r")
     plt.plot(10**(S150Basindf['connectedProbability']),p150(10**(S150Basindf['connectedProbability'])),c="orange")
@@ -218,6 +224,7 @@ def Fig3A():
     plt.xlim(1,10)
 
     ax.legend(labels = ["50", "100", "150 ", "200", "400"], title = "Graph Order")
+    plt.savefig("Fig12.tiff", dpi = 600 )
     plt.show()   
 
 #Mean Cluster Number by Graph Diameter
@@ -324,7 +331,7 @@ def Fig5():
     non_conv = Total - eq - cycle2 - cycle3 - cycle4 
     print(non_conv)
 
-    fig = plt.figure()
+    fig = plt.figure(figsize = (9.6,4.6),dpi =100)
     ax = fig.gca()
 
     p1 = ax.scatter(TotalBroaddf["ED"], TotalBroaddf["ClusterNumber"],c=TotalBroaddf["Graph Size"])
@@ -338,6 +345,7 @@ def Fig5():
     plt.title("Cluster Number by Edge Density")
 
     fig.colorbar(p1, label = "Graph Order")
+    plt.savefig("Fig13.tiff", dpi = 600 )
     plt.show()
 
     # EQdf = TotalBroaddf[TotalBroaddf["EQ"]]
@@ -503,15 +511,15 @@ def Fig8():
 
     ploty = [(450-y)*yres/400 for y in Y]
 
-    l1  = ax.plot(X1, ploty, c='k')
-    l2  = ax.plot(X2, ploty, c='k')
-    l3  = ax.plot(X3, ploty, c='k')
-    l4  = ax.plot(X4, ploty, c='k')
-    l5  = ax.plot(X5, ploty, c='k')
-    l6  = ax.plot(X6, ploty, c='k')
-    l7  = ax.plot(X7, ploty, c='k')
-    l8  = ax.plot(X8, ploty, c='k')
-    l9  = ax.plot(X9, ploty, c='k')
+    l1  = ax.plot(X1, ploty, c='k',lw =1)
+    l2  = ax.plot(X2, ploty, c='k',lw =1)
+    l3  = ax.plot(X3, ploty, c='k',lw =1)
+    l4  = ax.plot(X4, ploty, c='k',lw =1)
+    l5  = ax.plot(X5, ploty, c='k',lw =1)
+    l6  = ax.plot(X6, ploty, c='k',lw =1)
+    l7  = ax.plot(X7, ploty, c='k',lw =1)
+    l8  = ax.plot(X8, ploty, c='k',lw =1)
+    l9  = ax.plot(X9, ploty, c='k',lw =1)
 
     xtics = np.linspace(-0.5,xres-0.5, 5)
     xticlabs = [np.round(minissimumMD + item /xres*(maxissimumMD-minissimumMD)) for item in xtics ]
@@ -528,7 +536,7 @@ def Fig8():
     plt.title("Heat map of Equilibrium Proportion")
 
     fig.colorbar(p1, label = "Equilibrium Proportion")
-
+    plt.savefig("Fig13Top.tiff", dpi = 600 )
     plt.show()
 
     #showing 4 cycles
@@ -603,15 +611,15 @@ def Fig9():
 
     ploty = [(450-y)*yres/400 for y in Y]
 
-    l1  = ax.plot(X1, ploty, c='w')
-    l2  = ax.plot(X2, ploty, c='w')
-    l3  = ax.plot(X3, ploty, c='w')
-    l4  = ax.plot(X4, ploty, c='w')
-    l5  = ax.plot(X5, ploty, c='w')
-    l6  = ax.plot(X6, ploty, c='w')
-    l7  = ax.plot(X7, ploty, c='w')
-    l8  = ax.plot(X8, ploty, c='w')
-    l9  = ax.plot(X9, ploty, c='w')
+    l1  = ax.plot(X1, ploty, c='w',lw =1)
+    l2  = ax.plot(X2, ploty, c='w',lw =1)
+    l3  = ax.plot(X3, ploty, c='w',lw =1)
+    l4  = ax.plot(X4, ploty, c='w',lw =1)
+    l5  = ax.plot(X5, ploty, c='w',lw =1)
+    l6  = ax.plot(X6, ploty, c='w',lw =1)
+    l7  = ax.plot(X7, ploty, c='w',lw =1)
+    l8  = ax.plot(X8, ploty, c='w',lw =1)
+    l9  = ax.plot(X9, ploty, c='w',lw =1)
 
     xtics = np.linspace(-0.5,xres-0.5, 5)
     xticlabs = [np.round(minissimumMD + item /xres*(maxissimumMD-minissimumMD)) for item in xtics ]
@@ -628,7 +636,7 @@ def Fig9():
     plt.title("Heat map of Average Cluster Number")
 
     fig.colorbar(p1, label = "Average Cluster Number")
-
+    plt.savefig("Fig13Bottom.tiff", dpi = 600 )
     plt.show()
     
 
@@ -684,15 +692,15 @@ def Fig10():
 
     ploty = [(450-y)*yres/400 for y in Y]
 
-    l1  = ax.plot(X1, ploty, c='k')
-    l2  = ax.plot(X2, ploty, c='k')
-    l3  = ax.plot(X3, ploty, c='k')
-    l4  = ax.plot(X4, ploty, c='k')
-    l5  = ax.plot(X5, ploty, c='k')
-    l6  = ax.plot(X6, ploty, c='k')
-    l7  = ax.plot(X7, ploty, c='k')
-    l8  = ax.plot(X8, ploty, c='k')
-    l9  = ax.plot(X9, ploty, c='k')
+    l1  = ax.plot(X1, ploty, c='k',lw =1)
+    l2  = ax.plot(X2, ploty, c='k',lw =1)
+    l3  = ax.plot(X3, ploty, c='k',lw =1)
+    l4  = ax.plot(X4, ploty, c='k',lw =1)
+    l5  = ax.plot(X5, ploty, c='k',lw =1)
+    l6  = ax.plot(X6, ploty, c='k',lw =1)
+    l7  = ax.plot(X7, ploty, c='k',lw =1)
+    l8  = ax.plot(X8, ploty, c='k',lw =1)
+    l9  = ax.plot(X9, ploty, c='k',lw =1)
 
     xtics = np.linspace(-0.5,xres-0.5, 5)
     xticlabs = [np.round(minissimumMD + item /xres*(maxissimumMD-minissimumMD)) for item in xtics ]
@@ -760,6 +768,6 @@ def Fig10():
 #Fig5()
 #Fig6()
 #Fig7()
-#Fig8()
+Fig8()
 Fig9()
 #Fig10()
